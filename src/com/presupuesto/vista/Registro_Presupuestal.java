@@ -1,0 +1,562 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.presupuesto.vista;
+
+import com.presupuesto.control.AccesoDatos;
+import com.presupuesto.control.RegistroJpaController;
+import com.presupuesto.control.exceptions.NonexistentEntityException;
+import com.presupuesto.modelo.Disponibilidad;
+import com.presupuesto.modelo.Registro;
+import com.presupuesto.modelo.Vigencia;
+import com.presupuesto.utilidades.Generar_Reportes;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
+
+/**
+ *
+ * @author Luis Fernando Leiva
+ */
+public class Registro_Presupuestal extends javax.swing.JInternalFrame {
+
+    Home home;
+    AccesoDatos accesoDatos;
+    Vigencia vigencia;
+    RegistroJpaController registroController;
+
+    /**
+     * Creates new form Registro_Presupuestal
+     */
+    public Registro_Presupuestal(Home parent) {
+        super();
+        this.home = parent;
+
+        // Elimina el la decoracion en la ventana interna
+        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
+        this.setBorder(null);
+        consultarVigencia();
+        initComponents();
+
+        frRegistro.setText(consultarConsecutivo().toString());
+        cargarListaDisponibilidades();
+    }
+
+    /**
+     * Metodo que consulta la vigencia activa
+     */
+    private void consultarVigencia() {
+        accesoDatos = new AccesoDatos();
+        vigencia = new Vigencia();
+        vigencia.setActiva(true);
+        vigencia = accesoDatos.consultarTodos(vigencia, Vigencia.class).get(0);
+    }
+
+    private boolean validarFormulario() {
+        boolean validacionExitosa = true;
+
+        if (frRegistro.getText().trim().equals("") || frFecha.getDate() == null || frObjeto.getText().trim().equals("")) {
+            validacionExitosa = false;
+        }
+
+        return validacionExitosa;
+    }
+
+    private BigDecimal consultarConsecutivo() {
+        BigDecimal consecutivo = new BigDecimal(0);
+        registroController = new RegistroJpaController();
+
+        consecutivo = registroController.consultarMaximoRegistro(vigencia).add(new BigDecimal(1));
+
+        return consecutivo;
+    }
+
+    private void cargarListaDisponibilidades() {
+        accesoDatos = new AccesoDatos();
+        List<Disponibilidad> listaDisponibilidad = new ArrayList<Disponibilidad>();
+        listaDisponibilidad = accesoDatos.consultarTodosPorVigencia(Disponibilidad.class, vigencia);
+
+        if (!listaDisponibilidad.isEmpty()) {
+            for (Disponibilidad disponibilidadIterado : listaDisponibilidad) {
+                frListaDisponibilidad.addItem(disponibilidadIterado.getConsecutivo() + " - " + disponibilidadIterado.getBeneficiario().getNombre());
+            }
+        }
+    }
+
+    private Disponibilidad consultarDisponibilidad() {
+        Disponibilidad disponibilidad = new Disponibilidad();
+
+        String disponibilidadSeleccionada = frListaDisponibilidad.getSelectedItem().toString();
+        String consecutivo = disponibilidadSeleccionada.substring(0, disponibilidadSeleccionada.indexOf("-") - 1);
+
+        disponibilidad.setConsecutivo(new BigDecimal(consecutivo));
+        disponibilidad.setVigencia(vigencia);
+
+        disponibilidad = accesoDatos.consultarObjetoPorVigencia(Disponibilidad.class, disponibilidad, vigencia).get(0);
+
+        return disponibilidad;
+    }
+
+    private void reiniciarFormulario() {
+        frRegistro.setText(consultarConsecutivo().toString());
+        if (frListaDisponibilidad.getItemCount() > 0) {
+            frListaDisponibilidad.setSelectedIndex(0);
+        }
+        frFecha.setDate(null);
+        frObjeto.setText("");
+        frRegistro.requestFocus();
+    }
+
+    public void cargarRegistroSeleccionado(String consecutivoRegistro) {
+        List<Registro> listaRegistro = new ArrayList<Registro>();
+        Registro registro = new Registro();
+        accesoDatos = new AccesoDatos();
+
+        registro.setConsecutivo(new BigDecimal(consecutivoRegistro));
+        registro.setVigencia(vigencia);
+
+        listaRegistro = accesoDatos.consultarObjetoPorVigencia(Registro.class, registro, vigencia);
+
+        if (!listaRegistro.isEmpty()) {
+            registro = listaRegistro.get(0);
+            frRegistro.setText(registro.getConsecutivo().toString());
+            frFecha.setDate(registro.getFecha());
+            frListaDisponibilidad.setSelectedItem(registro.getDisponibilidad().getConsecutivo() + " - " + registro.getDisponibilidad().getBeneficiario().getNombre());
+            frObjeto.setText(registro.getObjeto());
+        }
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        barraHerramientas = new javax.swing.JToolBar();
+        nuevoRegistro = new javax.swing.JLabel();
+        guardarRegistro = new javax.swing.JLabel();
+        listaRegistros = new javax.swing.JLabel();
+        imprimirRegistro = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JToolBar.Separator();
+        eliminarRegistro = new javax.swing.JLabel();
+        labelNoRegistro = new javax.swing.JLabel();
+        frRegistro = new javax.swing.JTextField();
+        labelDisponibilidad = new javax.swing.JLabel();
+        frListaDisponibilidad = new javax.swing.JComboBox<>();
+        labelFecha = new javax.swing.JLabel();
+        frFecha = new com.toedter.calendar.JDateChooser();
+        labelObjeto = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        frObjeto = new javax.swing.JTextArea();
+        barraMenu = new javax.swing.JMenuBar();
+        menuTraslado = new javax.swing.JMenu();
+        itemNuevo = new javax.swing.JMenuItem();
+        itemGuardar = new javax.swing.JMenuItem();
+        itemListaAdiciones = new javax.swing.JMenuItem();
+        itemCerrar = new javax.swing.JMenuItem();
+        menuEditar = new javax.swing.JMenu();
+        itemEliminar = new javax.swing.JMenuItem();
+
+        setBackground(new java.awt.Color(255, 255, 255));
+        setMaximumSize(new java.awt.Dimension(895, 474));
+        setMinimumSize(new java.awt.Dimension(895, 474));
+        setPreferredSize(new java.awt.Dimension(895, 474));
+
+        barraHerramientas.setBackground(new java.awt.Color(255, 255, 255));
+        barraHerramientas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        barraHerramientas.setFloatable(false);
+        barraHerramientas.setRollover(true);
+
+        nuevoRegistro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nuevoRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/nuevo_registro.png"))); // NOI18N
+        nuevoRegistro.setAlignmentX(0.5F);
+        nuevoRegistro.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        nuevoRegistro.setMaximumSize(new java.awt.Dimension(25, 20));
+        nuevoRegistro.setMinimumSize(new java.awt.Dimension(25, 20));
+        nuevoRegistro.setPreferredSize(new java.awt.Dimension(25, 20));
+        nuevoRegistro.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                nuevoRegistroMousePressed(evt);
+            }
+        });
+        barraHerramientas.add(nuevoRegistro);
+
+        guardarRegistro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        guardarRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/guardar.png"))); // NOI18N
+        guardarRegistro.setAlignmentX(0.5F);
+        guardarRegistro.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        guardarRegistro.setMaximumSize(new java.awt.Dimension(25, 20));
+        guardarRegistro.setMinimumSize(new java.awt.Dimension(25, 20));
+        guardarRegistro.setPreferredSize(new java.awt.Dimension(25, 20));
+        guardarRegistro.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                guardarRegistroMousePressed(evt);
+            }
+        });
+        barraHerramientas.add(guardarRegistro);
+
+        listaRegistros.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        listaRegistros.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/lista.png"))); // NOI18N
+        listaRegistros.setAlignmentX(0.5F);
+        listaRegistros.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        listaRegistros.setMaximumSize(new java.awt.Dimension(25, 20));
+        listaRegistros.setMinimumSize(new java.awt.Dimension(25, 20));
+        listaRegistros.setPreferredSize(new java.awt.Dimension(25, 20));
+        listaRegistros.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                listaRegistrosMousePressed(evt);
+            }
+        });
+        barraHerramientas.add(listaRegistros);
+
+        imprimirRegistro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        imprimirRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/imprimir.png"))); // NOI18N
+        imprimirRegistro.setAlignmentX(0.5F);
+        imprimirRegistro.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        imprimirRegistro.setMaximumSize(new java.awt.Dimension(25, 20));
+        imprimirRegistro.setMinimumSize(new java.awt.Dimension(25, 20));
+        imprimirRegistro.setPreferredSize(new java.awt.Dimension(25, 20));
+        imprimirRegistro.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                imprimirRegistroMousePressed(evt);
+            }
+        });
+        barraHerramientas.add(imprimirRegistro);
+        barraHerramientas.add(jSeparator1);
+
+        eliminarRegistro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        eliminarRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/eliminar.png"))); // NOI18N
+        eliminarRegistro.setAlignmentX(0.5F);
+        eliminarRegistro.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        eliminarRegistro.setMaximumSize(new java.awt.Dimension(25, 20));
+        eliminarRegistro.setMinimumSize(new java.awt.Dimension(25, 20));
+        eliminarRegistro.setPreferredSize(new java.awt.Dimension(25, 20));
+        eliminarRegistro.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                eliminarRegistroMousePressed(evt);
+            }
+        });
+        barraHerramientas.add(eliminarRegistro);
+
+        labelNoRegistro.setText("No. Registro");
+
+        frRegistro.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                frRegistroFocusLost(evt);
+            }
+        });
+
+        labelDisponibilidad.setText("Disponibilidad");
+
+        labelFecha.setText("Fecha");
+
+        labelObjeto.setText("Objeto");
+
+        frObjeto.setColumns(20);
+        frObjeto.setLineWrap(true);
+        frObjeto.setRows(5);
+        jScrollPane1.setViewportView(frObjeto);
+
+        barraMenu.setBackground(new java.awt.Color(255, 255, 255));
+
+        menuTraslado.setText("Registro");
+
+        itemNuevo.setText("Nuevo Registro");
+        itemNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemNuevoActionPerformed(evt);
+            }
+        });
+        menuTraslado.add(itemNuevo);
+
+        itemGuardar.setText("Guardar");
+        itemGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemGuardarActionPerformed(evt);
+            }
+        });
+        menuTraslado.add(itemGuardar);
+
+        itemListaAdiciones.setText("Lista Registro Presupuestal");
+        itemListaAdiciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemListaAdicionesActionPerformed(evt);
+            }
+        });
+        menuTraslado.add(itemListaAdiciones);
+
+        itemCerrar.setText("Cerrar");
+        itemCerrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemCerrarActionPerformed(evt);
+            }
+        });
+        menuTraslado.add(itemCerrar);
+
+        barraMenu.add(menuTraslado);
+
+        menuEditar.setText("Editar");
+
+        itemEliminar.setText("Eliminar");
+        itemEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemEliminarActionPerformed(evt);
+            }
+        });
+        menuEditar.add(itemEliminar);
+
+        barraMenu.add(menuEditar);
+
+        setJMenuBar(barraMenu);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(barraHerramientas, javax.swing.GroupLayout.DEFAULT_SIZE, 879, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(113, 113, 113)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelObjeto, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(labelFecha, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(labelDisponibilidad, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(labelNoRegistro, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(frRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(frListaDisponibilidad, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(frFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(barraHerramientas, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(frRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelNoRegistro))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelDisponibilidad)
+                    .addComponent(frListaDisponibilidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelFecha)
+                    .addComponent(frFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelObjeto)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 169, Short.MAX_VALUE))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void itemNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemNuevoActionPerformed
+        reiniciarFormulario();
+    }//GEN-LAST:event_itemNuevoActionPerformed
+
+    private void itemGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGuardarActionPerformed
+        if (validarFormulario()) {
+            List<Registro> listaRegistro = new ArrayList<Registro>();
+            Registro registro = new Registro();
+            registro.setConsecutivo(new BigDecimal(frRegistro.getText().trim()));
+            registro.setVigencia(vigencia);
+
+            listaRegistro = accesoDatos.consultarObjetoPorVigencia(Registro.class, registro, vigencia);
+
+            if (!listaRegistro.isEmpty()) {
+                registro = listaRegistro.get(0);
+            }
+
+            registro.setFecha(frFecha.getDate());
+            registro.setDisponibilidad(consultarDisponibilidad());
+            registro.setObjeto(frObjeto.getText());
+            registro.setVigencia(vigencia);
+
+            registro = accesoDatos.persistirActualizar(registro);
+
+            reiniciarFormulario();
+        }
+    }//GEN-LAST:event_itemGuardarActionPerformed
+
+    private void itemListaAdicionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemListaAdicionesActionPerformed
+        // Abrir Lista
+        Lista_Registros listaRegistros = new Lista_Registros(this, true);
+        listaRegistros.setLocationRelativeTo(null);
+        listaRegistros.setVisible(true);
+    }//GEN-LAST:event_itemListaAdicionesActionPerformed
+
+    private void itemCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCerrarActionPerformed
+        home.getVentanaPrincipal().remove(this);
+    }//GEN-LAST:event_itemCerrarActionPerformed
+
+    private void itemEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemEliminarActionPerformed
+        accesoDatos = new AccesoDatos();
+        registroController = new RegistroJpaController();
+        List<Registro> listaRegistro = new ArrayList<Registro>();
+        Registro registro = new Registro();
+        registro.setConsecutivo(new BigDecimal(frRegistro.getText()));
+        registro.setVigencia(vigencia);
+
+        listaRegistro = accesoDatos.consultarObjetoPorVigencia(Registro.class, registro, vigencia);
+
+        if (!listaRegistro.isEmpty()) {
+            try {
+                registro = listaRegistro.get(0);
+                registroController.destroy(registro);
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(Disponibilidad_Presupuestal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        reiniciarFormulario();
+    }//GEN-LAST:event_itemEliminarActionPerformed
+
+    private void nuevoRegistroMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nuevoRegistroMousePressed
+        reiniciarFormulario();
+    }//GEN-LAST:event_nuevoRegistroMousePressed
+
+    private void guardarRegistroMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarRegistroMousePressed
+        if (validarFormulario()) {
+            List<Registro> listaRegistro = new ArrayList<Registro>();
+            Registro registro = new Registro();
+            registro.setConsecutivo(new BigDecimal(frRegistro.getText().trim()));
+            registro.setVigencia(vigencia);
+
+            listaRegistro = accesoDatos.consultarObjetoPorVigencia(Registro.class, registro, vigencia);
+
+            if (!listaRegistro.isEmpty()) {
+                registro = listaRegistro.get(0);
+            }
+
+            registro.setFecha(frFecha.getDate());
+            registro.setDisponibilidad(consultarDisponibilidad());
+            registro.setObjeto(frObjeto.getText());
+            registro.setVigencia(vigencia);
+
+            registro = accesoDatos.persistirActualizar(registro);
+
+            reiniciarFormulario();
+        }
+    }//GEN-LAST:event_guardarRegistroMousePressed
+
+    private void listaRegistrosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaRegistrosMousePressed
+        // Abrir Lista
+        Lista_Registros listaRegistros = new Lista_Registros(this, true);
+        listaRegistros.setLocationRelativeTo(null);
+        listaRegistros.setVisible(true);
+    }//GEN-LAST:event_listaRegistrosMousePressed
+
+    private void imprimirRegistroMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imprimirRegistroMousePressed
+        Generar_Reportes reportes = new Generar_Reportes();
+
+        if (validarFormulario()) {
+            accesoDatos = new AccesoDatos();
+            List<Registro> listaRegistros = new ArrayList<Registro>();
+            Registro registro = new Registro();
+            registro.setConsecutivo(new BigDecimal(frRegistro.getText()));
+            registro.setVigencia(vigencia);
+
+            listaRegistros = accesoDatos.consultarObjetoPorVigencia(Registro.class, registro, vigencia);
+
+            if (!listaRegistros.isEmpty()) {
+                registro = listaRegistros.get(0);
+                reportes.runReporteRegistroPresupuestal(vigencia, registro);
+            } else {
+                JOptionPane.showMessageDialog(null, "La Disponibilidad no existe", "Verificación Disponibilidad", 0);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor verificar el formulario de entrada", "Verificación Formulario", 0);
+        }
+    }//GEN-LAST:event_imprimirRegistroMousePressed
+
+    private void eliminarRegistroMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_eliminarRegistroMousePressed
+        accesoDatos = new AccesoDatos();
+        registroController = new RegistroJpaController();
+        List<Registro> listaRegistro = new ArrayList<Registro>();
+        Registro registro = new Registro();
+        registro.setConsecutivo(new BigDecimal(frRegistro.getText()));
+        registro.setVigencia(vigencia);
+
+        listaRegistro = accesoDatos.consultarObjetoPorVigencia(Registro.class, registro, vigencia);
+
+        if (!listaRegistro.isEmpty()) {
+            try {
+                registro = listaRegistro.get(0);
+                registroController.destroy(registro);
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(Disponibilidad_Presupuestal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        reiniciarFormulario();
+    }//GEN-LAST:event_eliminarRegistroMousePressed
+
+    private void frRegistroFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_frRegistroFocusLost
+        if (!frRegistro.getText().trim().equals("")) {
+            accesoDatos = new AccesoDatos();
+            List<Registro> listaRegistro = new ArrayList<Registro>();
+            Registro registro = new Registro();
+            registro.setConsecutivo(new BigDecimal(frRegistro.getText()));
+            registro.setVigencia(vigencia);
+
+            listaRegistro = accesoDatos.consultarObjetoPorVigencia(Registro.class, registro, vigencia);
+
+            if (!listaRegistro.isEmpty()) {
+                registro = listaRegistro.get(0);
+                if (frListaDisponibilidad.getItemCount() > 0) {
+                    frListaDisponibilidad.setSelectedItem(registro.getDisponibilidad().getConsecutivo() + " - " + registro.getDisponibilidad().getBeneficiario().getNombre());
+                }
+                frFecha.setDate(registro.getFecha());
+                frObjeto.setText(registro.getObjeto());
+            } else {
+                if (frListaDisponibilidad.getItemCount() > 0) {
+                    frListaDisponibilidad.setSelectedIndex(0);
+                }
+                frFecha.setDate(null);
+                frObjeto.setText("");
+            }
+        }
+    }//GEN-LAST:event_frRegistroFocusLost
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToolBar barraHerramientas;
+    private javax.swing.JMenuBar barraMenu;
+    private javax.swing.JLabel eliminarRegistro;
+    private com.toedter.calendar.JDateChooser frFecha;
+    private javax.swing.JComboBox<String> frListaDisponibilidad;
+    private javax.swing.JTextArea frObjeto;
+    private javax.swing.JTextField frRegistro;
+    private javax.swing.JLabel guardarRegistro;
+    private javax.swing.JLabel imprimirRegistro;
+    private javax.swing.JMenuItem itemCerrar;
+    private javax.swing.JMenuItem itemEliminar;
+    private javax.swing.JMenuItem itemGuardar;
+    private javax.swing.JMenuItem itemListaAdiciones;
+    private javax.swing.JMenuItem itemNuevo;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JToolBar.Separator jSeparator1;
+    private javax.swing.JLabel labelDisponibilidad;
+    private javax.swing.JLabel labelFecha;
+    private javax.swing.JLabel labelNoRegistro;
+    private javax.swing.JLabel labelObjeto;
+    private javax.swing.JLabel listaRegistros;
+    private javax.swing.JMenu menuEditar;
+    private javax.swing.JMenu menuTraslado;
+    private javax.swing.JLabel nuevoRegistro;
+    // End of variables declaration//GEN-END:variables
+}
