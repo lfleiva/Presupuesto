@@ -37,6 +37,10 @@ import org.hibernate.annotations.NotFoundAction;
     @NamedQuery(name = "Suministro.findByCantidad", query = "SELECT s FROM Suministro s WHERE s.cantidad = :cantidad")})
 public class Suministro implements Serializable {
 
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "cantidad")
+    private BigDecimal cantidad;
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -48,8 +52,6 @@ public class Suministro implements Serializable {
     private String detalle;
     @Column(name = "unidad")
     private String unidad;
-    @Column(name = "cantidad")
-    private BigDecimal cantidad;
     @JoinColumn(name = "orden_suministro", referencedColumnName = "id_orden_suministro")
     @ManyToOne
     @NotFound(action = NotFoundAction.IGNORE)
@@ -90,13 +92,6 @@ public class Suministro implements Serializable {
         this.unidad = unidad;
     }
 
-    public BigDecimal getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(BigDecimal cantidad) {
-        this.cantidad = cantidad;
-    }
 
     public OrdenSuministro getOrdenSuministro() {
         return ordenSuministro;
@@ -137,6 +132,14 @@ public class Suministro implements Serializable {
     @Override
     public String toString() {
         return "com.presupuesto.modelo.Suministro[ idSuministro=" + idSuministro + " ]";
+    }
+
+    public BigDecimal getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(BigDecimal cantidad) {
+        this.cantidad = cantidad;
     }
     
 }

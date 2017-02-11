@@ -42,6 +42,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Ops.findByFechaFinal", query = "SELECT o FROM Ops o WHERE o.fechaFinal = :fechaFinal")})
 public class Ops implements Serializable {
 
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "consecutivo")
+    private BigDecimal consecutivo;
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -49,8 +53,6 @@ public class Ops implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_ops")
     private BigDecimal idOps;
-    @Column(name = "consecutivo")
-    private BigDecimal consecutivo;
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
     private Date fecha;
@@ -89,13 +91,6 @@ public class Ops implements Serializable {
         this.idOps = idOps;
     }
 
-    public BigDecimal getConsecutivo() {
-        return consecutivo;
-    }
-
-    public void setConsecutivo(BigDecimal consecutivo) {
-        this.consecutivo = consecutivo;
-    }
 
     public Date getFecha() {
         return fecha;
@@ -184,6 +179,14 @@ public class Ops implements Serializable {
     @Override
     public String toString() {
         return "com.presupuesto.modelo.Ops[ idOps=" + idOps + " ]";
+    }
+
+    public BigDecimal getConsecutivo() {
+        return consecutivo;
+    }
+
+    public void setConsecutivo(BigDecimal consecutivo) {
+        this.consecutivo = consecutivo;
     }
     
 }

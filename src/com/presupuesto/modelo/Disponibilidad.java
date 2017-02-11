@@ -45,6 +45,7 @@ public class Disponibilidad implements Serializable {
 
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "consecutivo")
     private BigDecimal consecutivo;
     @OneToMany(mappedBy = "disponibilidad")
@@ -170,13 +171,6 @@ public class Disponibilidad implements Serializable {
         this.registroList = registroList;
     }
 
-    public BigDecimal getConsecutivo() {
-        return consecutivo;
-    }
-
-    public void setConsecutivo(BigDecimal consecutivo) {
-        this.consecutivo = consecutivo;
-    }
 
     @XmlTransient
     public List<OrdenSuministro> getOrdenSuministroList() {
@@ -203,6 +197,14 @@ public class Disponibilidad implements Serializable {
 
     public void setOpsList(List<Ops> opsList) {
         this.opsList = opsList;
+    }
+
+    public BigDecimal getConsecutivo() {
+        return consecutivo;
+    }
+
+    public void setConsecutivo(BigDecimal consecutivo) {
+        this.consecutivo = consecutivo;
     }
     
 }

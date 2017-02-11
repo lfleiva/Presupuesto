@@ -39,6 +39,10 @@ import org.hibernate.annotations.NotFoundAction;
     @NamedQuery(name = "Descuento.findByNombre", query = "SELECT d FROM Descuento d WHERE d.nombre = :nombre")})
 public class Descuento implements Serializable {
 
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "tipo_descuento")
+    private BigDecimal tipoDescuento;
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -46,8 +50,6 @@ public class Descuento implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_descuento")
     private BigDecimal idDescuento;
-    @Column(name = "tipo_descuento")
-    private BigDecimal tipoDescuento;
     @Column(name = "nombre")
     private String nombre;
     @JoinColumn(name = "vigencia", referencedColumnName = "id_vigencia")

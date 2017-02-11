@@ -41,6 +41,7 @@ import org.hibernate.annotations.NotFoundAction;
 public class Rubro implements Serializable {
 
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "valor")
     private BigDecimal valor;
 

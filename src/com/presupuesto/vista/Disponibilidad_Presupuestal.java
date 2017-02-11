@@ -467,7 +467,7 @@ public class Disponibilidad_Presupuestal extends javax.swing.JInternalFrame {
         });
         menuDisponibilidad.add(itemGuardar);
 
-        itemListaAdiciones.setText("Lista Adiciones");
+        itemListaAdiciones.setText("Lista Disponibilidades");
         itemListaAdiciones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemListaAdicionesActionPerformed(evt);
@@ -559,7 +559,6 @@ public class Disponibilidad_Presupuestal extends javax.swing.JInternalFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(63, 63, 63)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(botonRegistrar)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)

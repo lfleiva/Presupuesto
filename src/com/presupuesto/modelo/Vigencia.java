@@ -11,6 +11,9 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -26,68 +29,67 @@ import org.hibernate.annotations.NotFoundAction;
  * @author Luis Fernando Leiva
  */
 @Entity
-@Table(name = "vigencia", catalog = "presupuesto", schema = "")
+@Table(name = "vigencia")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Vigencia.findAll", query = "SELECT v FROM Vigencia v"),
-    @NamedQuery(name = "Vigencia.findByIdVigencia", query = "SELECT v FROM Vigencia v WHERE v.idVigencia = :idVigencia"),
-    @NamedQuery(name = "Vigencia.findByVigencia", query = "SELECT v FROM Vigencia v WHERE v.vigencia = :vigencia"),
-    @NamedQuery(name = "Vigencia.findByDescripcion", query = "SELECT v FROM Vigencia v WHERE v.descripcion = :descripcion"),
-    @NamedQuery(name = "Vigencia.findByActiva", query = "SELECT v FROM Vigencia v WHERE v.activa = :activa")})
+    @NamedQuery(name = "Vigencia.findAll", query = "SELECT v FROM Vigencia v")
+    , @NamedQuery(name = "Vigencia.findByIdVigencia", query = "SELECT v FROM Vigencia v WHERE v.idVigencia = :idVigencia")
+    , @NamedQuery(name = "Vigencia.findByVigencia", query = "SELECT v FROM Vigencia v WHERE v.vigencia = :vigencia")
+    , @NamedQuery(name = "Vigencia.findByDescripcion", query = "SELECT v FROM Vigencia v WHERE v.descripcion = :descripcion")
+    , @NamedQuery(name = "Vigencia.findByActiva", query = "SELECT v FROM Vigencia v WHERE v.activa = :activa")})
 public class Vigencia implements Serializable {
-
-    @OneToMany(mappedBy = "vigencia")
-    private List<OrdenSuministro> ordenSuministroList;
-    @OneToMany(mappedBy = "vigencia")
-    @NotFound(action = NotFoundAction.IGNORE)
-    private List<Suministro> suministroList;
-    @OneToMany(mappedBy = "vigencia")
-    @NotFound(action = NotFoundAction.IGNORE)
-    private List<Descuento> descuentoList;
-    @OneToMany(mappedBy = "vigencia")
-    private List<ComprobanteEgreso> comprobanteEgresoList;
-    @OneToMany(mappedBy = "vigencia")
-    private List<Ops> opsList;
-    @OneToMany(mappedBy = "vigencia")
-    @NotFound(action = NotFoundAction.IGNORE)
-    private List<EgresoDescuento> egresoDescuentoList;
-
-    @OneToMany(mappedBy = "vigencia")
-    private List<Registro> registroList;
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_vigencia", nullable = false, precision = 22)
+    @Column(name = "id_vigencia")
     private BigDecimal idVigencia;
     @Basic(optional = false)
-    @Column(name = "vigencia", nullable = false, length = 20)
+    @Column(name = "vigencia")
     private String vigencia;
-    @Column(name = "descripcion", length = 1000)
+    @Column(name = "descripcion")
     private String descripcion;
     @Column(name = "activa")
     private Boolean activa;
-    @OneToMany(mappedBy = "vigencia")
-    private List<Presupuesto> presupuestoList;
-    @OneToMany(mappedBy = "vigencia")
+    @OneToMany(mappedBy = "vigencia", fetch = FetchType.LAZY)
+    private List<Rubro> rubroList;
+    @OneToMany(mappedBy = "vigencia", fetch = FetchType.LAZY)
+    private List<ComprobanteEgreso> comprobanteEgresoList;
+    @OneToMany(mappedBy = "vigencia", fetch = FetchType.LAZY)
     @NotFound(action = NotFoundAction.IGNORE)
-    private List<AdicionRubro> adicionRubroList;
-    @OneToMany(mappedBy = "vigencia")
+    private List<Descuento> descuentoList;
+    @OneToMany(mappedBy = "vigencia", fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
+    private List<EgresoDescuento> egresoDescuentoList;
+    @OneToMany(mappedBy = "vigencia", fetch = FetchType.LAZY)
     private List<Traslado> trasladoList;
-    @OneToMany(mappedBy = "vigencia")
-    private List<Ejecucion> ejecucionList;
-    @OneToMany(mappedBy = "vigencia")
+    @OneToMany(mappedBy = "vigencia", fetch = FetchType.LAZY)
+    private List<OrdenSuministro> ordenSuministroList;
+    @OneToMany(mappedBy = "vigencia", fetch = FetchType.LAZY)
+    private List<Registro> registroList;
+    @OneToMany(mappedBy = "vigencia", fetch = FetchType.LAZY)
     @NotFound(action = NotFoundAction.IGNORE)
     private List<DisponibilidadRubro> disponibilidadRubroList;
-    @OneToMany(mappedBy = "vigencia")
+    @OneToMany(mappedBy = "vigencia", fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
+    private List<AdicionRubro> adicionRubroList;
+    @OneToMany(mappedBy = "vigencia", fetch = FetchType.LAZY)
     @NotFound(action = NotFoundAction.IGNORE)
     private List<Disponibilidad> disponibilidadList;
-    @OneToMany(mappedBy = "vigencia")
+    @OneToMany(mappedBy = "vigencia", fetch = FetchType.LAZY)
+    private List<Presupuesto> presupuestoList;
+    @OneToMany(mappedBy = "vigencia", fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
+    private List<Suministro> suministroList;
+    @OneToMany(mappedBy = "vigencia", fetch = FetchType.LAZY)
+    private List<Ops> opsList;
+    @OneToMany(mappedBy = "vigencia", fetch = FetchType.LAZY)
+    private List<Ejecucion> ejecucionList;
+    @OneToMany(mappedBy = "vigencia", fetch = FetchType.LAZY)
     private List<Adicion> adicionList;
-    @OneToMany(mappedBy = "vigencia")
-    private List<Rubro> rubroList;
-    @OneToMany(mappedBy = "vigencia")
+    @OneToMany(mappedBy = "vigencia", fetch = FetchType.LAZY)
     @NotFound(action = NotFoundAction.IGNORE)
     private List<TrasladoRubro> trasladoRubroList;
 
@@ -136,21 +138,39 @@ public class Vigencia implements Serializable {
     }
 
     @XmlTransient
-    public List<Presupuesto> getPresupuestoList() {
-        return presupuestoList;
+    public List<Rubro> getRubroList() {
+        return rubroList;
     }
 
-    public void setPresupuestoList(List<Presupuesto> presupuestoList) {
-        this.presupuestoList = presupuestoList;
+    public void setRubroList(List<Rubro> rubroList) {
+        this.rubroList = rubroList;
     }
 
     @XmlTransient
-    public List<AdicionRubro> getAdicionRubroList() {
-        return adicionRubroList;
+    public List<ComprobanteEgreso> getComprobanteEgresoList() {
+        return comprobanteEgresoList;
     }
 
-    public void setAdicionRubroList(List<AdicionRubro> adicionRubroList) {
-        this.adicionRubroList = adicionRubroList;
+    public void setComprobanteEgresoList(List<ComprobanteEgreso> comprobanteEgresoList) {
+        this.comprobanteEgresoList = comprobanteEgresoList;
+    }
+
+    @XmlTransient
+    public List<Descuento> getDescuentoList() {
+        return descuentoList;
+    }
+
+    public void setDescuentoList(List<Descuento> descuentoList) {
+        this.descuentoList = descuentoList;
+    }
+
+    @XmlTransient
+    public List<EgresoDescuento> getEgresoDescuentoList() {
+        return egresoDescuentoList;
+    }
+
+    public void setEgresoDescuentoList(List<EgresoDescuento> egresoDescuentoList) {
+        this.egresoDescuentoList = egresoDescuentoList;
     }
 
     @XmlTransient
@@ -163,12 +183,21 @@ public class Vigencia implements Serializable {
     }
 
     @XmlTransient
-    public List<Ejecucion> getEjecucionList() {
-        return ejecucionList;
+    public List<OrdenSuministro> getOrdenSuministroList() {
+        return ordenSuministroList;
     }
 
-    public void setEjecucionList(List<Ejecucion> ejecucionList) {
-        this.ejecucionList = ejecucionList;
+    public void setOrdenSuministroList(List<OrdenSuministro> ordenSuministroList) {
+        this.ordenSuministroList = ordenSuministroList;
+    }
+
+    @XmlTransient
+    public List<Registro> getRegistroList() {
+        return registroList;
+    }
+
+    public void setRegistroList(List<Registro> registroList) {
+        this.registroList = registroList;
     }
 
     @XmlTransient
@@ -181,6 +210,15 @@ public class Vigencia implements Serializable {
     }
 
     @XmlTransient
+    public List<AdicionRubro> getAdicionRubroList() {
+        return adicionRubroList;
+    }
+
+    public void setAdicionRubroList(List<AdicionRubro> adicionRubroList) {
+        this.adicionRubroList = adicionRubroList;
+    }
+
+    @XmlTransient
     public List<Disponibilidad> getDisponibilidadList() {
         return disponibilidadList;
     }
@@ -190,21 +228,48 @@ public class Vigencia implements Serializable {
     }
 
     @XmlTransient
+    public List<Presupuesto> getPresupuestoList() {
+        return presupuestoList;
+    }
+
+    public void setPresupuestoList(List<Presupuesto> presupuestoList) {
+        this.presupuestoList = presupuestoList;
+    }
+
+    @XmlTransient
+    public List<Suministro> getSuministroList() {
+        return suministroList;
+    }
+
+    public void setSuministroList(List<Suministro> suministroList) {
+        this.suministroList = suministroList;
+    }
+
+    @XmlTransient
+    public List<Ops> getOpsList() {
+        return opsList;
+    }
+
+    public void setOpsList(List<Ops> opsList) {
+        this.opsList = opsList;
+    }
+
+    @XmlTransient
+    public List<Ejecucion> getEjecucionList() {
+        return ejecucionList;
+    }
+
+    public void setEjecucionList(List<Ejecucion> ejecucionList) {
+        this.ejecucionList = ejecucionList;
+    }
+
+    @XmlTransient
     public List<Adicion> getAdicionList() {
         return adicionList;
     }
 
     public void setAdicionList(List<Adicion> adicionList) {
         this.adicionList = adicionList;
-    }
-
-    @XmlTransient
-    public List<Rubro> getRubroList() {
-        return rubroList;
-    }
-
-    public void setRubroList(List<Rubro> rubroList) {
-        this.rubroList = rubroList;
     }
 
     @XmlTransient
@@ -239,69 +304,6 @@ public class Vigencia implements Serializable {
     @Override
     public String toString() {
         return "com.presupuesto.modelo.Vigencia[ idVigencia=" + idVigencia + " ]";
-    }
-
-    @XmlTransient
-    public List<Registro> getRegistroList() {
-        return registroList;
-    }
-
-    public void setRegistroList(List<Registro> registroList) {
-        this.registroList = registroList;
-    }
-
-    @XmlTransient
-    public List<OrdenSuministro> getOrdenSuministroList() {
-        return ordenSuministroList;
-    }
-
-    public void setOrdenSuministroList(List<OrdenSuministro> ordenSuministroList) {
-        this.ordenSuministroList = ordenSuministroList;
-    }
-
-    @XmlTransient
-    public List<Suministro> getSuministroList() {
-        return suministroList;
-    }
-
-    public void setSuministroList(List<Suministro> suministroList) {
-        this.suministroList = suministroList;
-    }
-
-    @XmlTransient
-    public List<Descuento> getDescuentoList() {
-        return descuentoList;
-    }
-
-    public void setDescuentoList(List<Descuento> descuentoList) {
-        this.descuentoList = descuentoList;
-    }
-
-    @XmlTransient
-    public List<ComprobanteEgreso> getComprobanteEgresoList() {
-        return comprobanteEgresoList;
-    }
-
-    public void setComprobanteEgresoList(List<ComprobanteEgreso> comprobanteEgresoList) {
-        this.comprobanteEgresoList = comprobanteEgresoList;
-    }
-
-    @XmlTransient
-    public List<Ops> getOpsList() {
-        return opsList;
-    }
-
-    public void setOpsList(List<Ops> opsList) {
-        this.opsList = opsList;
-    }
-
-    @XmlTransient
-    public List<EgresoDescuento> getEgresoDescuentoList() {
-        return egresoDescuentoList;
-    }
-
-    public void setEgresoDescuentoList(List<EgresoDescuento> egresoDescuentoList) {
-        this.egresoDescuentoList = egresoDescuentoList;
     }
     
 }

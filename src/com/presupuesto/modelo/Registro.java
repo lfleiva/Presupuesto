@@ -39,6 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Registro implements Serializable {
 
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "consecutivo")
     private BigDecimal consecutivo;
 

@@ -49,6 +49,16 @@ import org.hibernate.annotations.NotFoundAction;
     @NamedQuery(name = "ComprobanteEgreso.findByDescripcion", query = "SELECT c FROM ComprobanteEgreso c WHERE c.descripcion = :descripcion")})
 public class ComprobanteEgreso implements Serializable {
 
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "consecutivo")
+    private BigDecimal consecutivo;
+    @Column(name = "valor_cuenta")
+    private BigDecimal valorCuenta;
+    @Column(name = "valor_descuentos")
+    private BigDecimal valorDescuentos;
+    @Column(name = "valor_pagar")
+    private BigDecimal valorPagar;
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -56,19 +66,11 @@ public class ComprobanteEgreso implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_comprobante_egreso")
     private BigDecimal idComprobanteEgreso;
-    @Column(name = "consecutivo")
-    private BigDecimal consecutivo;
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
     private Date fecha;
     @Column(name = "valor_letras")
     private String valorLetras;
-    @Column(name = "valor_cuenta")
-    private BigDecimal valorCuenta;
-    @Column(name = "valor_descuentos")
-    private BigDecimal valorDescuentos;
-    @Column(name = "valor_pagar")
-    private BigDecimal valorPagar;
     @Column(name = "cuenta_banco")
     private String cuentaBanco;
     @Column(name = "cheque")
@@ -100,13 +102,6 @@ public class ComprobanteEgreso implements Serializable {
         this.idComprobanteEgreso = idComprobanteEgreso;
     }
 
-    public BigDecimal getConsecutivo() {
-        return consecutivo;
-    }
-
-    public void setConsecutivo(BigDecimal consecutivo) {
-        this.consecutivo = consecutivo;
-    }
 
     public Date getFecha() {
         return fecha;
@@ -220,6 +215,14 @@ public class ComprobanteEgreso implements Serializable {
     @Override
     public String toString() {
         return "com.presupuesto.modelo.ComprobanteEgreso[ idComprobanteEgreso=" + idComprobanteEgreso + " ]";
+    }
+
+    public BigDecimal getConsecutivo() {
+        return consecutivo;
+    }
+
+    public void setConsecutivo(BigDecimal consecutivo) {
+        this.consecutivo = consecutivo;
     }
     
 }

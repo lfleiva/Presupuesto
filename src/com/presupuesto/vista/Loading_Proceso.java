@@ -5,17 +5,16 @@
  */
 package com.presupuesto.vista;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author Luis Fernando Leiva
  */
-public class Loading_Proceso extends javax.swing.JDialog {
+public class Loading_Proceso extends javax.swing.JDialog implements Runnable {
 
     public static Ejecucion_Presupuestal ejecucionPresupuestal;
     public static Presupuesto_Inicial presupuestoInicial; 
+    
+    Thread hilo;
 
     /**
      * Creates new form Generar_Ejecucion
@@ -24,7 +23,8 @@ public class Loading_Proceso extends javax.swing.JDialog {
         //super(parent, modal);
         this.ejecucionPresupuestal = parent;
         this.setModal(modal);
-        initComponents();
+        initComponents();        
+        this.setLocationRelativeTo(null);                    
     }
     
     public Loading_Proceso(Presupuesto_Inicial parent, boolean modal) {
@@ -32,6 +32,17 @@ public class Loading_Proceso extends javax.swing.JDialog {
         this.presupuestoInicial = parent;
         this.setModal(modal);
         initComponents();
+    }
+    
+    private void estadoHilo() {
+        while (this.hilo.isAlive()) {            
+            System.out.println("Hilo vivo");
+        }
+        this.setVisible(false);
+    }
+    
+    public void setHilo(Thread hilo){
+        this.hilo = hilo;
     }
 
     /**
@@ -89,7 +100,7 @@ public class Loading_Proceso extends javax.swing.JDialog {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -107,13 +118,18 @@ public class Loading_Proceso extends javax.swing.JDialog {
         //</editor-fold>
 
         /* Create and display the dialog */
-        Loading_Proceso dialog = new Loading_Proceso(ejecucionPresupuestal, true);
-        dialog.setVisible(true);
-
+//        Loading_Proceso dialog = new Loading_Proceso(ejecucionPresupuestal, true);
+//        dialog.setVisible(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void run() {
+        this.setVisible(true);
+        estadoHilo();
+    }
 }

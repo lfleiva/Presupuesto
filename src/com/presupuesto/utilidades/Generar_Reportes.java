@@ -143,7 +143,7 @@ public class Generar_Reportes {
             //basta con poner mas parametro.put
             Map parametro = new HashMap();
             parametro.put("vigencia", vigencia.getIdVigencia());
-            parametro.put("disponibilidad", disponibilidad.getConsecutivo());
+            parametro.put("disponibilidad", disponibilidad.getIdDisponibilidad());
 
             //Reporte diseñado y compilado con iReport
             JasperPrint jasperPrint = JasperFillManager.fillReport(masterReport, parametro, conn);
@@ -218,8 +218,8 @@ public class Generar_Reportes {
             //basta con poner mas parametro.put
             Map parametro = new HashMap();
             parametro.put("vigencia", vigencia.getIdVigencia());
-            parametro.put("ops", ops.getConsecutivo());
-            parametro.put("disponibilidad", ops.getDisponibilidad().getConsecutivo());
+            parametro.put("ops", ops.getIdOps());
+            parametro.put("disponibilidad", ops.getDisponibilidad().getIdDisponibilidad());
 
             //Reporte diseñado y compilado con iReport
             JasperPrint jasperPrint = JasperFillManager.fillReport(masterReport, parametro, conn);

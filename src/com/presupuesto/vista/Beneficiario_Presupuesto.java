@@ -8,7 +8,6 @@ package com.presupuesto.vista;
 import com.presupuesto.control.AccesoDatos;
 import com.presupuesto.control.BeneficiarioJpaController;
 import com.presupuesto.control.exceptions.NonexistentEntityException;
-import com.presupuesto.modelo.Adicion;
 import com.presupuesto.modelo.Beneficiario;
 import com.presupuesto.modelo.Vigencia;
 import java.util.ArrayList;
@@ -46,7 +45,7 @@ public class Beneficiario_Presupuesto extends javax.swing.JInternalFrame {
     private Boolean validarFormulario() {
         Boolean validacionExitosa = true;
 
-        if (frIdentificacion.getText().equals("") || frNombre.getText().equals("") || frDireccion.getText().equals("") || frTelefono.getText().equals("") || frEmail.getText().equals("")) {
+        if (frIdentificacion.getText().equals("") || frNombre.getText().equals("")) {
             validacionExitosa = false;
         }
 
@@ -88,7 +87,6 @@ public class Beneficiario_Presupuesto extends javax.swing.JInternalFrame {
         nuevoRegistro = new javax.swing.JLabel();
         guardarRegistro = new javax.swing.JLabel();
         listaRegistros = new javax.swing.JLabel();
-        imprimirRegistro = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         eliminarRegistro = new javax.swing.JLabel();
         labelIdentificacion = new javax.swing.JLabel();
@@ -161,20 +159,6 @@ public class Beneficiario_Presupuesto extends javax.swing.JInternalFrame {
             }
         });
         barraHerramientas.add(listaRegistros);
-
-        imprimirRegistro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        imprimirRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/imprimir.png"))); // NOI18N
-        imprimirRegistro.setAlignmentX(0.5F);
-        imprimirRegistro.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        imprimirRegistro.setMaximumSize(new java.awt.Dimension(25, 20));
-        imprimirRegistro.setMinimumSize(new java.awt.Dimension(25, 20));
-        imprimirRegistro.setPreferredSize(new java.awt.Dimension(25, 20));
-        imprimirRegistro.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                imprimirRegistroMousePressed(evt);
-            }
-        });
-        barraHerramientas.add(imprimirRegistro);
         barraHerramientas.add(jSeparator1);
 
         eliminarRegistro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -341,18 +325,20 @@ public class Beneficiario_Presupuesto extends javax.swing.JInternalFrame {
             beneficiario = accesoDatos.persistirActualizar(beneficiario);
 
             reiniciarFormulario();
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor verificar que el formulario de registro este completo", "Verificación Beneficiario", 0);
         }
     }//GEN-LAST:event_itemGuardarActionPerformed
 
     private void itemListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemListaActionPerformed
-         // Abrir Lista
+        // Abrir Lista
         Lista_Beneficiarios listaBeneficiarios = new Lista_Beneficiarios(this, true);
         listaBeneficiarios.setLocationRelativeTo(null);
         listaBeneficiarios.setVisible(true);
     }//GEN-LAST:event_itemListaActionPerformed
 
     private void itemCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCerrarActionPerformed
-         home.getVentanaPrincipal().remove(this);
+        home.getVentanaPrincipal().remove(this);
     }//GEN-LAST:event_itemCerrarActionPerformed
 
     private void itemEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemEliminarActionPerformed
@@ -414,6 +400,8 @@ public class Beneficiario_Presupuesto extends javax.swing.JInternalFrame {
             beneficiario = accesoDatos.persistirActualizar(beneficiario);
 
             reiniciarFormulario();
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor verificar que el formulario de registro este completo", "Verificación Beneficiario", 0);
         }
     }//GEN-LAST:event_guardarRegistroMousePressed
 
@@ -423,10 +411,6 @@ public class Beneficiario_Presupuesto extends javax.swing.JInternalFrame {
         listaBeneficiarios.setLocationRelativeTo(null);
         listaBeneficiarios.setVisible(true);
     }//GEN-LAST:event_listaRegistrosMousePressed
-
-    private void imprimirRegistroMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imprimirRegistroMousePressed
-
-    }//GEN-LAST:event_imprimirRegistroMousePressed
 
     private void eliminarRegistroMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_eliminarRegistroMousePressed
         if (validarFormulario()) {
@@ -453,6 +437,8 @@ public class Beneficiario_Presupuesto extends javax.swing.JInternalFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Por favor verificar que exista el registro del beneficiario a eliminar", "Verificación Beneficiario", 0);
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor verificar que los datos de formulario estan correctos", "Verificación Formulario", 0);
         }
     }//GEN-LAST:event_eliminarRegistroMousePressed
 
@@ -486,7 +472,6 @@ public class Beneficiario_Presupuesto extends javax.swing.JInternalFrame {
     private javax.swing.JTextField frNombre;
     private javax.swing.JTextField frTelefono;
     private javax.swing.JLabel guardarRegistro;
-    private javax.swing.JLabel imprimirRegistro;
     private javax.swing.JMenuItem itemCerrar;
     private javax.swing.JMenuItem itemEliminar;
     private javax.swing.JMenuItem itemGuardar;

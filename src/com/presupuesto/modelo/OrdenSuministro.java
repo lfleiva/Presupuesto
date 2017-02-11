@@ -43,6 +43,10 @@ import org.hibernate.annotations.NotFoundAction;
     @NamedQuery(name = "OrdenSuministro.findByObjeto", query = "SELECT o FROM OrdenSuministro o WHERE o.objeto = :objeto")})
 public class OrdenSuministro implements Serializable {
 
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "consecutivo")
+    private BigDecimal consecutivo;
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -50,8 +54,6 @@ public class OrdenSuministro implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_orden_suministro")
     private BigDecimal idOrdenSuministro;
-    @Column(name = "consecutivo")
-    private BigDecimal consecutivo;
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
     private Date fecha;
@@ -82,13 +84,6 @@ public class OrdenSuministro implements Serializable {
         this.idOrdenSuministro = idOrdenSuministro;
     }
 
-    public BigDecimal getConsecutivo() {
-        return consecutivo;
-    }
-
-    public void setConsecutivo(BigDecimal consecutivo) {
-        this.consecutivo = consecutivo;
-    }
 
     public Date getFecha() {
         return fecha;
@@ -154,6 +149,14 @@ public class OrdenSuministro implements Serializable {
     @Override
     public String toString() {
         return "com.presupuesto.modelo.OrdenSuministro[ idOrdenSuministro=" + idOrdenSuministro + " ]";
+    }
+
+    public BigDecimal getConsecutivo() {
+        return consecutivo;
+    }
+
+    public void setConsecutivo(BigDecimal consecutivo) {
+        this.consecutivo = consecutivo;
     }
     
 }

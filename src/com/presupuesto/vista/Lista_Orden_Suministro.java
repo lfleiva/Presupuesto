@@ -6,7 +6,6 @@
 package com.presupuesto.vista;
 
 import com.presupuesto.control.AccesoDatos;
-import com.presupuesto.modelo.Ops;
 import com.presupuesto.modelo.OrdenSuministro;
 import com.presupuesto.modelo.Vigencia;
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Lista_Orden_Suministro extends javax.swing.JDialog {
 
-     public static Orden_Suministro_Presupuestal ordenPresupuestal;
+    public static Orden_Suministro_Presupuestal ordenPresupuestal;
 
     AccesoDatos accesoDatos;
     Vigencia vigencia;

@@ -25,7 +25,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Luis Fernando Leiva
  */
-public class Ejecucion_Presupuestal extends javax.swing.JInternalFrame {
+public class Ejecucion_Presupuestal extends javax.swing.JInternalFrame implements Runnable{
 
     //***** Atributos de la clase *****//
     Home home;
@@ -65,18 +65,12 @@ public class Ejecucion_Presupuestal extends javax.swing.JInternalFrame {
         vigencia = accesoDatos.consultarTodos(vigencia, Vigencia.class).get(0);
     }
 
-    Runnable runnable = new Runnable() {
+  
 
-        @Override
-        public void run() {
-            inicializarVentanaProcesos();
-        }
-    };
-
-    private void inicializarVentanaProcesos() {
-        Loading_Proceso generarEjecucion = new Loading_Proceso(this, false); // Modal debe ser false para que se ejecute el hilo
-        generarEjecucion.setLocationRelativeTo(null);
-        generarEjecucion.setVisible(true);
+    private void inicializarVentanaProcesos() {                
+//        Loading_Proceso generarEjecucion = new Loading_Proceso(this, false); // Modal debe ser false para que se ejecute el hilo        
+//        generarEjecucion.setLocationRelativeTo(null);
+//        generarEjecucion.setVisible(true);
         // Deshabilito boton generar
         botonGenerar.setEnabled(false);
 
@@ -195,7 +189,7 @@ public class Ejecucion_Presupuestal extends javax.swing.JInternalFrame {
         }
 
         // Ocullto loading y habilito el boton generar         
-        generarEjecucion.setVisible(false);
+        //generarEjecucion.setVisible(false);
         botonGenerar.setEnabled(true);
     }
 
@@ -469,8 +463,14 @@ public class Ejecucion_Presupuestal extends javax.swing.JInternalFrame {
 
     private void botonGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGenerarActionPerformed
         // Creo el hilo
-        Thread thread1 = new Thread(runnable);
+        Loading_Proceso loadig = new Loading_Proceso(this, false);     
+        
+        Ejecucion_Presupuestal ejecucion = new Ejecucion_Presupuestal(home);
+        Thread thread1 = new Thread(loadig);
+        Thread thread2 = new Thread(ejecucion);
+        loadig.setHilo(thread2);
         thread1.start();
+        thread2.start();        
     }//GEN-LAST:event_botonGenerarActionPerformed
 
     private void itemCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCerrarActionPerformed
@@ -497,4 +497,9 @@ public class Ejecucion_Presupuestal extends javax.swing.JInternalFrame {
     private javax.swing.JMenu menuAdicion;
     private javax.swing.JTable tablaEjecucion;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void run() {
+        inicializarVentanaProcesos();
+    }
 }

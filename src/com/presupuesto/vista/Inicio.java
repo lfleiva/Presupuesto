@@ -19,9 +19,10 @@ import javax.swing.JOptionPane;
  *
  * @author Luis Fernando Leiva
  */
-public class Inicio extends javax.swing.JFrame {
+public class Inicio extends javax.swing.JFrame implements Runnable {
 
     AccesoDatos accesoDatos;
+    Thread hilo;
 
     /**
      * Creates new form Inicio
@@ -30,10 +31,41 @@ public class Inicio extends javax.swing.JFrame {
         initComponents();
         // Icono
         setIconImage(new ImageIcon(getClass().getResource("/com/presupuesto/img/Icono.png")).getImage());
-        this.setLocationRelativeTo(null);
-        consultarEntidad();
-        consultarVigencias();
-        frContrasena.requestFocus();
+        this.setLocationRelativeTo(null);     
+        hilo = new Thread(this);
+        hilo.start();                
+    }
+
+    public void BarraCorriendo(int num) {
+
+        try {
+            for (int i = num; i < 1000; i++) {
+                String Cadena = "";
+                if (i == 40) {
+                    try {
+                        Cadena = "Iniciando conexion BD";
+                       
+                        Cadena = "Cargando componentes " + i + "%";
+                        //conectar();
+                    } catch (Exception e) {
+                        Cadena = "No existe la base de datos " + i + "%";
+                       
+                        Cadena = "Base de datos creada " + i + "%";
+                    }
+
+                } else {
+                    Cadena = "Cargando componentes " + i + "%";
+                    Thread.sleep(10);
+                }
+
+               
+            }
+            //abrirVentana();
+
+        } catch (Exception e) {
+            //hilo.interrupt();
+            
+        }
     }
 
     private void consultarVigencias() {
@@ -281,4 +313,13 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JLabel labelPass;
     private javax.swing.JLabel labelVigencia;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void run() {
+        consultarEntidad();
+        consultarVigencias();
+        frContrasena.requestFocus(); 
+        BarraCorriendo(0);
+         
+    }
 }

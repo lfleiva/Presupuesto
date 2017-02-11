@@ -37,6 +37,12 @@ import org.hibernate.annotations.NotFoundAction;
     @NamedQuery(name = "EgresoDescuento.findByValor", query = "SELECT e FROM EgresoDescuento e WHERE e.valor = :valor")})
 public class EgresoDescuento implements Serializable {
 
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "porcentaje")
+    private BigDecimal porcentaje;
+    @Column(name = "valor")
+    private BigDecimal valor;
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -44,10 +50,6 @@ public class EgresoDescuento implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_egreso_descuento")
     private BigDecimal idEgresoDescuento;
-    @Column(name = "porcentaje")
-    private BigDecimal porcentaje;
-    @Column(name = "valor")
-    private BigDecimal valor;
     @JoinColumn(name = "descuento", referencedColumnName = "id_descuento")
     @ManyToOne(fetch = FetchType.LAZY)
     @NotFound(action = NotFoundAction.IGNORE)
@@ -76,21 +78,6 @@ public class EgresoDescuento implements Serializable {
         this.idEgresoDescuento = idEgresoDescuento;
     }
 
-    public BigDecimal getPorcentaje() {
-        return porcentaje;
-    }
-
-    public void setPorcentaje(BigDecimal porcentaje) {
-        this.porcentaje = porcentaje;
-    }
-
-    public BigDecimal getValor() {
-        return valor;
-    }
-
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
-    }
 
     public Descuento getDescuento() {
         return descuento;
@@ -139,6 +126,22 @@ public class EgresoDescuento implements Serializable {
     @Override
     public String toString() {
         return "com.presupuesto.modelo.EgresoDescuento[ idEgresoDescuento=" + idEgresoDescuento + " ]";
+    }
+
+    public BigDecimal getPorcentaje() {
+        return porcentaje;
+    }
+
+    public void setPorcentaje(BigDecimal porcentaje) {
+        this.porcentaje = porcentaje;
+    }
+
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public void setValor(BigDecimal valor) {
+        this.valor = valor;
     }
     
 }

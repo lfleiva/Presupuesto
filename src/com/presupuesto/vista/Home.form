@@ -211,6 +211,14 @@
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemEjecucionPrespuestalActionPerformed"/>
                       </Events>
                     </MenuItem>
+                    <MenuItem class="javax.swing.JMenuItem" name="itemVigenciaPresupuestal">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Vigencia Presupuestal"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemVigenciaPresupuestalActionPerformed"/>
+                      </Events>
+                    </MenuItem>
                   </SubComponents>
                 </Menu>
                 <Menu class="javax.swing.JMenu" name="menuEgresos">

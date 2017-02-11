@@ -8,6 +8,9 @@ package com.presupuesto.vista;
 import com.presupuesto.control.AccesoDatos;
 import com.presupuesto.modelo.Beneficiario;
 import com.presupuesto.modelo.Entidad;
+import com.presupuesto.modelo.Vigencia;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
@@ -20,13 +23,13 @@ public class Home extends javax.swing.JFrame {
 
     // ***** Atributos de la clase *****//
     AccesoDatos accesoDatos;
-    
+
     /**
      * Creates new form Home
      */
     public Home() {
         initComponents();
-        
+
         // Icono
         setIconImage(new ImageIcon(getClass().getResource("/com/presupuesto/img/Icono.png")).getImage());
         // Posicion centro de pantalla
@@ -34,21 +37,15 @@ public class Home extends javax.swing.JFrame {
         // Se quita decoracion de pantalla al frame interno
         ((BasicInternalFrameUI) infoEmpresa.getUI()).setNorthPane(null);
         infoEmpresa.setBorder(null);
-     
-        datosEntidad();               
-    }
-    
-    // ***** Metodos Privados ***** //
-    private void datosEntidad() {
-        accesoDatos = new AccesoDatos();
-        Entidad entidad = new Entidad();
-        entidad = accesoDatos.consultarTodos(entidad, Entidad.class).get(0);
-        nombreEntidad.setText(entidad.getNombre());
-        nitEntidad.setText("Nit. " + entidad.getNit());
-        departamentoCiudad.setText(entidad.getCiudad() + " - " + entidad.getDepartamento());
-        this.setTitle("Presupuesto - " + entidad.getNombreCorto());
+
+        Login_Dialog login = new Login_Dialog(this, true);
+        login.setLocationRelativeTo(null);
+        login.setVisible(true);
+
+        //datosEntidad();               
     }
 
+    // ***** Metodos Privados ***** //    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -71,6 +68,7 @@ public class Home extends javax.swing.JFrame {
         itemAdicionPresupuestal = new javax.swing.JMenuItem();
         itemTrasladoPresupuestal = new javax.swing.JMenuItem();
         itemEjecucionPrespuestal = new javax.swing.JMenuItem();
+        itemVigenciaPresupuestal = new javax.swing.JMenuItem();
         menuEgresos = new javax.swing.JMenu();
         itemBeneficiario = new javax.swing.JMenuItem();
         itemDisponibilidadPrespuestal = new javax.swing.JMenuItem();
@@ -160,6 +158,14 @@ public class Home extends javax.swing.JFrame {
             }
         });
         menuPresupuesto.add(itemEjecucionPrespuestal);
+
+        itemVigenciaPresupuestal.setText("Vigencia Presupuestal");
+        itemVigenciaPresupuestal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemVigenciaPresupuestalActionPerformed(evt);
+            }
+        });
+        menuPresupuesto.add(itemVigenciaPresupuestal);
 
         barraMenuPrincipal.add(menuPresupuesto);
 
@@ -387,6 +393,20 @@ public class Home extends javax.swing.JFrame {
         pass.setVisible(true);
     }//GEN-LAST:event_itemCambioContraseñaActionPerformed
 
+    private void itemVigenciaPresupuestalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemVigenciaPresupuestalActionPerformed
+        Administracion_Vigencias admVigencia = new Administracion_Vigencias(this);
+        this.ventanaPrincipal.addTab("Administración Vigencias", admVigencia);
+        this.ventanaPrincipal.setSelectedIndex(this.ventanaPrincipal.getTabCount() - 1);
+    }//GEN-LAST:event_itemVigenciaPresupuestalActionPerformed
+
+    //***** Metodos Publicos *****//
+    public void datosEntidad(Entidad entidad) {
+        nombreEntidad.setText(entidad.getNombre());
+        nitEntidad.setText("Nit. " + entidad.getNit());
+        departamentoCiudad.setText(entidad.getCiudad() + " - " + entidad.getDepartamento());
+        this.setTitle("Presupuesto - " + entidad.getNombreCorto());
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -422,9 +442,7 @@ public class Home extends javax.swing.JFrame {
         });
     }
 
-    
     //***** Getters & Setters *****//
-    
     public JTabbedPane getVentanaPrincipal() {
         return ventanaPrincipal;
     }
@@ -433,8 +451,7 @@ public class Home extends javax.swing.JFrame {
         this.ventanaPrincipal = ventanaPrincipal;
     }
 
-    
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar barraMenuPrincipal;
     private javax.swing.JLabel departamentoCiudad;
@@ -456,6 +473,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemRegistroPrespuestal;
     private javax.swing.JMenuItem itemRubros;
     private javax.swing.JMenuItem itemTrasladoPresupuestal;
+    private javax.swing.JMenuItem itemVigenciaPresupuestal;
     private javax.swing.JMenu menuAdministrar;
     private javax.swing.JMenu menuAyuda;
     private javax.swing.JMenu menuEgresos;
