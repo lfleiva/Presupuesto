@@ -12,6 +12,7 @@ import com.presupuesto.modelo.Ejecucion;
 import com.presupuesto.modelo.Presupuesto;
 import com.presupuesto.modelo.Rubro;
 import com.presupuesto.modelo.Vigencia;
+import com.presupuesto.utilidades.Generar_Ejecucion;
 import com.presupuesto.utilidades.Generar_Reportes;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -25,12 +26,13 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Luis Fernando Leiva
  */
-public class Ejecucion_Presupuestal extends javax.swing.JInternalFrame implements Runnable{
+public class Ejecucion_Presupuestal extends javax.swing.JInternalFrame implements Runnable {
 
     //***** Atributos de la clase *****//
     Home home;
     Vigencia vigencia;
     AccesoDatos accesoDatos;
+    Thread hilo;
 
     /**
      * Creates new form Ejecucion_Presupuestal
@@ -45,14 +47,16 @@ public class Ejecucion_Presupuestal extends javax.swing.JInternalFrame implement
 
         initComponents();
         consultarVigencia();
-        
+
         Date fecha = new Date();
-        
+
         frMesInicial.setMonth(0);
         frMesFinal.setMonth(fecha.getMonth());
-        
+
         frMesInicial.setEnabled(false);
         //frMesFinal.setEnabled(false);
+
+        llenarTablaEjecucion();
     }
 
     /**
@@ -65,9 +69,7 @@ public class Ejecucion_Presupuestal extends javax.swing.JInternalFrame implement
         vigencia = accesoDatos.consultarTodos(vigencia, Vigencia.class).get(0);
     }
 
-  
-
-    private void inicializarVentanaProcesos() {                
+    private void inicializarVentanaProcesos() {
 //        Loading_Proceso generarEjecucion = new Loading_Proceso(this, false); // Modal debe ser false para que se ejecute el hilo        
 //        generarEjecucion.setLocationRelativeTo(null);
 //        generarEjecucion.setVisible(true);
@@ -84,7 +86,7 @@ public class Ejecucion_Presupuestal extends javax.swing.JInternalFrame implement
         if (!listaPresupuesto.isEmpty()) {
             Ejecucion ejecucionCuenta = new Ejecucion();
             Ejecucion ejecucionSubcuenta = new Ejecucion();
-           
+
             for (Presupuesto presupuestoIterado : listaPresupuesto) {
 
                 switch (presupuestoIterado.getRubro().getTipoRubro().getTipoRubro()) {
@@ -177,9 +179,9 @@ public class Ejecucion_Presupuestal extends javax.swing.JInternalFrame implement
         listaEjecucion = accesoDatos.consultarTodosPorVigencia(Ejecucion.class, vigencia);
 
         eliminarElementosTabla();
-        
-        if (!listaEjecucion.isEmpty()) {            
-            
+
+        if (!listaEjecucion.isEmpty()) {
+
             DefaultTableModel model = new DefaultTableModel();
             model = (DefaultTableModel) tablaEjecucion.getModel();
 
@@ -247,9 +249,9 @@ public class Ejecucion_Presupuestal extends javax.swing.JInternalFrame implement
         if (!rubro.getDisponibilidadRubroList().isEmpty()) {
             for (DisponibilidadRubro disponibilidadRubro : rubro.getDisponibilidadRubroList()) {
                 int mesDisponibilidad = disponibilidadRubro.getDisponibilidad().getFecha().getMonth();
-                if(frMesInicial.getMonth() <= disponibilidadRubro.getDisponibilidad().getFecha().getMonth() && frMesFinal.getMonth() >= disponibilidadRubro.getDisponibilidad().getFecha().getMonth()) {
+                if (frMesInicial.getMonth() <= disponibilidadRubro.getDisponibilidad().getFecha().getMonth() && frMesFinal.getMonth() >= disponibilidadRubro.getDisponibilidad().getFecha().getMonth()) {
                     gastos = gastos.add(disponibilidadRubro.getValor());
-                }                
+                }
             }
         }
 
@@ -298,7 +300,7 @@ public class Ejecucion_Presupuestal extends javax.swing.JInternalFrame implement
         // saldo
         BigDecimal saldo = new BigDecimal(ejecucionActualizar.getSaldo().toString());
         saldo = saldo.add(ejecucion.getSaldo());
-        
+
         ejecucionActualizar.setPresupuestoInicial(presupuestoInicial);
         ejecucionActualizar.setAdiciones(adiciones);
         ejecucionActualizar.setCreditos(creditos);
@@ -309,7 +311,7 @@ public class Ejecucion_Presupuestal extends javax.swing.JInternalFrame implement
 
         return ejecucionActualizar;
     }
-    
+
     private void eliminarElementosTabla() {
         DefaultTableModel model = new DefaultTableModel();
         model = (DefaultTableModel) tablaEjecucion.getModel();
@@ -320,6 +322,24 @@ public class Ejecucion_Presupuestal extends javax.swing.JInternalFrame implement
             model.removeRow(0);
             model = (DefaultTableModel) tablaEjecucion.getModel();
             numeroFilas = model.getRowCount();
+        }
+    }
+
+    private void llenarTablaEjecucion() {
+        accesoDatos = new AccesoDatos();
+
+        DefaultTableModel model = new DefaultTableModel();
+        model = (DefaultTableModel) tablaEjecucion.getModel();
+
+        List<Ejecucion> listaEjecucion = new ArrayList<Ejecucion>();
+        listaEjecucion = accesoDatos.consultarTodosPorVigencia(Ejecucion.class, vigencia);
+
+        if (!listaEjecucion.isEmpty()) {
+            for (Ejecucion ejecucionIterada : listaEjecucion) {
+                model.addRow(new Object[]{ejecucionIterada.getRubro().getCodigo() + "-" + ejecucionIterada.getRubro().getNombre(), 
+                    ejecucionIterada.getPresupuestoInicial(), ejecucionIterada.getAdiciones(), ejecucionIterada.getCreditos(), 
+                    ejecucionIterada.getContracreditos(), ejecucionIterada.getPresupuestoFinal(), ejecucionIterada.getGastoTotal(), ejecucionIterada.getSaldo()});
+            }
         }
     }
 
@@ -341,6 +361,7 @@ public class Ejecucion_Presupuestal extends javax.swing.JInternalFrame implement
         tablaEjecucion = new javax.swing.JTable();
         barraHerramientas = new javax.swing.JToolBar();
         imprimirAdicion = new javax.swing.JLabel();
+        labelMensaje = new javax.swing.JLabel();
         barraMenu = new javax.swing.JMenuBar();
         menuAdicion = new javax.swing.JMenu();
         itemCerrar = new javax.swing.JMenuItem();
@@ -399,6 +420,8 @@ public class Ejecucion_Presupuestal extends javax.swing.JInternalFrame implement
         });
         barraHerramientas.add(imprimirAdicion);
 
+        labelMensaje.setForeground(new java.awt.Color(204, 0, 0));
+
         barraMenu.setBackground(new java.awt.Color(255, 255, 255));
 
         menuAdicion.setText("Ejecucion");
@@ -419,31 +442,36 @@ public class Ejecucion_Presupuestal extends javax.swing.JInternalFrame implement
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(barraHerramientas, javax.swing.GroupLayout.DEFAULT_SIZE, 879, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 835, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(botonGenerar)
+                        .addComponent(labelMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 774, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 835, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(41, 41, 41)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel1))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(frMesInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(frMesFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 628, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(19, 19, 19))
-            .addComponent(barraHerramientas, javax.swing.GroupLayout.DEFAULT_SIZE, 879, Short.MAX_VALUE)
+                                    .addComponent(botonGenerar)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel2)
+                                            .addComponent(jLabel1))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(frMesInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(frMesFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 628, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(19, 19, 19))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(barraHerramientas, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel1)
                     .addComponent(frMesInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -453,8 +481,10 @@ public class Ejecucion_Presupuestal extends javax.swing.JInternalFrame implement
                     .addComponent(frMesFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(botonGenerar)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23))
         );
 
@@ -462,15 +492,19 @@ public class Ejecucion_Presupuestal extends javax.swing.JInternalFrame implement
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGenerarActionPerformed
-        // Creo el hilo
-        Loading_Proceso loadig = new Loading_Proceso(this, false);     
+               
+        Generar_Ejecucion generarEjecucion = new Generar_Ejecucion(frMesInicial.getMonth(), frMesFinal.getMonth());
+        Thread thread1 = new Thread(generarEjecucion);
+        thread1.start();  
         
-        Ejecucion_Presupuestal ejecucion = new Ejecucion_Presupuestal(home);
-        Thread thread1 = new Thread(loadig);
-        Thread thread2 = new Thread(ejecucion);
-        loadig.setHilo(thread2);
-        thread1.start();
+        hilo = thread1;
+        
+        Thread thread2 = new Thread(this);
         thread2.start();        
+        
+        Loading_Proceso loading = new Loading_Proceso(this, true);
+        loading.setHilo(hilo);
+        loading.setVisible(true);                
     }//GEN-LAST:event_botonGenerarActionPerformed
 
     private void itemCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCerrarActionPerformed
@@ -494,12 +528,25 @@ public class Ejecucion_Presupuestal extends javax.swing.JInternalFrame implement
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelMensaje;
     private javax.swing.JMenu menuAdicion;
     private javax.swing.JTable tablaEjecucion;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void run() {
-        inicializarVentanaProcesos();
+                 
+        while (hilo.isAlive()) {            
+                          
+        }                   
+              
+        eliminarElementosTabla();
+        System.out.println("elimino tabla");
+        
+        llenarTablaEjecucion();
+        System.out.println("cargo tabla");
+                
+        labelMensaje.setText("Ejecucion Actualizada");
+        
     }
 }

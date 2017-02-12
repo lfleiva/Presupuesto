@@ -5,6 +5,8 @@
  */
 package com.presupuesto.vista;
 
+import static com.presupuesto.vista.Lista_Adicion.adicionPresupuestal;
+
 /**
  *
  * @author Luis Fernando Leiva
@@ -12,8 +14,8 @@ package com.presupuesto.vista;
 public class Loading_Proceso extends javax.swing.JDialog implements Runnable {
 
     public static Ejecucion_Presupuestal ejecucionPresupuestal;
-    public static Presupuesto_Inicial presupuestoInicial; 
-    
+    public static Presupuesto_Inicial presupuestoInicial;
+
     Thread hilo;
 
     /**
@@ -23,25 +25,27 @@ public class Loading_Proceso extends javax.swing.JDialog implements Runnable {
         //super(parent, modal);
         this.ejecucionPresupuestal = parent;
         this.setModal(modal);
-        initComponents();        
-        this.setLocationRelativeTo(null);                    
+        initComponents();
+        this.setLocationRelativeTo(null);
+        hilo = new Thread(this);
+        hilo.start();
     }
-    
+
     public Loading_Proceso(Presupuesto_Inicial parent, boolean modal) {
         //super(parent, modal);
         this.presupuestoInicial = parent;
         this.setModal(modal);
         initComponents();
     }
-    
-    private void estadoHilo() {
-        while (this.hilo.isAlive()) {            
+
+    public void estadoHilo() {
+        while (this.hilo.isAlive()) {
             System.out.println("Hilo vivo");
         }
         this.setVisible(false);
     }
-    
-    public void setHilo(Thread hilo){
+
+    public void setHilo(Thread hilo) {
         this.hilo = hilo;
     }
 
@@ -118,8 +122,18 @@ public class Loading_Proceso extends javax.swing.JDialog implements Runnable {
         //</editor-fold>
 
         /* Create and display the dialog */
-//        Loading_Proceso dialog = new Loading_Proceso(ejecucionPresupuestal, true);
-//        dialog.setVisible(true);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                Loading_Proceso dialog = new Loading_Proceso(ejecucionPresupuestal, true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });                          
+            }
+        });
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -128,8 +142,7 @@ public class Loading_Proceso extends javax.swing.JDialog implements Runnable {
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void run() {
-        this.setVisible(true);
+    public void run() {        
         estadoHilo();
     }
 }
