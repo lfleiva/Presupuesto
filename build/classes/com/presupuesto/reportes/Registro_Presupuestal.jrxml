@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Disponibilidad_Presupuestal" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\Innovacion y Desarrollo\\Desarrollos\\Presupuesto\\Reportes\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="vigencia" class="java.math.BigDecimal"/>
+	<parameter name="registro" class="java.math.BigDecimal"/>
+	<parameter name="disponibilidad" class="java.math.BigDecimal"/>
+	<queryString>
+		<![CDATA[SELECT R.consecutivo, R.objeto, R.fecha, D.consecutivo DISPONIBILIDAD, B.identificacion, B.nombre FROM Presupuesto.registro R, Presupuesto.disponibilidad D, Presupuesto.beneficiario B, Presupuesto.vigencia V WHERE R.disponibilidad = D.id_disponibilidad AND R.vigencia = V.id_vigencia AND D.beneficiario = B.id_beneficiario AND V.id_vigencia = $P{vigencia} AND R.consecutivo = $P{registro};]]>
+	</queryString>
+	<field name="consecutivo" class="java.lang.Double"/>
+	<field name="objeto" class="java.lang.String"/>
+	<field name="fecha" class="java.sql.Date"/>
+	<field name="DISPONIBILIDAD" class="java.lang.Double"/>
+	<field name="identificacion" class="java.lang.String"/>
+	<field name="nombre" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="105" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="100"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA["C:\\Program Files\\Presupuesto\\Reportes\\Encabezado.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="444" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CERTIFICADO DE REGISTRO PRESUPUESTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="23" width="555" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="12"/>
+				</textElement>
+				<text><![CDATA[SECRETARIA TESORERA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="117" width="80" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="12"/>
+				</textElement>
+				<text><![CDATA[Disponibilidad:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="140" width="80" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="12"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="164" width="80" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="12"/>
+				</textElement>
+				<text><![CDATA[Beneficiario:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="186" width="80" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="12"/>
+				</textElement>
+				<text><![CDATA[CC/NIT:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="208" width="80" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="12"/>
+				</textElement>
+				<text><![CDATA[Objeto:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="271" width="552" height="20"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Tahoma" size="12"/>
+				</textElement>
+				<text><![CDATA[Para respaldar lo siguiente]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="0" y="302" width="555" height="100"/>
+				<subreportParameter name="vigencia">
+					<subreportParameterExpression><![CDATA[$P{vigencia}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="disponibilidad">
+					<subreportParameterExpression><![CDATA[$P{disponibilidad}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA["C:\\Program Files\\Presupuesto\\Reportes\\Disponibilidad_Rubro.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="3" y="77" width="552" height="32"/>
+				<textElement textAlignment="Justified">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[En el Presupuesto de Gastos de la presente vigencia, la entidad compromete de manera definitiva la disponibilidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="201" y="43" width="142" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Registro Presupuestal:]]></text>
+			</staticText>
+			<textField pattern="###0">
+				<reportElement x="343" y="43" width="42" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{consecutivo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="82" y="208" width="473" height="43"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{objeto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="82" y="186" width="473" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{identificacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="82" y="164" width="473" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd MMMMM yyyy">
+				<reportElement x="82" y="140" width="473" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement x="82" y="117" width="473" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{DISPONIBILIDAD}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnFooter>
+		<band height="135" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="135"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA["C:\\Program Files\\Presupuesto\\Reportes\\Firma_Tesorera.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</columnFooter>
+</jasperReport>
