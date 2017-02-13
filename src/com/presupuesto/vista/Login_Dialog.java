@@ -8,6 +8,7 @@ package com.presupuesto.vista;
 import com.presupuesto.control.AccesoDatos;
 import com.presupuesto.modelo.Acceso;
 import com.presupuesto.modelo.Entidad;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -67,6 +68,11 @@ public class Login_Dialog extends javax.swing.JDialog implements Runnable {
         frPassword.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         frPassword.setForeground(new java.awt.Color(102, 102, 102));
         frPassword.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        frPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                frPasswordKeyTyped(evt);
+            }
+        });
 
         botonLogin.setBackground(new java.awt.Color(255, 255, 255));
         botonLogin.setForeground(new java.awt.Color(102, 102, 102));
@@ -165,12 +171,20 @@ public class Login_Dialog extends javax.swing.JDialog implements Runnable {
     private void botonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonLoginActionPerformed
         labelMensaje.setText("Validando datos...");
         hilo = new Thread(this);
-        hilo.start();       
+        hilo.start();
     }//GEN-LAST:event_botonLoginActionPerformed
 
     private void labelCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelCerrarMouseClicked
         System.exit(0);
     }//GEN-LAST:event_labelCerrarMouseClicked
+
+    private void frPasswordKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_frPasswordKeyTyped
+        if (evt.getKeyChar() == KeyEvent.VK_ENTER) {
+            labelMensaje.setText("Validando datos...");
+            hilo = new Thread(this);
+            hilo.start();
+        }
+    }//GEN-LAST:event_frPasswordKeyTyped
 
     private boolean validarLogin() {
         boolean validacionExitosa = false;
