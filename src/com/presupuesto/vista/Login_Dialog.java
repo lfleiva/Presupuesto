@@ -8,6 +8,7 @@ package com.presupuesto.vista;
 import com.presupuesto.control.AccesoDatos;
 import com.presupuesto.modelo.Acceso;
 import com.presupuesto.modelo.Entidad;
+import com.presupuesto.modelo.Vigencia;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ public class Login_Dialog extends javax.swing.JDialog implements Runnable {
     public static Home home;
     Thread hilo;
     AccesoDatos accesoDatos;
+    Vigencia vigencia;
 
     /**
      * Creates new form Login
@@ -216,8 +218,20 @@ public class Login_Dialog extends javax.swing.JDialog implements Runnable {
         listaEntidad = accesoDatos.consultarTodos(entidad, Entidad.class);
 
         entidad = listaEntidad.get(0);
+        
+        consultarVigencia();
 
-        home.datosEntidad(entidad);
+        home.datosEntidad(entidad, vigencia);
+    }
+    
+    /**
+     * Metodo que consulta la vigencia activa
+     */
+    private void consultarVigencia() {
+        accesoDatos = new AccesoDatos();
+        vigencia = new Vigencia();
+        vigencia.setActiva(true);
+        vigencia = accesoDatos.consultarTodos(vigencia, Vigencia.class).get(0);
     }
 
     private void barra() {

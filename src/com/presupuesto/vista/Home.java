@@ -400,11 +400,17 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_itemVigenciaPresupuestalActionPerformed
 
     //***** Metodos Publicos *****//
-    public void datosEntidad(Entidad entidad) {
+    public void datosEntidad(Entidad entidad, Vigencia vigencia) {
         nombreEntidad.setText(entidad.getNombre());
         nitEntidad.setText("Nit. " + entidad.getNit());
         departamentoCiudad.setText(entidad.getCiudad() + " - " + entidad.getDepartamento());
-        this.setTitle("Presupuesto - " + entidad.getNombreCorto());
+        this.setTitle("Presupuesto - " + entidad.getNombreCorto() + " - Vigencia " + vigencia.getVigencia());
+    }
+    
+    public void vigenciaActiva(Vigencia vigencia){
+        String tituloHome = this.getTitle();
+        String titulo = tituloHome.substring(0, tituloHome.indexOf("Vigencia"));
+        this.setTitle(titulo + "Vigencia " + vigencia.getVigencia());
     }
 
     /**
