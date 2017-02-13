@@ -123,9 +123,9 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
 
         if (!listaDescuentos.isEmpty()) {
             frListaDecuentos.removeAllItems();
-
+            frListaDecuentos.addItem("-- Seleccione --");
             for (Descuento descuentoIterado : listaDescuentos) {
-                frListaDecuentos.addItem(descuentoIterado.getNombre());
+                frListaDecuentos.addItem(descuentoIterado.getNombre() + " (" + descuentoIterado.getPorcentaje() + "%)");                
             }
         }
     }
@@ -170,8 +170,7 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
         frListaDecuentos.setSelectedIndex(0);
         frListaDisponibilidad.setSelectedIndex(0);
         frNoCuenta.setText("");
-        frCuenta.setText("$0.0");
-        frPorcentaje.setText("");
+        frCuenta.setText("$0.0");        
         frNetoPagar.setText("$0.0");
         frValorLetras.setText("");
         frComprobante.requestFocus();
@@ -231,8 +230,7 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
                 frCuenta.setText("$" + formatoNumeroDecimales(comprobante.getValorPagar().toString()));
                 frNetoPagar.setText("$" + formatoNumeroDecimales(comprobante.getValorCuenta().toString()));
                 frValorDescuento.setText("$0.0");
-                frValorLetras.setText(comprobante.getValorLetras());
-                frPorcentaje.setText("");
+                frValorLetras.setText(comprobante.getValorLetras());                
 
                 if (frListaDecuentos.getItemCount() > 0) {
                     frListaDecuentos.setSelectedItem(0);
@@ -248,7 +246,7 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
                     model = (DefaultTableModel) tablaDescuentos.getModel();
 
                     for (EgresoDescuento descuento : listaDescuentos) {
-                        model.addRow(new Object[]{descuento.getDescuento().getNombre(), descuento.getPorcentaje(), "$" + formatoNumeroDecimales(descuento.getValor().toString())});
+                        model.addRow(new Object[]{descuento.getDescuento().getNombre() + " (" + descuento.getDescuento().getPorcentaje() + "%)", "$" + formatoNumeroDecimales(descuento.getValor().toString())});
                     }
                 }
 
@@ -263,8 +261,7 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
                 frCuenta.setText("");
                 frNetoPagar.setText("");
                 frValorDescuento.setText("$0.0");
-                frValorLetras.setText("");
-                frPorcentaje.setText("");
+                frValorLetras.setText("");                
 
                 if (frListaDecuentos.getItemCount() > 0) {
                     frListaDecuentos.setSelectedItem(0);
@@ -281,7 +278,7 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
         int numeroFilas = model.getRowCount();
         if (numeroFilas > 0) {
             for (int i = 0; i < numeroFilas; i++) {
-                String valorDescuentoTexto = model.getValueAt(i, 2).toString();
+                String valorDescuentoTexto = model.getValueAt(i, 1).toString();
 
                 BigDecimal valorDescuento = obtenerValorRubro(valorDescuentoTexto);
                 totalDescuentos = totalDescuentos.add(valorDescuento);
@@ -289,6 +286,11 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
         }
 
         return totalDescuentos;
+    }
+    
+    private BigDecimal obtenerPorcentaje(String descuentoSeleccionado){        
+        String porcentajeDescuento = descuentoSeleccionado.substring(descuentoSeleccionado.indexOf("(") + 1, descuentoSeleccionado.length() - 2);
+        return new BigDecimal(porcentajeDescuento);
     }
 
     /**
@@ -330,9 +332,6 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
         tablaDescuentos = new javax.swing.JTable();
         labelDescuento = new javax.swing.JLabel();
         frListaDecuentos = new javax.swing.JComboBox<>();
-        labelPorcentaje = new javax.swing.JLabel();
-        frPorcentaje = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
         labelValorDescuento = new javax.swing.JLabel();
         frValorDescuento = new javax.swing.JTextField();
         botonQuitar = new javax.swing.JButton();
@@ -469,11 +468,11 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Descuento", "Porcentaje", "Valor"
+                "Descuento", "Valor"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, false, true
+                false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -483,10 +482,6 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(tablaDescuentos);
 
         labelDescuento.setText("Descuento");
-
-        labelPorcentaje.setText("Porcentaje");
-
-        jLabel9.setText("%");
 
         labelValorDescuento.setText("Valor");
 
@@ -526,14 +521,8 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
                     .addGroup(panelDescuentosLayout.createSequentialGroup()
                         .addComponent(labelDescuento)
                         .addGap(18, 18, 18)
-                        .addComponent(frListaDecuentos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(labelPorcentaje)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(frPorcentaje, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel9)
-                        .addGap(25, 25, 25)
+                        .addComponent(frListaDecuentos, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(labelValorDescuento)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(frValorDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -550,9 +539,6 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
                 .addGroup(panelDescuentosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelDescuento)
                     .addComponent(frListaDecuentos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelPorcentaje)
-                    .addComponent(frPorcentaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9)
                     .addComponent(frValorDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelValorDescuento))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -842,13 +828,12 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
             if (numeroFilas > 0) {
                 for (int i = 0; i < numeroFilas; i++) {
                     EgresoDescuento egresoDescuento = new EgresoDescuento();
-                    String nombreDescuento = model.getValueAt(i, 0).toString();
-                    String porcentajeDescuento = model.getValueAt(i, 1).toString();
-                    String valorDescuento = model.getValueAt(i, 2).toString();
+                    String nombreDescuento = model.getValueAt(i, 0).toString();                    
+                    String valorDescuento = model.getValueAt(i, 1).toString();
 
                     egresoDescuento.setComprobanteEgreso(comprobante);
-                    egresoDescuento.setDescuento(consultarDescuento(nombreDescuento));
-                    egresoDescuento.setPorcentaje(new BigDecimal(porcentajeDescuento));
+                    egresoDescuento.setDescuento(consultarDescuento(nombreDescuento.substring(0, nombreDescuento.indexOf("(") - 1)));
+                    egresoDescuento.setPorcentaje(obtenerPorcentaje(nombreDescuento));
                     egresoDescuento.setValor(obtenerValorRubro(valorDescuento));
                     egresoDescuento.setVigencia(vigencia);
                     accesoDatos.persistirActualizar(egresoDescuento);
@@ -935,8 +920,7 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
                 frCuenta.setText("$" + formatoNumeroDecimales(comprobante.getValorCuenta().toString()));
                 frNetoPagar.setText("$" + formatoNumeroDecimales(comprobante.getValorPagar().toString()));
                 frValorDescuento.setText("$0.0");
-                frValorLetras.setText(comprobante.getValorLetras());
-                frPorcentaje.setText("");
+                frValorLetras.setText(comprobante.getValorLetras());                
 
                 if (frListaDecuentos.getItemCount() > 0) {
                     frListaDecuentos.setSelectedItem(0);
@@ -952,7 +936,7 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
                     model = (DefaultTableModel) tablaDescuentos.getModel();
 
                     for (EgresoDescuento descuento : listaDescuentos) {
-                        model.addRow(new Object[]{descuento.getDescuento().getNombre(), descuento.getPorcentaje(), "$" + formatoNumeroDecimales(descuento.getValor().toString())});
+                        model.addRow(new Object[]{descuento.getDescuento().getNombre() + " (" + descuento.getDescuento().getPorcentaje() + "%)", "$" + formatoNumeroDecimales(descuento.getValor().toString())});
                     }
                 }
 
@@ -967,8 +951,7 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
                 frCuenta.setText("");
                 frNetoPagar.setText("");
                 frValorDescuento.setText("$0.0");
-                frValorLetras.setText("");
-                frPorcentaje.setText("");
+                frValorLetras.setText("");                
 
                 if (frListaDecuentos.getItemCount() > 0) {
                     frListaDecuentos.setSelectedItem(0);
@@ -1049,11 +1032,13 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
         String descuentoSeleccionado = frListaDecuentos.getSelectedItem().toString();
 
         if (!descuentoSeleccionado.equals("-- Seleccionar --")) {
-            if (!frValorDescuento.getText().trim().equals("") && !frValorDescuento.getText().trim().equals("$0.0") && !frPorcentaje.getText().equals("")) {
-
+            
+            BigDecimal porcentajeDescuento = obtenerPorcentaje(descuentoSeleccionado);
+            
+            if (!frValorDescuento.getText().trim().equals("") && !frValorDescuento.getText().trim().equals("$0.0") && !porcentajeDescuento.equals("")) {                                
                 DefaultTableModel model = new DefaultTableModel();
                 model = (DefaultTableModel) tablaDescuentos.getModel();
-                model.addRow(new Object[]{descuentoSeleccionado, frPorcentaje.getText(), frValorDescuento.getText()});
+                model.addRow(new Object[]{descuentoSeleccionado, frValorDescuento.getText()});
 
                 // Se debe restar el valor del descuento para calcular neto a pagar
                 BigDecimal valorDescuento = obtenerValorRubro(frValorDescuento.getText());
@@ -1063,7 +1048,6 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
 
                 //
                 frValorDescuento.setText("$0.0");
-                frPorcentaje.setText("");
                 frListaDecuentos.setSelectedIndex(0);
             } else {
                 JOptionPane.showMessageDialog(null, "Debe digitar un valor para el Decusento", "Verificación Descuento", 0);
@@ -1080,7 +1064,7 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
             DefaultTableModel model = new DefaultTableModel();
             model = (DefaultTableModel) tablaDescuentos.getModel();
 
-            String valorDescuentoSeleccionado = model.getValueAt(filaSeleccionada, 2).toString();
+            String valorDescuentoSeleccionado = model.getValueAt(filaSeleccionada, 1).toString();
             BigDecimal valorDescuento = obtenerValorRubro(valorDescuentoSeleccionado);
             BigDecimal netoPagar = obtenerValorRubro(frNetoPagar.getText());
             netoPagar = netoPagar.add(valorDescuento);
@@ -1108,7 +1092,6 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> frListaDisponibilidad;
     private javax.swing.JTextField frNetoPagar;
     private javax.swing.JTextField frNoCuenta;
-    private javax.swing.JTextField frPorcentaje;
     private javax.swing.JTextField frValorDescuento;
     private javax.swing.JTextField frValorLetras;
     private javax.swing.JLabel guardarRegistro;
@@ -1119,7 +1102,6 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
     private javax.swing.JMenuItem itemListaAdiciones;
     private javax.swing.JMenuItem itemNuevo;
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar.Separator jSeparator1;
@@ -1131,7 +1113,6 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
     private javax.swing.JLabel labelDisponibilidad;
     private javax.swing.JLabel labelFecha;
     private javax.swing.JLabel labelPagar;
-    private javax.swing.JLabel labelPorcentaje;
     private javax.swing.JLabel labelValorCuenta;
     private javax.swing.JLabel labelValorDescuento;
     private javax.swing.JLabel labelValorLetras;

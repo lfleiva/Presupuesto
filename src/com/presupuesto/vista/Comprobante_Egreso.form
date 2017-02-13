@@ -459,14 +459,8 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="labelDescuento" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="frListaDecuentos" max="32767" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="labelPorcentaje" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="frPorcentaje" min="-2" pref="23" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                          <Component id="frListaDecuentos" min="-2" pref="340" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Component id="labelValorDescuento" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="frValorDescuento" min="-2" pref="93" max="-2" attributes="0"/>
@@ -489,9 +483,6 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="labelDescuento" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="frListaDecuentos" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="labelPorcentaje" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="frPorcentaje" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="frValorDescuento" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="labelValorDescuento" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -516,19 +507,13 @@
             <Component class="javax.swing.JTable" name="tablaDescuentos">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="3" rowCount="0">
-                    <Column editable="true" title="Descuento" type="java.lang.Object"/>
-                    <Column editable="false" title="Porcentaje" type="java.lang.Object"/>
-                    <Column editable="true" title="Valor" type="java.lang.Object"/>
+                  <Table columnCount="2" rowCount="0">
+                    <Column editable="false" title="Descuento" type="java.lang.Object"/>
+                    <Column editable="false" title="Valor" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title/>
-                      <Editor/>
-                      <Renderer/>
-                    </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
@@ -562,18 +547,6 @@
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
-        </Component>
-        <Component class="javax.swing.JLabel" name="labelPorcentaje">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Porcentaje"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="frPorcentaje">
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabel9">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="%"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="labelValorDescuento">
           <Properties>

@@ -52,6 +52,8 @@ public class Descuento implements Serializable {
     private BigDecimal idDescuento;
     @Column(name = "nombre")
     private String nombre;
+    @Column(name = "porcentaje")
+    private BigDecimal porcentaje;
     @JoinColumn(name = "vigencia", referencedColumnName = "id_vigencia")
     @ManyToOne
     private Vigencia vigencia;
@@ -97,6 +99,15 @@ public class Descuento implements Serializable {
     public void setVigencia(Vigencia vigencia) {
         this.vigencia = vigencia;
     }
+
+    public BigDecimal getPorcentaje() {
+        return porcentaje;
+    }
+
+    public void setPorcentaje(BigDecimal porcentaje) {
+        this.porcentaje = porcentaje;
+    }
+        
 
     @XmlTransient
     public List<EgresoDescuento> getEgresoDescuentoList() {

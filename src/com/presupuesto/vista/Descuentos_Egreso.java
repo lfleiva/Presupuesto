@@ -9,6 +9,8 @@ import com.presupuesto.control.AccesoDatos;
 import com.presupuesto.modelo.Descuento;
 import com.presupuesto.modelo.Vigencia;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -62,6 +64,7 @@ public class Descuentos_Egreso extends javax.swing.JDialog {
     
     private void reiniciarFormulario() {
         frNombreDescuento.setText("");
+        frPorcentaje.setText("");
     }
 
     /**
@@ -76,12 +79,16 @@ public class Descuentos_Egreso extends javax.swing.JDialog {
         barraHerramientas = new javax.swing.JToolBar();
         nuevoRegistro = new javax.swing.JLabel();
         guardarRegistro = new javax.swing.JLabel();
+        listaRegistros = new javax.swing.JLabel();
         labelDecuento = new javax.swing.JLabel();
         frNombreDescuento = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        frPorcentaje = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(700, 400));
-        setMinimumSize(new java.awt.Dimension(700, 400));
+        setMaximumSize(new java.awt.Dimension(450, 160));
+        setMinimumSize(new java.awt.Dimension(450, 160));
+        setPreferredSize(new java.awt.Dimension(450, 160));
 
         barraHerramientas.setBackground(new java.awt.Color(255, 255, 255));
         barraHerramientas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
@@ -116,29 +123,53 @@ public class Descuentos_Egreso extends javax.swing.JDialog {
         });
         barraHerramientas.add(guardarRegistro);
 
+        listaRegistros.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        listaRegistros.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/lista.png"))); // NOI18N
+        listaRegistros.setAlignmentX(0.5F);
+        listaRegistros.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        listaRegistros.setMaximumSize(new java.awt.Dimension(25, 20));
+        listaRegistros.setMinimumSize(new java.awt.Dimension(25, 20));
+        listaRegistros.setPreferredSize(new java.awt.Dimension(25, 20));
+        listaRegistros.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                listaRegistrosMousePressed(evt);
+            }
+        });
+        barraHerramientas.add(listaRegistros);
+
         labelDecuento.setText("Nombre Descuento");
+
+        jLabel1.setText("Porcentaje (%)");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(barraHerramientas, javax.swing.GroupLayout.DEFAULT_SIZE, 579, Short.MAX_VALUE)
+            .addComponent(barraHerramientas, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(84, 84, 84)
-                .addComponent(labelDecuento)
+                .addGap(36, 36, 36)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addComponent(labelDecuento))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(frNombreDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(frPorcentaje, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(frNombreDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(barraHerramientas, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(78, 78, 78)
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelDecuento)
                     .addComponent(frNombreDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 90, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(frPorcentaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 49, Short.MAX_VALUE))
         );
 
         pack();
@@ -151,10 +182,19 @@ public class Descuentos_Egreso extends javax.swing.JDialog {
     private void guardarRegistroMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarRegistroMousePressed
         if (validarFormulario()) {
             accesoDatos = new AccesoDatos();
+            List<Descuento> listaDescuentos = new ArrayList<Descuento>();
             
             Descuento descuento = new Descuento();
             descuento.setNombre(frNombreDescuento.getText());
+            
+            listaDescuentos = accesoDatos.consultarObjetoPorVigencia(Descuento.class, descuento, vigencia);
+            
+            if(!listaDescuentos.isEmpty()){
+                descuento = listaDescuentos.get(0);
+            }
+            
             descuento.setTipoDescuento(new BigDecimal(1));
+            descuento.setPorcentaje(new BigDecimal(frPorcentaje.getText()));
             descuento.setVigencia(vigencia);
             
             descuento = accesoDatos.persistirActualizar(descuento);
@@ -167,6 +207,31 @@ public class Descuentos_Egreso extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_guardarRegistroMousePressed
 
+    private void listaRegistrosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaRegistrosMousePressed
+        // Abrir Lista
+        Lista_Descuentos listaDescuentos = new Lista_Descuentos(this, true);
+        listaDescuentos.setLocationRelativeTo(null);
+        listaDescuentos.setVisible(true);
+    }//GEN-LAST:event_listaRegistrosMousePressed
+
+    public void cargarDescuento(String descuentoSeleccionado){
+        accesoDatos = new AccesoDatos();
+        Descuento descuento = new Descuento();
+        descuento.setNombre(descuentoSeleccionado);
+        
+        List<Descuento> listaDescuento = new ArrayList<Descuento>();        
+        listaDescuento = accesoDatos.consultarObjetoPorVigencia(Descuento.class, descuento, vigencia);
+        
+        if(!listaDescuento.isEmpty()){            
+            descuento = listaDescuento.get(0);
+            frNombreDescuento.setText(descuento.getNombre());
+            
+            if(descuento.getPorcentaje() != null){
+                frPorcentaje.setText(descuento.getPorcentaje().toString());
+            }
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -212,8 +277,11 @@ public class Descuentos_Egreso extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraHerramientas;
     private javax.swing.JTextField frNombreDescuento;
+    private javax.swing.JTextField frPorcentaje;
     private javax.swing.JLabel guardarRegistro;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel labelDecuento;
+    private javax.swing.JLabel listaRegistros;
     private javax.swing.JLabel nuevoRegistro;
     // End of variables declaration//GEN-END:variables
 }

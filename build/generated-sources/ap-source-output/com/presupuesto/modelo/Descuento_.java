@@ -13,6 +13,7 @@ public abstract class Descuento_ {
 	public static volatile SingularAttribute<Descuento, Vigencia> vigencia;
 	public static volatile SingularAttribute<Descuento, BigDecimal> idDescuento;
 	public static volatile SingularAttribute<Descuento, BigDecimal> tipoDescuento;
+	public static volatile SingularAttribute<Descuento, BigDecimal> porcentaje;
 	public static volatile SingularAttribute<Descuento, String> nombre;
 	public static volatile ListAttribute<Descuento, EgresoDescuento> egresoDescuentoList;
 
