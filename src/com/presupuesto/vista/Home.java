@@ -31,7 +31,7 @@ public class Home extends javax.swing.JFrame {
         initComponents();
 
         // Icono
-        setIconImage(new ImageIcon(getClass().getResource("/com/presupuesto/img/logo_ittera_2017.png")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("/com/presupuesto/img/Icono.png")).getImage());
         // Posicion centro de pantalla
         this.setLocationRelativeTo(null);
         // Se quita decoracion de pantalla al frame interno
