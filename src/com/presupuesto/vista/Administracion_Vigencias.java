@@ -9,8 +9,6 @@ import com.presupuesto.control.AccesoDatos;
 import com.presupuesto.modelo.Vigencia;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
@@ -199,11 +197,11 @@ public class Administracion_Vigencias extends javax.swing.JInternalFrame {
             for (Vigencia vigencia : listaVigencia) {
                 if (vigencia.getActiva()) {
                     frListaVigencias.addItem(vigencia.getVigencia() + " (Activa)");
-                    frListaVigencias.setSelectedItem(vigencia.getVigencia() + " (Activa)");                    
+                    frListaVigencias.setSelectedItem(vigencia.getVigencia() + " (Activa)");                      
                 } else {
                     frListaVigencias.addItem(vigencia.getVigencia());
                 }
-            }
+            }            
         }
     }
 
@@ -265,11 +263,14 @@ public class Administracion_Vigencias extends javax.swing.JInternalFrame {
             for (Vigencia vigenciaIterada : listaVigencias) {
                 if (vigenciaIterada.getActiva()) {
                     frListaVigencias.addItem(vigenciaIterada.getVigencia() + " (Activa)");
-                    frListaVigencias.setSelectedItem(vigenciaIterada.getVigencia() + " (Activa)");                    
+                    frListaVigencias.setSelectedItem(vigenciaIterada.getVigencia() + " (Activa)");      
+                    home.vigenciaActiva(vigencia);
                 } else {
                     frListaVigencias.addItem(vigenciaIterada.getVigencia());
                 }
             }
+            
+            
         }
     }//GEN-LAST:event_guardarRegistroMousePressed
 
