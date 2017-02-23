@@ -8,6 +8,7 @@ package com.presupuesto.vista;
 import com.presupuesto.control.AccesoDatos;
 import com.presupuesto.modelo.Rubro;
 import com.presupuesto.modelo.Vigencia;
+import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +23,17 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Lista_Rubros extends javax.swing.JDialog {
 
-    /***** Constantes de la clase *****/
+    /**
+     * *** Constantes de la clase ****
+     */
     public static Rubro_Presupuestal rubroPresupuestal;
-    
-    /***** Atributos de la clase *****/
+
+    /**
+     * *** Atributos de la clase ****
+     */
     AccesoDatos accesoDatos;
     Vigencia vigencia;
-            
+
     /**
      * Creates new form Lista_Rubros
      */
@@ -39,23 +44,20 @@ public class Lista_Rubros extends javax.swing.JDialog {
         initComponents();
         consultarVigencia();
         consultarRubrosRegistrados();
-        
+
         // Icono
         setIconImage(new ImageIcon(getClass().getResource("/com/presupuesto/img/Icono.png")).getImage());
     }
-    
+
     /**
      * Metodo que consulta la vigencia activa
      */
-    private void consultarVigencia() {
-        accesoDatos = new AccesoDatos();
-        vigencia = new Vigencia();
-        vigencia = accesoDatos.consultarVigenciaActiva();
+    private void consultarVigencia() {        
+        vigencia = rubroPresupuestal.getVigencia();        
     }
-    
+
     private void consultarRubrosRegistrados() {
         accesoDatos = new AccesoDatos();
-        Rubro rubro = new Rubro();
         List<Rubro> listaRubros = new ArrayList<Rubro>();
 
         listaRubros = accesoDatos.consultarTodosPorVigencia(Rubro.class, vigencia);
@@ -63,29 +65,28 @@ public class Lista_Rubros extends javax.swing.JDialog {
         if (listaRubros != null && !listaRubros.isEmpty()) {
             DefaultTableModel model = new DefaultTableModel();
             model = (DefaultTableModel) tablaListaRubros.getModel();
-            
+
             DefaultTableCellRenderer Alinear = new DefaultTableCellRenderer();
             Alinear.setHorizontalAlignment(SwingConstants.RIGHT);
             tablaListaRubros.getColumnModel().getColumn(2).setCellRenderer(Alinear);
 
-
             for (Rubro rubroIterado : listaRubros) {
 
-                switch(rubroIterado.getTipoRubro().getTipoRubro()) {
+                switch (rubroIterado.getTipoRubro().getTipoRubro()) {
                     case "Cuenta":
-                        model.addRow(new Object[]{rubroIterado.getCodigo(), rubroIterado.getNombre(), "$0.0", rubroIterado.getTipoRubro().getTipoRubro(), "", ""});
-                        break;                    
+                        model.addRow(new Object[]{rubroIterado.getCodigo(), rubroIterado.getNombre(), "$" + formatoNumeroDecimales(rubroIterado.getValor().toString()), rubroIterado.getTipoRubro().getTipoRubro(), "", ""});
+                        break;
                     case "Subcuenta":
-                        model.addRow(new Object[]{rubroIterado.getCodigo(), rubroIterado.getNombre(), "$0.0", rubroIterado.getTipoRubro().getTipoRubro(), rubroIterado.getCuenta().getNombre(), ""});
-                        break;                        
+                        model.addRow(new Object[]{rubroIterado.getCodigo(), rubroIterado.getNombre(), "$" + formatoNumeroDecimales(rubroIterado.getValor().toString()), rubroIterado.getTipoRubro().getTipoRubro(), rubroIterado.getCuenta().getNombre(), ""});
+                        break;
                     case "Auxiliar":
                         model.addRow(new Object[]{rubroIterado.getCodigo(), rubroIterado.getNombre(), "$" + formatoNumeroDecimales(rubroIterado.getValor().toString()), rubroIterado.getTipoRubro().getTipoRubro(), rubroIterado.getCuenta().getNombre(), rubroIterado.getSubcuenta().getNombre()});
                         break;
-                }                               
+                }
             }
         }
     }
-    
+
     private String formatoNumeroDecimales(String valor) {
         DecimalFormat formateador = new DecimalFormat("###,###,###.##");
         valor = valor.replace(",", "");
@@ -95,7 +96,7 @@ public class Lista_Rubros extends javax.swing.JDialog {
         valorFormateado = valorFormateado.replace(".", ",");
         valorFormateado = valorFormateado.replace("#", ".");
         return valorFormateado;
-    }
+    }    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -129,6 +130,11 @@ public class Lista_Rubros extends javax.swing.JDialog {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tablaListaRubros.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaListaRubrosMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tablaListaRubros);
@@ -189,16 +195,34 @@ public class Lista_Rubros extends javax.swing.JDialog {
     private void botonSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSeleccionarActionPerformed
         DefaultTableModel model = new DefaultTableModel();
         model = (DefaultTableModel) tablaListaRubros.getModel();
-        
+
         int filaSeleccionada = tablaListaRubros.getSelectedRow();
-        
-        if(filaSeleccionada != -1) {
+
+        if (filaSeleccionada != -1) {
             String rubroSeleccionado = model.getValueAt(filaSeleccionada, 0).toString();
             rubroPresupuestal.cargarRubroSeleccionado(rubroSeleccionado);
         }
-        
+
         this.setVisible(false);
     }//GEN-LAST:event_botonSeleccionarActionPerformed
+
+    private void tablaListaRubrosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaListaRubrosMouseClicked
+
+        if (evt.getClickCount() == 2) {
+            DefaultTableModel model = new DefaultTableModel();
+            model = (DefaultTableModel) tablaListaRubros.getModel();
+            int filaSeleccionada = tablaListaRubros.getSelectedRow();
+            
+            if (filaSeleccionada != -1) {
+                String rubroSeleccionado = model.getValueAt(filaSeleccionada, 0).toString();
+                System.out.println(rubroSeleccionado);
+                rubroPresupuestal.cargarRubroSeleccionado(rubroSeleccionado);
+            }
+
+            this.setVisible(false);
+        }
+
+    }//GEN-LAST:event_tablaListaRubrosMouseClicked
 
     /**
      * @param args the command line arguments

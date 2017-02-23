@@ -11,6 +11,7 @@ import com.presupuesto.control.exceptions.NonexistentEntityException;
 import com.presupuesto.modelo.Rubro;
 import com.presupuesto.modelo.TipoRubro;
 import com.presupuesto.modelo.Vigencia;
+import java.awt.Color;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -55,10 +56,7 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
      * Metodo que consulta la vigencia activa
      */
     private void consultarVigencia() {
-        accesoDatos = new AccesoDatos();
-        vigencia = new Vigencia();
-        vigencia.setActiva(true);
-        vigencia = accesoDatos.consultarTodos(vigencia, Vigencia.class).get(0);
+        vigencia = home.getVigencia();
     }
 
     private void cargarTiposRubro() {
@@ -81,8 +79,8 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
         frCodigoPresupuestal.setText("");
         frNombreRubro.setText("");
         frValor.setText("$0.0");
-        frValor.setEnabled(false);
         frCodigoPresupuestal.requestFocus();
+        frMensaje.setText("");
     }
 
     private void consultarCuentasRegistradas() {
@@ -121,7 +119,6 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
         }
     }
 
-
     private boolean validarFormulario() {
         boolean validacionExitosa = true;
 
@@ -129,23 +126,157 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
 
         switch (tipo) {
             case "Cuenta":
-                if (frCodigoPresupuestal.getText().trim().equals("") || frNombreRubro.getText().trim().equals("")) {
+                if (frCodigoPresupuestal.getText().trim().equals("") || frNombreRubro.getText().trim().equals("") || frValor.getText().trim().equals("$0.0") || frValor.getText().trim().equals("")) {
                     validacionExitosa = false;
                 }
                 break;
             case "Subcuenta":
-                if (frCodigoPresupuestal.getText().trim().equals("") || frNombreRubro.getText().trim().equals("") || frListaCuentas.getSelectedItem().toString().equals("-- Seleccionar --")) {
+                if (frCodigoPresupuestal.getText().trim().equals("") || frNombreRubro.getText().trim().equals("") || frListaCuentas.getSelectedItem().toString().equals("-- Seleccionar --") || frValor.getText().trim().equals("$0.0") || frValor.getText().trim().equals("")) {
                     validacionExitosa = false;
                 }
                 break;
             case "Auxiliar":
-                if (frCodigoPresupuestal.getText().trim().equals("") || frNombreRubro.getText().trim().equals("") || frListaCuentas.getSelectedItem().toString().equals("-- Seleccionar --") || frListaSubcuentas.getSelectedItem().toString().equals("-- Seleccionar --") || frValor.getText().trim().equals("$0.0")) {
+                if (frCodigoPresupuestal.getText().trim().equals("") || frNombreRubro.getText().trim().equals("") || frListaCuentas.getSelectedItem().toString().equals("-- Seleccionar --") || frListaSubcuentas.getSelectedItem().toString().equals("-- Seleccionar --") || frValor.getText().trim().equals("$0.0") || frValor.getText().trim().equals("")) {
                     validacionExitosa = false;
                 }
                 break;
         }
 
         return validacionExitosa;
+    }
+
+    private Rubro registrarRubro() {
+        boolean modificacion = false;
+        if (validarFormulario()) {
+            Rubro rubro = new Rubro();
+            rubro.setCodigo(frCodigoPresupuestal.getText().trim());
+            rubro.setVigencia(vigencia);
+
+            List<Rubro> listaRubro = new ArrayList<Rubro>();
+            listaRubro = accesoDatos.consultarObjetoPorVigencia(Rubro.class, rubro, vigencia);
+
+            if (!listaRubro.isEmpty()) {
+                rubro = listaRubro.get(0);
+                modificacion = true;
+            }
+
+            TipoRubro tipoRubro = new TipoRubro();
+            String tipo = frListaTipoRubro.getSelectedItem().toString();
+
+            if (modificacion == false) {
+
+                rubro = registrarActualizarRubro(rubro, tipo);
+                
+                frMensaje.setForeground(Color.DARK_GRAY);
+                frMensaje.setText("El Rubro se registro correctamente");
+                return rubro;
+                
+            } else if(modificacion == true && rubro.getPresupuestoList().isEmpty()
+                    && rubro.getDisponibilidadRubroList().isEmpty()
+                    && rubro.getEjecucionList().isEmpty()
+                    && rubro.getPresupuestoList().isEmpty()
+                    && rubro.getTrasladoRubroList().isEmpty()
+                    && rubro.getAdicionRubroList().isEmpty()){
+                
+                rubro = registrarActualizarRubro(rubro, tipo);
+                frMensaje.setForeground(Color.DARK_GRAY);
+                frMensaje.setText("El Rubro se actualizo correctamente");
+                return rubro;
+            
+            } else {                
+                frMensaje.setForeground(Color.RED);
+                frMensaje.setText("El Rubro se encuentra registrado en el Presupuesto. No se puede modificar.");
+                return rubro;
+            }
+
+        } else {
+            frMensaje.setForeground(Color.RED);
+            frMensaje.setText("Error en el formulario de registro");
+            return null;
+        }
+    }
+
+    private Rubro registrarActualizarRubro(Rubro rubro, String tipo) {
+        switch (tipo) {
+            case "Cuenta":
+                tipoRubro = consultarTipoRubro("Cuenta");
+                rubro.setTipoRubro(tipoRubro);
+                rubro.setVigencia(vigencia);
+                rubro.setCodigo(frCodigoPresupuestal.getText().trim());
+                rubro.setNombre(frNombreRubro.getText().trim());
+                rubro.setCuenta(null);
+                rubro.setSubcuenta(null);
+                rubro.setValor(obtenerValorRubro());
+                guardarRubro(rubro);
+                iniciarFormulario();
+                break;
+
+            case "Subcuenta":
+                tipoRubro = consultarTipoRubro("Subcuenta");
+                rubro.setTipoRubro(tipoRubro);
+                rubro.setVigencia(vigencia);
+                rubro.setCodigo(frCodigoPresupuestal.getText().trim());
+                rubro.setNombre(frNombreRubro.getText().trim());
+                rubro.setCuenta(consultarCuentaSeleccionada());
+                rubro.setSubcuenta(null);
+                rubro.setValor(obtenerValorRubro());
+                guardarRubro(rubro);
+                iniciarFormulario();
+                break;
+            case "Auxiliar":
+                tipoRubro = consultarTipoRubro("Auxiliar");
+                rubro.setTipoRubro(tipoRubro);
+                rubro.setVigencia(vigencia);
+                rubro.setCodigo(frCodigoPresupuestal.getText().trim());
+                rubro.setNombre(frNombreRubro.getText().trim());
+                rubro.setCuenta(consultarCuentaSeleccionada());
+                rubro.setSubcuenta(consultarSubcuentaSeleccionada());
+                rubro.setValor(obtenerValorRubro());
+                rubro = guardarRubro(rubro);
+                iniciarFormulario();
+                break;
+        }
+        
+        return rubro;
+    }
+
+    private void eliminarRubro() {
+        if (validarFormulario()) {
+            accesoDatos = new AccesoDatos();
+            RubroJpaController rubroController = new RubroJpaController();
+            Rubro rubro = new Rubro();
+            rubro.setCodigo(frCodigoPresupuestal.getText().trim());
+            rubro.setVigencia(vigencia);
+
+            List<Rubro> listaRubro = new ArrayList<Rubro>();
+            listaRubro = accesoDatos.consultarObjetoPorVigencia(Rubro.class, rubro, vigencia);
+
+            if (!listaRubro.isEmpty()) {
+                try {
+                    rubro = listaRubro.get(0);
+                    if (rubro.getPresupuestoList().isEmpty() && rubro.getAdicionRubroList().isEmpty()
+                            && rubro.getDisponibilidadRubroList().isEmpty()
+                            && rubro.getEjecucionList().isEmpty()
+                            && rubro.getTrasladoRubroList().isEmpty()) {
+                        rubroController.destroy(rubro);
+                        iniciarFormulario();
+                    } else {
+                        frMensaje.setForeground(Color.RED);
+                        frMensaje.setText("Rubro registrado en presupuesto. No se puede eliminar.");
+                    }
+                } catch (NonexistentEntityException ex) {
+                    Logger.getLogger(Rubro_Presupuestal.class.getName()).log(Level.SEVERE, null, ex);
+                    frMensaje.setForeground(Color.RED);
+                    frMensaje.setText("Error al intentar eliminar el rubro");
+                }
+            } else {
+                frMensaje.setForeground(Color.RED);
+                frMensaje.setText("El rubro no existe");
+            }
+        } else {
+            frMensaje.setForeground(Color.RED);
+            frMensaje.setText("Error en el formulario");
+        }
     }
 
     /**
@@ -175,6 +306,7 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
         frListaSubcuentas = new javax.swing.JComboBox<>();
         labelValor = new javax.swing.JLabel();
         frValor = new javax.swing.JTextField();
+        frMensaje = new javax.swing.JLabel();
         barraMenu = new javax.swing.JMenuBar();
         menuRubro = new javax.swing.JMenu();
         itemNuevoRegistro = new javax.swing.JMenuItem();
@@ -316,6 +448,11 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
         menuRubro.add(itemNuevoRegistro);
 
         itemGuardar.setText("Guardar Rubro");
+        itemGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemGuardarActionPerformed(evt);
+            }
+        });
         menuRubro.add(itemGuardar);
 
         itemLista.setText("Lista");
@@ -374,8 +511,9 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
                             .addGap(47, 47, 47)))
                     .addComponent(frValor, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(frCodigoPresupuestal, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(frNombreRubro, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(449, Short.MAX_VALUE))
+                    .addComponent(frNombreRubro, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(frMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -405,7 +543,9 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelValor)
                     .addComponent(frValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 155, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(frMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 123, Short.MAX_VALUE))
         );
 
         pack();
@@ -425,7 +565,6 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
                 frListaSubcuentas.removeAllItems();
                 frListaSubcuentas.setEnabled(false);
                 frValor.setText("$0.0");
-                frValor.setEnabled(false);
                 break;
             case "Subcuenta":
                 frListaCuentas.removeAllItems();
@@ -434,7 +573,6 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
                 frListaSubcuentas.removeAllItems();
                 frListaSubcuentas.setEnabled(false);
                 frValor.setText("$0.0");
-                frValor.setEnabled(false);
                 break;
             case "Auxiliar":
                 frListaCuentas.removeAllItems();
@@ -443,7 +581,6 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
                 frListaSubcuentas.removeAllItems();
                 frListaSubcuentas.setEnabled(false);
                 frValor.setText("$0.0");
-                frValor.setEnabled(true);
                 break;
             default:
                 break;
@@ -455,64 +592,8 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_nuevoRegistroMousePressed
 
     private void guardarRegistroMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarRegistroMousePressed
-
-        if (validarFormulario()) {
-            Rubro rubro = new Rubro();
-            rubro.setCodigo(frCodigoPresupuestal.getText().trim());
-            rubro.setVigencia(vigencia);
-
-            List<Rubro> listaRubro = new ArrayList<Rubro>();
-            listaRubro = accesoDatos.consultarObjetoPorVigencia(Rubro.class, rubro, vigencia);
-
-            if (!listaRubro.isEmpty()) {
-                rubro = listaRubro.get(0);
-            }
-
-            TipoRubro tipoRubro = new TipoRubro();
-            String tipo = frListaTipoRubro.getSelectedItem().toString();
-
-            switch (tipo) {
-                case "Cuenta":
-                    tipoRubro = consultarTipoRubro("Cuenta");
-                    rubro.setTipoRubro(tipoRubro);
-                    rubro.setVigencia(vigencia);
-                    rubro.setCodigo(frCodigoPresupuestal.getText().trim());
-                    rubro.setNombre(frNombreRubro.getText().trim());
-                    rubro.setCuenta(null);
-                    rubro.setSubcuenta(null);
-                    rubro.setValor(new BigDecimal(0));
-                    guardarRubro(rubro);
-                    iniciarFormulario();
-                    break;
-
-                case "Subcuenta":
-                    tipoRubro = consultarTipoRubro("Subcuenta");
-                    rubro.setTipoRubro(tipoRubro);
-                    rubro.setVigencia(vigencia);
-                    rubro.setCodigo(frCodigoPresupuestal.getText().trim());
-                    rubro.setNombre(frNombreRubro.getText().trim());
-                    rubro.setCuenta(consultarCuentaSeleccionada());
-                    rubro.setSubcuenta(null);
-                    rubro.setValor(new BigDecimal(0));
-                    guardarRubro(rubro);
-                    iniciarFormulario();
-                    break;
-                case "Auxiliar":
-                    tipoRubro = consultarTipoRubro("Auxiliar");
-                    rubro.setTipoRubro(tipoRubro);
-                    rubro.setVigencia(vigencia);
-                    rubro.setCodigo(frCodigoPresupuestal.getText().trim());
-                    rubro.setNombre(frNombreRubro.getText().trim());
-                    rubro.setCuenta(consultarCuentaSeleccionada());
-                    rubro.setSubcuenta(consultarSubcuentaSeleccionada());
-                    rubro.setValor(obtenerValorRubro());
-                    guardarRubro(rubro);
-                    iniciarFormulario();
-                    break;
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Formulario incompleto", "Validacion Formulario", JOptionPane.ERROR_MESSAGE);
-        }
+        Rubro rubro = new Rubro();
+        rubro = registrarRubro();
     }//GEN-LAST:event_guardarRegistroMousePressed
 
     private void frListaCuentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frListaCuentasActionPerformed
@@ -529,9 +610,9 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
                 frListaSubcuentas.setEnabled(true);
                 frListaSubcuentas.addItem("-- Seleccione --");
                 for (Rubro subCuentasIteradas : listaSubcuentas) {
-                    if(subCuentasIteradas.getTipoRubro().getTipoRubro().equals("Subcuenta")) {
+                    if (subCuentasIteradas.getTipoRubro().getTipoRubro().equals("Subcuenta")) {
                         frListaSubcuentas.addItem(subCuentasIteradas.getCodigo() + " - " + subCuentasIteradas.getNombre());
-                    }                    
+                    }
                 }
             } else {
                 frListaSubcuentas.addItem("-- Seleccione --");
@@ -573,6 +654,8 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
 
     private void frCodigoPresupuestalFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_frCodigoPresupuestalFocusLost
         if (!frCodigoPresupuestal.getText().trim().equals("")) {
+            // Se borra mensaje de formulario
+            frMensaje.setText("");
             accesoDatos = new AccesoDatos();
             Rubro rubro = new Rubro();
             rubro.setCodigo(frCodigoPresupuestal.getText().trim());
@@ -599,7 +682,7 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
                                 frListaCuentas.setEnabled(false);
                                 frListaSubcuentas.removeAllItems();
                                 frListaSubcuentas.setEnabled(false);
-                                frValor.setText("$0.0");
+                                frValor.setText("$" + formatoNumeroDecimales(rubro.getValor().toString()));
                                 break;
                             case "Subcuenta":
                                 frListaCuentas.removeAllItems();
@@ -608,7 +691,7 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
                                 frListaCuentas.setEnabled(true);
                                 frListaSubcuentas.removeAllItems();
                                 frListaSubcuentas.setEnabled(false);
-                                frValor.setText("$0.0");
+                                frValor.setText("$" + formatoNumeroDecimales(rubro.getValor().toString()));
                                 break;
                             case "Auxiliar":
                                 frListaCuentas.removeAllItems();
@@ -620,9 +703,9 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
                                 if (!rubro.getCuenta().getRubroList1().isEmpty()) {
                                     frListaSubcuentas.addItem("-- Seleccione --");
                                     for (Rubro subcuentaIterada : rubro.getCuenta().getRubroList1()) {
-                                        if(subcuentaIterada.getTipoRubro().getTipoRubro().equals("Subcuenta")) {
+                                        if (subcuentaIterada.getTipoRubro().getTipoRubro().equals("Subcuenta")) {
                                             frListaSubcuentas.addItem(subcuentaIterada.getCodigo() + " - " + subcuentaIterada.getNombre());
-                                        }                                        
+                                        }
                                     }
                                 }
 
@@ -671,7 +754,7 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
                     rubro.setNombre(frNombreRubro.getText().trim());
                     rubro.setCuenta(null);
                     rubro.setSubcuenta(null);
-                    rubro.setValor(new BigDecimal(0));
+                    rubro.setValor(obtenerValorRubro());
                     guardarRubro(rubro);
                     iniciarFormulario();
                     break;
@@ -684,7 +767,7 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
                     rubro.setNombre(frNombreRubro.getText().trim());
                     rubro.setCuenta(consultarCuentaSeleccionada());
                     rubro.setSubcuenta(null);
-                    rubro.setValor(new BigDecimal(0));
+                    rubro.setValor(obtenerValorRubro());
                     guardarRubro(rubro);
                     iniciarFormulario();
                     break;
@@ -708,28 +791,7 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
 
     private void eliminarRegistroMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_eliminarRegistroMousePressed
         // Eliminar Registro
-        if (validarFormulario()) {
-            accesoDatos = new AccesoDatos();
-            RubroJpaController rubroController = new RubroJpaController();
-            Rubro rubro = new Rubro();
-            rubro.setCodigo(frCodigoPresupuestal.getText().trim());
-            rubro.setVigencia(vigencia);
-
-            List<Rubro> listaRubro = new ArrayList<Rubro>();
-            listaRubro = accesoDatos.consultarObjetoPorVigencia(Rubro.class, rubro, vigencia);
-
-            if (!listaRubro.isEmpty()) {
-                try {
-                    rubro = listaRubro.get(0);
-                    rubroController.destroy(rubro);
-                    iniciarFormulario();
-                } catch (NonexistentEntityException ex) {
-                    Logger.getLogger(Rubro_Presupuestal.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Formulario incompleto", "Validacion Formulario", JOptionPane.ERROR_MESSAGE);
-        }
+        eliminarRubro();
     }//GEN-LAST:event_eliminarRegistroMousePressed
 
     private void listaRubrosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaRubrosMousePressed
@@ -741,28 +803,7 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
 
     private void itemEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemEliminarActionPerformed
         // Eliminar Registro
-        if (validarFormulario()) {
-            accesoDatos = new AccesoDatos();
-            RubroJpaController rubroController = new RubroJpaController();
-            Rubro rubro = new Rubro();
-            rubro.setCodigo(frCodigoPresupuestal.getText().trim());
-            rubro.setVigencia(vigencia);
-
-            List<Rubro> listaRubro = new ArrayList<Rubro>();
-            listaRubro = accesoDatos.consultarObjetoPorVigencia(Rubro.class, rubro, vigencia);
-
-            if (!listaRubro.isEmpty()) {
-                try {
-                    rubro = listaRubro.get(0);
-                    rubroController.destroy(rubro);
-                    iniciarFormulario();
-                } catch (NonexistentEntityException ex) {
-                    Logger.getLogger(Rubro_Presupuestal.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Formulario incompleto", "Validacion Formulario", JOptionPane.ERROR_MESSAGE);
-        }
+        eliminarRubro();
     }//GEN-LAST:event_itemEliminarActionPerformed
 
     private void itemListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemListaActionPerformed
@@ -771,6 +812,11 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
         listaRubros.setLocationRelativeTo(null);
         listaRubros.setVisible(true);
     }//GEN-LAST:event_itemListaActionPerformed
+
+    private void itemGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGuardarActionPerformed
+        Rubro rubro = new Rubro();
+        rubro = registrarRubro();
+    }//GEN-LAST:event_itemGuardarActionPerformed
 
     private Rubro guardarRubro(Rubro rubro) {
         accesoDatos = new AccesoDatos();
@@ -852,11 +898,11 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
         if (rubro.getCodigo() != null && !rubro.getCodigo().trim().equals("")) {
             frCodigoPresupuestal.setText(rubro.getCodigo());
         }
-        
+
         if (rubro.getNombre() != null && !rubro.getNombre().trim().equals("")) {
             frNombreRubro.setText(rubro.getNombre());
         }
-        
+
         if (rubro.getTipoRubro() != null && rubro.getTipoRubro().getIdTipoRubro() != null) {
 
             frListaTipoRubro.setSelectedItem(rubro.getTipoRubro().getTipoRubro());
@@ -867,7 +913,7 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
                     frListaCuentas.setEnabled(false);
                     frListaSubcuentas.removeAllItems();
                     frListaSubcuentas.setEnabled(false);
-                    frValor.setText("$0.0");
+                    frValor.setText("$" + formatoNumeroDecimales(rubro.getValor().toString()));
                     break;
                 case "Subcuenta":
                     frListaCuentas.removeAllItems();
@@ -876,7 +922,7 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
                     frListaCuentas.setEnabled(true);
                     frListaSubcuentas.removeAllItems();
                     frListaSubcuentas.setEnabled(false);
-                    frValor.setText("$0.0");
+                    frValor.setText("$" + formatoNumeroDecimales(rubro.getValor().toString()));
                     break;
                 case "Auxiliar":
                     frListaCuentas.removeAllItems();
@@ -886,13 +932,13 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
                     frListaSubcuentas.removeAllItems();
 
                     consultarSubcuentasRegistradas();
-                    
+
                     if (!rubro.getCuenta().getRubroList().isEmpty()) {
                         frListaSubcuentas.addItem("-- Seleccione --");
                         for (Rubro subcuentaIterada : rubro.getSubcuenta().getRubroList()) {
-                            if(subcuentaIterada.getTipoRubro().getTipoRubro().equals("Subcuenta")) {
+                            if (subcuentaIterada.getTipoRubro().getTipoRubro().equals("Subcuenta")) {
                                 frListaSubcuentas.addItem(subcuentaIterada.getCodigo() + " - " + subcuentaIterada.getNombre());
-                            }                            
+                            }
                         }
                     }
 
@@ -905,6 +951,10 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
         }
     }
 
+    public Vigencia getVigencia() {
+        return vigencia;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraHerramientas;
     private javax.swing.JMenuBar barraMenu;
@@ -913,6 +963,7 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> frListaCuentas;
     private javax.swing.JComboBox<String> frListaSubcuentas;
     private javax.swing.JComboBox<String> frListaTipoRubro;
+    private javax.swing.JLabel frMensaje;
     private javax.swing.JTextField frNombreRubro;
     private javax.swing.JTextField frValor;
     private javax.swing.JLabel guardarRegistro;
