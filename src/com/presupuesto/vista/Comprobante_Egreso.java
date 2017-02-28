@@ -227,8 +227,8 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
                 frCheque.setText(comprobante.getCheque());
                 frDescripcion.setText(comprobante.getDescripcion());
                 frNoCuenta.setText(comprobante.getCuentaBanco());
-                frCuenta.setText("$" + formatoNumeroDecimales(comprobante.getValorPagar().toString()));
-                frNetoPagar.setText("$" + formatoNumeroDecimales(comprobante.getValorCuenta().toString()));
+                frCuenta.setText("$" + formatoNumeroDecimales(comprobante.getValorCuenta().toString()));
+                frNetoPagar.setText("$" + formatoNumeroDecimales(comprobante.getValorPagar().toString()));                
                 frValorDescuento.setText("$0.0");
                 frValorLetras.setText(comprobante.getValorLetras());
 
