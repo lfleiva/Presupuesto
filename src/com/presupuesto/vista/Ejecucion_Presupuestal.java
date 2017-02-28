@@ -424,7 +424,7 @@ public class Ejecucion_Presupuestal extends javax.swing.JInternalFrame implement
 
         barraMenu.setBackground(new java.awt.Color(255, 255, 255));
 
-        menuAdicion.setText("Ejecucion");
+        menuAdicion.setText("Inicio");
 
         itemCerrar.setText("Cerrar");
         itemCerrar.addActionListener(new java.awt.event.ActionListener() {

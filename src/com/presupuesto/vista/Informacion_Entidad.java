@@ -168,7 +168,7 @@ public class Informacion_Entidad extends javax.swing.JInternalFrame {
 
         barraMenu.setBackground(new java.awt.Color(255, 255, 255));
 
-        menuAdicion.setText("Entidad");
+        menuAdicion.setText("Inicio");
 
         itemGuardar.setText("Guardar");
         itemGuardar.addActionListener(new java.awt.event.ActionListener() {

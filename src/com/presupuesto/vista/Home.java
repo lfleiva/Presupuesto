@@ -23,6 +23,7 @@ public class Home extends javax.swing.JFrame {
 
     // ***** Atributos de la clase *****//
     AccesoDatos accesoDatos;
+    Vigencia vigencia;
 
     /**
      * Creates new form Home
@@ -42,7 +43,23 @@ public class Home extends javax.swing.JFrame {
         login.setLocationRelativeTo(null);
         login.setVisible(true);
 
-        //datosEntidad();               
+        //datosEntidad();   
+        
+        consultarVigencia();
+    }
+
+    /**
+     * Metodo para consultar vigencia actual
+     */
+    private void consultarVigencia() {
+        accesoDatos = new AccesoDatos();
+        vigencia = new Vigencia();
+        vigencia.setActiva(true);
+        vigencia = accesoDatos.consultarTodos(vigencia, Vigencia.class).get(0);
+    }
+
+    public Vigencia getVigencia() {
+        return vigencia;
     }
 
     // ***** Metodos Privados ***** //    
@@ -406,8 +423,8 @@ public class Home extends javax.swing.JFrame {
         departamentoCiudad.setText(entidad.getCiudad() + " - " + entidad.getDepartamento());
         this.setTitle("Presupuesto - " + entidad.getNombreCorto() + " - Vigencia " + vigencia.getVigencia());
     }
-    
-    public void vigenciaActiva(Vigencia vigencia){
+
+    public void vigenciaActiva(Vigencia vigencia) {
         String tituloHome = this.getTitle();
         String titulo = tituloHome.substring(0, tituloHome.indexOf("Vigencia"));
         this.setTitle(titulo + "Vigencia " + vigencia.getVigencia());

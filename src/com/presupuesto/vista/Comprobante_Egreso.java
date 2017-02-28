@@ -125,7 +125,7 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
             frListaDecuentos.removeAllItems();
             frListaDecuentos.addItem("-- Seleccione --");
             for (Descuento descuentoIterado : listaDescuentos) {
-                frListaDecuentos.addItem(descuentoIterado.getNombre() + " (" + descuentoIterado.getPorcentaje() + "%)");                
+                frListaDecuentos.addItem(descuentoIterado.getNombre() + " (" + descuentoIterado.getPorcentaje() + "%)");
             }
         }
     }
@@ -170,7 +170,7 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
         frListaDecuentos.setSelectedIndex(0);
         frListaDisponibilidad.setSelectedIndex(0);
         frNoCuenta.setText("");
-        frCuenta.setText("$0.0");        
+        frCuenta.setText("$0.0");
         frNetoPagar.setText("$0.0");
         frValorLetras.setText("");
         frComprobante.requestFocus();
@@ -230,7 +230,7 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
                 frCuenta.setText("$" + formatoNumeroDecimales(comprobante.getValorPagar().toString()));
                 frNetoPagar.setText("$" + formatoNumeroDecimales(comprobante.getValorCuenta().toString()));
                 frValorDescuento.setText("$0.0");
-                frValorLetras.setText(comprobante.getValorLetras());                
+                frValorLetras.setText(comprobante.getValorLetras());
 
                 if (frListaDecuentos.getItemCount() > 0) {
                     frListaDecuentos.setSelectedItem(0);
@@ -261,7 +261,7 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
                 frCuenta.setText("");
                 frNetoPagar.setText("");
                 frValorDescuento.setText("$0.0");
-                frValorLetras.setText("");                
+                frValorLetras.setText("");
 
                 if (frListaDecuentos.getItemCount() > 0) {
                     frListaDecuentos.setSelectedItem(0);
@@ -287,8 +287,8 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
 
         return totalDescuentos;
     }
-    
-    private BigDecimal obtenerPorcentaje(String descuentoSeleccionado){        
+
+    private BigDecimal obtenerPorcentaje(String descuentoSeleccionado) {
         String porcentajeDescuento = descuentoSeleccionado.substring(descuentoSeleccionado.indexOf("(") + 1, descuentoSeleccionado.length() - 2);
         return new BigDecimal(porcentajeDescuento);
     }
@@ -446,7 +446,12 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
 
         labelPagar.setText("Valor Cuenta");
 
-        frCuenta.setEnabled(false);
+        frCuenta.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        frCuenta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                frCuentaKeyTyped(evt);
+            }
+        });
 
         labelValorCuenta.setText("Neto a Pagar");
 
@@ -551,7 +556,7 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
 
         barraMenu.setBackground(new java.awt.Color(255, 255, 255));
 
-        menuTraslado.setText("Comprobante de Egreso");
+        menuTraslado.setText("Inicio");
 
         itemNuevo.setText("Nuevo Registro");
         itemNuevo.addActionListener(new java.awt.event.ActionListener() {
@@ -828,7 +833,7 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
             if (numeroFilas > 0) {
                 for (int i = 0; i < numeroFilas; i++) {
                     EgresoDescuento egresoDescuento = new EgresoDescuento();
-                    String nombreDescuento = model.getValueAt(i, 0).toString();                    
+                    String nombreDescuento = model.getValueAt(i, 0).toString();
                     String valorDescuento = model.getValueAt(i, 1).toString();
 
                     egresoDescuento.setComprobanteEgreso(comprobante);
@@ -920,7 +925,7 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
                 frCuenta.setText("$" + formatoNumeroDecimales(comprobante.getValorCuenta().toString()));
                 frNetoPagar.setText("$" + formatoNumeroDecimales(comprobante.getValorPagar().toString()));
                 frValorDescuento.setText("$0.0");
-                frValorLetras.setText(comprobante.getValorLetras());                
+                frValorLetras.setText(comprobante.getValorLetras());
 
                 if (frListaDecuentos.getItemCount() > 0) {
                     frListaDecuentos.setSelectedItem(0);
@@ -951,12 +956,12 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
                 frCuenta.setText("");
                 frNetoPagar.setText("");
                 frValorDescuento.setText("$0.0");
-                frValorLetras.setText("");                
+                frValorLetras.setText("");
 
                 if (frListaDecuentos.getItemCount() > 0) {
                     frListaDecuentos.setSelectedItem(0);
                 }
-                
+
                 eliminarElementosTabla();
             }
         }
@@ -1032,10 +1037,10 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
         String descuentoSeleccionado = frListaDecuentos.getSelectedItem().toString();
 
         if (!descuentoSeleccionado.equals("-- Seleccionar --")) {
-            
+
             BigDecimal porcentajeDescuento = obtenerPorcentaje(descuentoSeleccionado);
-            
-            if (!frValorDescuento.getText().trim().equals("") && !frValorDescuento.getText().trim().equals("$0.0") && !porcentajeDescuento.equals("")) {                                
+
+            if (!frValorDescuento.getText().trim().equals("") && !frValorDescuento.getText().trim().equals("$0.0") && !porcentajeDescuento.equals("")) {
                 DefaultTableModel model = new DefaultTableModel();
                 model = (DefaultTableModel) tablaDescuentos.getModel();
                 model.addRow(new Object[]{descuentoSeleccionado, frValorDescuento.getText()});
@@ -1076,6 +1081,25 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Para eliminar un registro debe seleccionar una fila", "Eliminar Registro", 0);
         }
     }//GEN-LAST:event_botonQuitarActionPerformed
+
+    private void frCuentaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_frCuentaKeyTyped
+        char tecla = evt.getKeyChar();
+
+        if ((tecla < '0' || tecla > '9') && (tecla != '.' && tecla != ',')) {
+            evt.consume();
+        } else {
+            String valor = frCuenta.getText();
+            valor = valor.replace("$", "");
+            valor = valor + tecla;
+            if (tecla != '.') {
+                valor = formatoNumeroDecimales(valor);
+            }
+            valor = "$" + valor;
+            frCuenta.setText(valor);
+            frNetoPagar.setText(valor);
+            evt.consume();
+        }
+    }//GEN-LAST:event_frCuentaKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

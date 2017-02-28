@@ -306,4 +306,40 @@ public class Generar_Reportes {
             System.out.println("Mensaje de Error:" + j.getMessage());
         }
     }
+    
+    public void runReporteRubro(Vigencia vigencia) {
+        try {
+//            String master = System.getProperty("user.dir")
+//                    + "/informes/Presupuesto_Inicial.jasper";    
+
+            String master = "C:\\Program Files\\Presupuesto\\Reportes/Rubro_Presupuesto.jasper";
+
+            System.out.println("master" + master);
+            if (master == null) {
+                System.out.println("No encuentro el archivo de Rubro Presupuestal.");
+            }
+
+            JasperReport masterReport = null;
+            try {
+                masterReport = (JasperReport) JRLoader.loadObject(master);
+            } catch (JRException e) {
+                System.out.println("Error cargando el reporte maestro: " + e.getMessage());
+            }
+
+            //este es el parámetro, se pueden agregar más parámetros
+            //basta con poner mas parametro.put
+            Map parametro = new HashMap();
+            parametro.put("vigencia", vigencia.getIdVigencia());
+
+            //Reporte diseñado y compilado con iReport
+            JasperPrint jasperPrint = JasperFillManager.fillReport(masterReport, parametro, conn);
+
+            //Se lanza el Viewer de Jasper, no termina aplicación al salir
+            JasperViewer jviewer = new JasperViewer(jasperPrint, false);
+            jviewer.setTitle("Rubros Presupuestales");
+            jviewer.setVisible(true);
+        } catch (Exception j) {
+            System.out.println("Mensaje de Error:" + j.getMessage());
+        }
+    }
 }

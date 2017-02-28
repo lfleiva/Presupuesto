@@ -268,7 +268,7 @@ public class Registro_Presupuestal extends javax.swing.JInternalFrame {
 
         barraMenu.setBackground(new java.awt.Color(255, 255, 255));
 
-        menuTraslado.setText("Registro");
+        menuTraslado.setText("Inicio");
 
         itemNuevo.setText("Nuevo Registro");
         itemNuevo.addActionListener(new java.awt.event.ActionListener() {

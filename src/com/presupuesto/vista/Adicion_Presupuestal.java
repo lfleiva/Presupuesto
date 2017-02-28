@@ -425,7 +425,7 @@ public class Adicion_Presupuestal extends javax.swing.JInternalFrame {
 
         barraMenu.setBackground(new java.awt.Color(255, 255, 255));
 
-        menuAdicion.setText("Adicion");
+        menuAdicion.setText("Inicio");
 
         itemNuevo.setText("Nuevo Registro");
         itemNuevo.addActionListener(new java.awt.event.ActionListener() {
