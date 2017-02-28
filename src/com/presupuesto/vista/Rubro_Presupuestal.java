@@ -11,6 +11,7 @@ import com.presupuesto.control.exceptions.NonexistentEntityException;
 import com.presupuesto.modelo.Rubro;
 import com.presupuesto.modelo.TipoRubro;
 import com.presupuesto.modelo.Vigencia;
+import com.presupuesto.utilidades.Generar_Reportes;
 import java.awt.Color;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -292,6 +293,7 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
         nuevoRegistro = new javax.swing.JLabel();
         guardarRegistro = new javax.swing.JLabel();
         listaRubros = new javax.swing.JLabel();
+        imprimirAdicion = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         eliminarRegistro = new javax.swing.JLabel();
         labelListaTipoRubro = new javax.swing.JLabel();
@@ -367,6 +369,20 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
             }
         });
         barraHerramientas.add(listaRubros);
+
+        imprimirAdicion.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        imprimirAdicion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/imprimir.png"))); // NOI18N
+        imprimirAdicion.setAlignmentX(0.5F);
+        imprimirAdicion.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        imprimirAdicion.setMaximumSize(new java.awt.Dimension(25, 20));
+        imprimirAdicion.setMinimumSize(new java.awt.Dimension(25, 20));
+        imprimirAdicion.setPreferredSize(new java.awt.Dimension(25, 20));
+        imprimirAdicion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                imprimirAdicionMousePressed(evt);
+            }
+        });
+        barraHerramientas.add(imprimirAdicion);
         barraHerramientas.add(jSeparator1);
 
         eliminarRegistro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -818,6 +834,11 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
         rubro = registrarRubro();
     }//GEN-LAST:event_itemGuardarActionPerformed
 
+    private void imprimirAdicionMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imprimirAdicionMousePressed
+        Generar_Reportes reportes = new Generar_Reportes();
+        reportes.runReporteRubro(vigencia);
+    }//GEN-LAST:event_imprimirAdicionMousePressed
+
     private Rubro guardarRubro(Rubro rubro) {
         accesoDatos = new AccesoDatos();
         try {
@@ -967,6 +988,7 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
     private javax.swing.JTextField frNombreRubro;
     private javax.swing.JTextField frValor;
     private javax.swing.JLabel guardarRegistro;
+    private javax.swing.JLabel imprimirAdicion;
     private javax.swing.JMenuItem itemCerrar;
     private javax.swing.JMenuItem itemEliminar;
     private javax.swing.JMenuItem itemGuardar;

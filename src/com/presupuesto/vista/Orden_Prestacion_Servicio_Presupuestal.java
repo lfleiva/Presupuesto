@@ -304,7 +304,7 @@ public class Orden_Prestacion_Servicio_Presupuestal extends javax.swing.JInterna
 
         barraMenu.setBackground(new java.awt.Color(255, 255, 255));
 
-        menuTraslado.setText("OPS");
+        menuTraslado.setText("Inicio");
 
         itemNuevo.setText("Nuevo Registro");
         itemNuevo.addActionListener(new java.awt.event.ActionListener() {

@@ -11,7 +11,7 @@
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="menuTraslado">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Comprobante de Egreso"/>
+            <Property name="text" type="java.lang.String" value="Inicio"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="itemNuevo">
@@ -396,8 +396,11 @@
     </Component>
     <Component class="javax.swing.JTextField" name="frCuenta">
       <Properties>
-        <Property name="enabled" type="boolean" value="false"/>
+        <Property name="horizontalAlignment" type="int" value="4"/>
       </Properties>
+      <Events>
+        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="frCuentaKeyTyped"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="labelValorCuenta">
       <Properties>

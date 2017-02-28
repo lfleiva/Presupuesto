@@ -118,7 +118,7 @@ public class Administracion_Vigencias extends javax.swing.JInternalFrame {
 
         barraMenu.setBackground(new java.awt.Color(255, 255, 255));
 
-        menuAdicion.setText("Vigencia");
+        menuAdicion.setText("Inicio");
 
         itemNuevo.setText("Nueva Vigencia");
         itemNuevo.addActionListener(new java.awt.event.ActionListener() {

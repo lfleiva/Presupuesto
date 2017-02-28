@@ -11,6 +11,7 @@ import com.presupuesto.modelo.Rubro;
 import com.presupuesto.modelo.TipoRubro;
 import com.presupuesto.modelo.Vigencia;
 import com.presupuesto.utilidades.Generar_Reportes;
+import java.awt.Color;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class Presupuesto_Inicial extends javax.swing.JInternalFrame {
     public Presupuesto_Inicial(Home parent) {
         super();
         this.home = parent;
+        accesoDatos = new AccesoDatos();
 
         // Elimina el la decoracion en la ventana interna
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
@@ -49,8 +51,39 @@ public class Presupuesto_Inicial extends javax.swing.JInternalFrame {
         cargarPresupuestoRegistrado();
     }
 
+    /**
+     * Metodo que consulta la vigencia activa
+     */
+    private void consultarVigencia() {
+        vigencia = home.getVigencia();
+    }
+
+    /**
+     * *
+     * Metodo que carga las cuentas registradas en la vigencia actual
+     */
+    private void consultarCuentasRegistradas() {
+        frListaCuentas.removeAllItems();
+
+        List<Rubro> listaCuentas = new ArrayList<Rubro>();
+        Rubro cuenta = new Rubro();
+        cuenta.setVigencia(vigencia);
+        cuenta.setTipoRubro(new TipoRubro(new BigDecimal(1)));
+        listaCuentas = accesoDatos.consultarObjetoPorVigencia(Rubro.class, cuenta, vigencia);
+
+        if (listaCuentas != null && !listaCuentas.isEmpty()) {
+            frListaCuentas.removeAllItems();
+            frListaCuentas.addItem("-- Seleccione --");
+            for (Rubro cuentaIterada : listaCuentas) {
+                frListaCuentas.addItem(cuentaIterada.getCodigo() + " - " + cuentaIterada.getNombre().trim());
+            }
+        }
+    }
+
+    /**
+     * Metodo que carga el presupuesto de la vigencia actual en la tabla
+     */
     private void cargarPresupuestoRegistrado() {
-        accesoDatos = new AccesoDatos();
         List<Presupuesto> listaPresupuesto = new ArrayList<Presupuesto>();
 
         listaPresupuesto = accesoDatos.consultarTodosPorVigencia(Presupuesto.class, vigencia);
@@ -69,34 +102,6 @@ public class Presupuesto_Inicial extends javax.swing.JInternalFrame {
 
             for (Presupuesto presupuesto : listaPresupuesto) {
                 model.addRow(new Object[]{presupuesto.getRubro().getCodigo(), presupuesto.getRubro().getNombre(), "$" + formatoNumeroDecimales(presupuesto.getValor().toString()), presupuesto.getRubro().getTipoRubro().getTipoRubro(), (presupuesto.getRubro().getCuenta() != null) ? presupuesto.getRubro().getCuenta().getNombre() : "", (presupuesto.getRubro().getSubcuenta() != null) ? presupuesto.getRubro().getSubcuenta().getNombre() : ""});
-            }
-        }
-    }
-
-    /**
-     * Metodo que consulta la vigencia activa
-     */
-    private void consultarVigencia() {
-        accesoDatos = new AccesoDatos();
-        vigencia = new Vigencia();
-        vigencia.setActiva(true);
-        vigencia = accesoDatos.consultarTodos(vigencia, Vigencia.class).get(0);
-    }
-
-    private void consultarCuentasRegistradas() {
-        frListaCuentas.removeAllItems();
-        accesoDatos = new AccesoDatos();
-        List<Rubro> listaCuentas = new ArrayList<Rubro>();
-        Rubro cuenta = new Rubro();
-        cuenta.setVigencia(vigencia);
-        cuenta.setTipoRubro(new TipoRubro(new BigDecimal(1)));
-        listaCuentas = accesoDatos.consultarObjetoPorVigencia(Rubro.class, cuenta, vigencia);
-
-        if (listaCuentas != null && !listaCuentas.isEmpty()) {
-            frListaCuentas.removeAllItems();
-            frListaCuentas.addItem("-- Seleccione --");
-            for (Rubro cuentaIterada : listaCuentas) {
-                frListaCuentas.addItem(cuentaIterada.getCodigo() + " - " + cuentaIterada.getNombre().trim());
             }
         }
     }
@@ -172,23 +177,6 @@ public class Presupuesto_Inicial extends javax.swing.JInternalFrame {
         valorFormateado = valorFormateado.replace(".", ",");
         valorFormateado = valorFormateado.replace("#", ".");
         return valorFormateado;
-    }
-
-    private void sumarValor(Rubro rubro, BigDecimal valor) {
-        DefaultTableModel model = new DefaultTableModel();
-        model = (DefaultTableModel) tablaPresupuesto.getModel();
-        int numeroFinal = model.getRowCount();
-
-        for (int i = 0; i < numeroFinal; i++) {
-            String primeraColumna = model.getValueAt(i, 0).toString();
-            if (rubro.getCodigo().equals(primeraColumna)) {
-                String valorActual = model.getValueAt(i, 2).toString();
-                BigDecimal valorNumerico = obtenerValorRubro(valorActual);
-                valorNumerico = valorNumerico.add(valor);
-                model.setValueAt("$" + formatoNumeroDecimales(valorNumerico.toString()), i, 2);
-                break;
-            }
-        }
     }
 
     private void restarValor(Rubro rubro, BigDecimal valor) {
@@ -282,6 +270,34 @@ public class Presupuesto_Inicial extends javax.swing.JInternalFrame {
         guardarRegistro.setEnabled(true);
     }
 
+    private void quitarRubroTabla() {
+        DefaultTableModel model = new DefaultTableModel();
+        model = (DefaultTableModel) tablaPresupuesto.getModel();
+
+        int filaSeleccionada = tablaPresupuesto.getSelectedRow();
+
+        if (filaSeleccionada != -1) {
+            String codigoRubro = model.getValueAt(filaSeleccionada, 0).toString();
+            accesoDatos = new AccesoDatos();
+            Rubro rubro = new Rubro();
+            rubro.setCodigo(codigoRubro);
+            rubro.setVigencia(vigencia);
+            rubro = accesoDatos.consultarObjetoPorVigencia(Rubro.class, rubro, vigencia).get(0);
+            
+            // Verificar si el rubro ya hace parte del presupuesto
+            if(rubro.getAdicionRubroList().isEmpty() && rubro.getDisponibilidadRubroList().isEmpty() && 
+                        rubro.getTrasladoRubroList().isEmpty()){
+                            
+                model.removeRow(filaSeleccionada);            
+            } else {
+                frMensaje.setText("El rubro no se puede eliminar del presupuesto.");
+            }
+                        
+        } else {
+            JOptionPane.showMessageDialog(null, "Para eliminar un registro debe seleccionar una fila", "Eliminar Registro", 0);
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -310,6 +326,8 @@ public class Presupuesto_Inicial extends javax.swing.JInternalFrame {
         frListaAuxiliares = new javax.swing.JComboBox<>();
         botonRegistrar = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
+        frMensaje = new javax.swing.JLabel();
+        frMensajeQuitar = new javax.swing.JLabel();
         barraMenu = new javax.swing.JMenuBar();
         menuPresupuesto = new javax.swing.JMenu();
         itemGuardar = new javax.swing.JMenuItem();
@@ -452,9 +470,14 @@ public class Presupuesto_Inicial extends javax.swing.JInternalFrame {
 
         barraMenu.setBackground(new java.awt.Color(255, 255, 255));
 
-        menuPresupuesto.setText("Presupuesto");
+        menuPresupuesto.setText("Inicio");
 
         itemGuardar.setText("Guardar");
+        itemGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemGuardarActionPerformed(evt);
+            }
+        });
         menuPresupuesto.add(itemGuardar);
 
         itemCerrar.setText("Cerrar");
@@ -491,7 +514,9 @@ public class Presupuesto_Inicial extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(botonQuitar)
-                        .addGap(411, 411, 411)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(frMensajeQuitar, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(46, 46, 46)
                         .addComponent(jLabel5)
                         .addGap(0, 26, Short.MAX_VALUE))
                     .addComponent(jScrollPane1))
@@ -507,7 +532,10 @@ public class Presupuesto_Inicial extends javax.swing.JInternalFrame {
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(botonRegistrar)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(botonRegistrar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(frMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(frListaCuentas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(frListaAuxiliares, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(44, 44, 44)
@@ -530,11 +558,9 @@ public class Presupuesto_Inicial extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(frListaSubcuentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3))
-                                .addGap(62, 62, 62))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(frListaSubcuentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel3))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel2)
@@ -544,13 +570,17 @@ public class Presupuesto_Inicial extends javax.swing.JInternalFrame {
                                     .addComponent(frListaAuxiliares, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel4))
                                 .addGap(8, 8, 8)
-                                .addComponent(botonRegistrar)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(botonRegistrar)
+                                    .addComponent(frMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(11, 11, 11)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(botonQuitar)
-                    .addComponent(jLabel5))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(frMensajeQuitar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -562,7 +592,7 @@ public class Presupuesto_Inicial extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_itemCerrarActionPerformed
 
     private void itemEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemEliminarActionPerformed
-
+        quitarRubroTabla();
     }//GEN-LAST:event_itemEliminarActionPerformed
 
     private void guardarRegistroMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarRegistroMousePressed
@@ -572,31 +602,7 @@ public class Presupuesto_Inicial extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_guardarRegistroMousePressed
 
     private void eliminarRegistroMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_eliminarRegistroMousePressed
-        DefaultTableModel model = new DefaultTableModel();
-        model = (DefaultTableModel) tablaPresupuesto.getModel();
-
-        int filaSeleccionada = tablaPresupuesto.getSelectedRow();
-
-        if (filaSeleccionada != -1) {
-
-            if (model.getValueAt(filaSeleccionada, 3).toString().equals("Auxiliar")) {
-                String codigoRubro = model.getValueAt(filaSeleccionada, 0).toString();
-                accesoDatos = new AccesoDatos();
-                Rubro rubro = new Rubro();
-                rubro.setCodigo(codigoRubro);
-                rubro.setVigencia(vigencia);
-                rubro.setTipoRubro(new TipoRubro(new BigDecimal(3)));
-                rubro = accesoDatos.consultarObjetoPorVigencia(Rubro.class, rubro, vigencia).get(0);
-                model.removeRow(filaSeleccionada);
-                // Restar el valor del auxiliar a la cuenta y subcuenta
-                restarValor(rubro.getCuenta(), rubro.getValor());
-                restarValor(rubro.getSubcuenta(), rubro.getValor());
-            } else {
-                JOptionPane.showMessageDialog(null, "Se deben eliminar solo rubros auxiliares", "Eliminar Registro", 0);
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Para eliminar un registro debe seleccionar una fila", "Eliminar Registro", 0);
-        }
+        quitarRubroTabla();
     }//GEN-LAST:event_eliminarRegistroMousePressed
 
     private void frListaCuentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frListaCuentasActionPerformed
@@ -641,7 +647,10 @@ public class Presupuesto_Inicial extends javax.swing.JInternalFrame {
 
             rubroSeleccionado = rubroSeleccionado.substring(0, rubroSeleccionado.indexOf("-") - 1);
 
+            // Retorna true cuando no se encuentra en la tabla
             if (verificarRubro(rubroSeleccionado)) {
+                frMensaje.setText("");
+
                 accesoDatos = new AccesoDatos();
                 Rubro rubro = new Rubro();
                 rubro.setCodigo(rubroSeleccionado);
@@ -649,62 +658,35 @@ public class Presupuesto_Inicial extends javax.swing.JInternalFrame {
                 rubro.setTipoRubro(new TipoRubro(new BigDecimal(3)));
                 rubro = accesoDatos.consultarObjetoPorVigencia(Rubro.class, rubro, vigencia).get(0);
 
-                // verificar si la cuenta esta en la tabla
+                // verificar si la cuenta esta en la tabla. Retorna true cuando no esta en la tabla
                 if (verificarRubro(rubro.getCuenta().getCodigo())) {
-
-                    // Se debe sumar el valor del rubro a la cuenta y subcuenta
-                    rubro.getCuenta().setValor(rubro.getValor());
-                    rubro.getSubcuenta().setValor(rubro.getValor());
-
                     // Registro la cuenta, despues la subcuenta y por ultimo el auxiliar                    
                     registrarRubroEnTable(rubro.getCuenta());
                     registrarRubroEnTable(rubro.getSubcuenta());
                     registrarRubroEnTable(rubro);
                 } else if (verificarRubro(rubro.getSubcuenta().getCodigo())) {
-                    sumarValor(rubro.getCuenta(), rubro.getValor());
-                    rubro.getSubcuenta().setValor(rubro.getValor());                    
                     registrarRubroEnTable(rubro.getSubcuenta());
                     registrarRubroEnTable(rubro);
                 } else {
-                    // Al valor de la cuenta y subcuenta registrado en la tabla se debe sumar el valor del rubro
-                    sumarValor(rubro.getCuenta(), rubro.getValor());
-                    sumarValor(rubro.getSubcuenta(), rubro.getValor());
+                    // Al valor de la cuenta y subcuenta registrado en la tabla se debe sumar el valor del rubro                   
                     registrarRubroEnTable(rubro);
                 }
 
             } else {
-                JOptionPane.showMessageDialog(null, "El rubro ya fue registrado en la tabla", "Verificación de Rubro", 0);
+                frMensaje.setForeground(Color.RED);
+                frMensaje.setText("El rubro ya fue registrado en la tabla");
             }
         }
 
     }//GEN-LAST:event_botonRegistrarActionPerformed
 
+    /**
+     * MEtodo que elimina fila seleccionada en la tabla
+     *
+     * @param evt
+     */
     private void botonQuitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonQuitarActionPerformed
-        DefaultTableModel model = new DefaultTableModel();
-        model = (DefaultTableModel) tablaPresupuesto.getModel();
-
-        int filaSeleccionada = tablaPresupuesto.getSelectedRow();
-
-        if (filaSeleccionada != -1) {
-
-            if (model.getValueAt(filaSeleccionada, 3).toString().equals("Auxiliar")) {
-                String codigoRubro = model.getValueAt(filaSeleccionada, 0).toString();
-                accesoDatos = new AccesoDatos();
-                Rubro rubro = new Rubro();
-                rubro.setCodigo(codigoRubro);
-                rubro.setVigencia(vigencia);
-                rubro.setTipoRubro(new TipoRubro(new BigDecimal(3)));
-                rubro = accesoDatos.consultarObjetoPorVigencia(Rubro.class, rubro, vigencia).get(0);
-                model.removeRow(filaSeleccionada);
-                // Restar el valor del auxiliar a la cuenta y subcuenta
-                restarValor(rubro.getCuenta(), rubro.getValor());
-                restarValor(rubro.getSubcuenta(), rubro.getValor());
-            } else {
-                JOptionPane.showMessageDialog(null, "Se deben eliminar solo rubros auxiliares", "Eliminar Registro", 0);
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Para eliminar un registro debe seleccionar una fila", "Eliminar Registro", 0);
-        }
+        quitarRubroTabla();
     }//GEN-LAST:event_botonQuitarActionPerformed
 
     private void botonSubirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSubirActionPerformed
@@ -737,6 +719,12 @@ public class Presupuesto_Inicial extends javax.swing.JInternalFrame {
         reportes.runReportePresupuestoInicial(vigencia);
     }//GEN-LAST:event_imprimirPresupuestoMousePressed
 
+    private void itemGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGuardarActionPerformed
+        // Creo el hilo
+        Thread thread1 = new Thread(runnable);
+        thread1.start();
+    }//GEN-LAST:event_itemGuardarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraHerramientas;
     private javax.swing.JMenuBar barraMenu;
@@ -748,6 +736,8 @@ public class Presupuesto_Inicial extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> frListaAuxiliares;
     private javax.swing.JComboBox<String> frListaCuentas;
     private javax.swing.JComboBox<String> frListaSubcuentas;
+    private javax.swing.JLabel frMensaje;
+    private javax.swing.JLabel frMensajeQuitar;
     private javax.swing.JLabel guardarRegistro;
     private javax.swing.JLabel imprimirPresupuesto;
     private javax.swing.JMenuItem itemCerrar;
