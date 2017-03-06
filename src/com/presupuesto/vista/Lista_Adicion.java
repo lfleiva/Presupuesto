@@ -43,7 +43,7 @@ public class Lista_Adicion extends javax.swing.JDialog {
         initComponents();
         consultarVigencia();
         cargarAdicionesRegistradas();
-        
+
         // Icono
         setIconImage(new ImageIcon(getClass().getResource("/com/presupuesto/img/Icono.png")).getImage());
     }
@@ -128,6 +128,11 @@ public class Lista_Adicion extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        tablaAdiciones.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaAdicionesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tablaAdiciones);
 
         jLabel1.setText("Adiciones Registradas");
@@ -179,6 +184,21 @@ public class Lista_Adicion extends javax.swing.JDialog {
 
         this.setVisible(false);
     }//GEN-LAST:event_botonSeleccionarActionPerformed
+
+    private void tablaAdicionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAdicionesMouseClicked
+        if (evt.getClickCount() == 2) {
+            DefaultTableModel model = new DefaultTableModel();
+            model = (DefaultTableModel) tablaAdiciones.getModel();
+            int filaSeleccionada = tablaAdiciones.getSelectedRow();
+
+            if (filaSeleccionada != -1) {
+                String adicionSeleccionada = model.getValueAt(filaSeleccionada, 0).toString();
+                adicionPresupuestal.cargarAdicionSeleccionada(adicionSeleccionada);
+            }
+
+            this.setVisible(false);
+        }
+    }//GEN-LAST:event_tablaAdicionesMouseClicked
 
     /**
      * @param args the command line arguments

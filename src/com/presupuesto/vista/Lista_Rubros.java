@@ -8,7 +8,6 @@ package com.presupuesto.vista;
 import com.presupuesto.control.AccesoDatos;
 import com.presupuesto.modelo.Rubro;
 import com.presupuesto.modelo.Vigencia;
-import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;

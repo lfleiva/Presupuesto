@@ -14,6 +14,7 @@ import com.presupuesto.modelo.AdicionRubro;
 import com.presupuesto.modelo.Rubro;
 import com.presupuesto.modelo.TipoRubro;
 import com.presupuesto.modelo.Vigencia;
+import com.presupuesto.utilidades.Generar_Reportes;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -676,7 +677,26 @@ public class Adicion_Presupuestal extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_listaAdicionesMousePressed
 
     private void imprimirAdicionMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imprimirAdicionMousePressed
+        Generar_Reportes reportes = new Generar_Reportes();
+        
+        if (validarFormulario()) {
+            accesoDatos = new AccesoDatos();
+            Adicion adicion = new Adicion();
+            List<Adicion> listaAdicion = new ArrayList<Adicion>();
 
+            if (!frNoDocumento.getText().trim().equals("")) {
+                adicion.setVigencia(vigencia);
+                adicion.setDocumento(frNoDocumento.getText().trim());
+
+                listaAdicion = accesoDatos.consultarObjetoPorVigencia(Adicion.class, adicion, vigencia);
+
+                if (!listaAdicion.isEmpty()) {
+                    adicion = listaAdicion.get(0);
+                    reportes.runReporteAdicion(vigencia, adicion);
+                }
+            }
+        }
+        
     }//GEN-LAST:event_imprimirAdicionMousePressed
 
     private void frNoDocumentoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_frNoDocumentoFocusLost
@@ -837,8 +857,8 @@ public class Adicion_Presupuestal extends javax.swing.JInternalFrame {
         listaAdicion.setLocationRelativeTo(null);
         listaAdicion.setVisible(true);
     }//GEN-LAST:event_itemListaAdicionesActionPerformed
-
-
+  
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraHerramientas;
     private javax.swing.JMenuBar barraMenu;
