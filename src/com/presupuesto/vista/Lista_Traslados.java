@@ -171,17 +171,17 @@ public class Lista_Traslados extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSeleccionarActionPerformed
-        /*DefaultTableModel model = new DefaultTableModel();
+        DefaultTableModel model = new DefaultTableModel();
         model = (DefaultTableModel) tablaTraslados.getModel();
 
         int filaSeleccionada = tablaTraslados.getSelectedRow();
 
         if (filaSeleccionada != -1) {
-            String adicionSeleccionada = model.getValueAt(filaSeleccionada, 0).toString();
-            adicionPresupuestal.cargarAdicionSeleccionada(adicionSeleccionada);
+            String trasladoSeleccionado = model.getValueAt(filaSeleccionada, 0).toString();
+            trasladoPresupuestal.cargarTrasladoSeleccionado(trasladoSeleccionado);
         }
 
-        this.setVisible(false);*/
+        this.setVisible(false);
     }//GEN-LAST:event_botonSeleccionarActionPerformed
 
     private void tablaTrasladosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaTrasladosMouseClicked
