@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Disponibilidad_Presupuestal" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="171"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -94,10 +94,10 @@
 				</rectangle>
 				<staticText>
 					<reportElement x="20" y="57" width="85" height="20"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
+					<textElement verticalAlignment="Middle">
 						<font size="12" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Identidicación:]]></text>
+					<text><![CDATA[Identificación:]]></text>
 				</staticText>
 				<textField>
 					<reportElement x="163" y="77" width="242" height="20"/>
@@ -245,8 +245,14 @@
 		<band height="98" splitType="Stretch">
 			<subreport>
 				<reportElement x="0" y="0" width="555" height="98"/>
+				<subreportParameter name="comprobante">
+					<subreportParameterExpression><![CDATA[$P{comprobante}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="vigencia">
+					<subreportParameterExpression><![CDATA[$P{vigencia}]]></subreportParameterExpression>
+				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression class="java.lang.String"><![CDATA["C:\\Program Files\\Presupuesto\\Reportes\\Firma_Gerente_Tesorera.jasper"]]></subreportExpression>
+				<subreportExpression class="java.lang.String"><![CDATA["C:\\Program Files\\Presupuesto\\Reportes\\Firma_Comprobante_Egreso.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</columnFooter>

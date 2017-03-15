@@ -8,7 +8,11 @@
 	</parameter>
 	<parameter name="vigencia" class="java.math.BigDecimal"/>
 	<queryString>
-		<![CDATA[SELECT R.codigo, R.nombre, P.valor FROM Presupuesto.presupuesto P, Presupuesto.rubro R, Presupuesto.vigencia V WHERE P.vigencia = V.id_vigencia AND V.id_vigencia = $P{vigencia} AND P.rubro = R.id_rubro;]]>
+		<![CDATA[SELECT R.`codigo`, R.`nombre`, p.`valor`  FROM presupuesto.presupuesto P
+INNER JOIN presupuesto.`rubro` R ON P.`rubro` = R.`id_rubro`
+JOIN presupuesto.`vigencia` V ON P.`vigencia` = V.`id_vigencia`
+WHERE V.`id_vigencia` = $P{vigencia}
+ORDER BY P.`orden` ASC;]]>
 	</queryString>
 	<field name="codigo" class="java.lang.String"/>
 	<field name="nombre" class="java.lang.String"/>
