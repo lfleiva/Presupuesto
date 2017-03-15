@@ -11,6 +11,7 @@ import com.presupuesto.modelo.Disponibilidad;
 import com.presupuesto.modelo.Ops;
 import com.presupuesto.modelo.OrdenSuministro;
 import com.presupuesto.modelo.Registro;
+import com.presupuesto.modelo.Traslado;
 import com.presupuesto.modelo.Vigencia;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -374,7 +375,44 @@ public class Generar_Reportes {
 
             //Se lanza el Viewer de Jasper, no termina aplicación al salir
             JasperViewer jviewer = new JasperViewer(jasperPrint, false);
-            jviewer.setTitle("Adicion Presupuestal");
+            jviewer.setTitle("Adición Presupuestal");
+            jviewer.setVisible(true);
+        } catch (Exception j) {
+            System.out.println("Mensaje de Error:" + j.getMessage());
+        }
+    }
+    
+    public void runReporteTraslado(Vigencia vigencia, Traslado traslado) {
+        try {
+//            String master = System.getProperty("user.dir")
+//                    + "/informes/Presupuesto_Inicial.jasper";    
+
+            String master = "C:\\Program Files\\Presupuesto\\Reportes/Traslado_Presupuestal.jasper";
+
+            System.out.println("master" + master);
+            if (master == null) {
+                System.out.println("No encuentro el archivo de Adicion Presupuestal.");
+            }
+
+            JasperReport masterReport = null;
+            try {
+                masterReport = (JasperReport) JRLoader.loadObject(master);
+            } catch (JRException e) {
+                System.out.println("Error cargando el reporte maestro: " + e.getMessage());
+            }
+
+            //este es el parámetro, se pueden agregar más parámetros
+            //basta con poner mas parametro.put
+            Map parametro = new HashMap();
+            parametro.put("vigencia", vigencia.getIdVigencia());
+            parametro.put("traslado", traslado.getIdTraslado());
+
+            //Reporte diseñado y compilado con iReport
+            JasperPrint jasperPrint = JasperFillManager.fillReport(masterReport, parametro, conn);
+
+            //Se lanza el Viewer de Jasper, no termina aplicación al salir
+            JasperViewer jviewer = new JasperViewer(jasperPrint, false);
+            jviewer.setTitle("Traslado Presupuestal");
             jviewer.setVisible(true);
         } catch (Exception j) {
             System.out.println("Mensaje de Error:" + j.getMessage());

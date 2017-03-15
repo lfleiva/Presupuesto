@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Traslado_Rubro" pageWidth="595" pageHeight="842" columnWidth="575" leftMargin="0" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="vigencia" class="java.math.BigDecimal"/>
+	<parameter name="traslado" class="java.math.BigDecimal">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT * FROM presupuesto.`traslado_rubro` A
+INNER JOIN presupuesto.`rubro` R ON A.`rubro` = R.`id_rubro`
+WHERE A.`traslado` = $P{traslado}
+AND A.`vigencia` = $P{vigencia}]]>
+	</queryString>
+	<field name="id_traslado_rubro" class="java.lang.Double"/>
+	<field name="traslado" class="java.lang.Double"/>
+	<field name="rubro" class="java.lang.Double"/>
+	<field name="tipo" class="java.lang.String"/>
+	<field name="valor" class="java.lang.Double"/>
+	<field name="vigencia" class="java.lang.Double"/>
+	<field name="id_rubro" class="java.lang.Double"/>
+	<field name="codigo" class="java.lang.String"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="cuenta" class="java.lang.Double"/>
+	<field name="subcuenta" class="java.lang.Double"/>
+	<field name="tipo_rubro" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="22">
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="414" y="0" width="100" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Tahoma" size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="79" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="79" y="0" width="335" height="20"/>
+				<textElement>
+					<font fontName="Tahoma" size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

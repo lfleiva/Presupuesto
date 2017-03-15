@@ -8,11 +8,13 @@ package com.presupuesto.vista;
 import com.presupuesto.control.AccesoDatos;
 import com.presupuesto.control.TrasladoRubroJpaController;
 import com.presupuesto.control.exceptions.NonexistentEntityException;
+import com.presupuesto.modelo.Adicion;
 import com.presupuesto.modelo.Rubro;
 import com.presupuesto.modelo.TipoRubro;
 import com.presupuesto.modelo.Traslado;
 import com.presupuesto.modelo.TrasladoRubro;
 import com.presupuesto.modelo.Vigencia;
+import com.presupuesto.utilidades.Generar_Reportes;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -55,11 +57,8 @@ public class Traslado_Presupuestal extends javax.swing.JInternalFrame {
     /**
      * Metodo que consulta la vigencia activa
      */
-    private void consultarVigencia() {
-        accesoDatos = new AccesoDatos();
-        vigencia = new Vigencia();
-        vigencia.setActiva(true);
-        vigencia = accesoDatos.consultarTodos(vigencia, Vigencia.class).get(0);
+    private void consultarVigencia() {        
+        vigencia = home.getVigencia();        
     }
 
     private void consultarRubrosRegistrados() {
@@ -398,7 +397,7 @@ public class Traslado_Presupuestal extends javax.swing.JInternalFrame {
 
         menuTraslado.setText("Inicio");
 
-        itemNuevo.setText("Nuevo Registro");
+        itemNuevo.setText("Nuevo Traslado");
         itemNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemNuevoActionPerformed(evt);
@@ -406,7 +405,7 @@ public class Traslado_Presupuestal extends javax.swing.JInternalFrame {
         });
         menuTraslado.add(itemNuevo);
 
-        itemGuardar.setText("Guardar");
+        itemGuardar.setText("Guardar Traslado");
         itemGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemGuardarActionPerformed(evt);
@@ -434,7 +433,7 @@ public class Traslado_Presupuestal extends javax.swing.JInternalFrame {
 
         menuEditar.setText("Editar");
 
-        itemEliminar.setText("Eliminar");
+        itemEliminar.setText("Eliminar Traslado");
         itemEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemEliminarActionPerformed(evt);
@@ -609,11 +608,32 @@ public class Traslado_Presupuestal extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_guardarRegistroMousePressed
 
     private void listaTrasladoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaTrasladoMousePressed
-
+        // Abrir Lista
+        Lista_Traslados listaTraslados = new Lista_Traslados(this, true);
+        listaTraslados.setLocationRelativeTo(null);
+        listaTraslados.setVisible(true);
     }//GEN-LAST:event_listaTrasladoMousePressed
 
     private void imprimirTrasladoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imprimirTrasladoMousePressed
+        Generar_Reportes reportes = new Generar_Reportes();
+        
+        if (validarFormulario()) {
+            accesoDatos = new AccesoDatos();
+            Traslado traslado = new Traslado();
+            List<Traslado> listaTraslado = new ArrayList<Traslado>();
 
+            if (!frNoDocumento.getText().trim().equals("")) {
+                traslado.setVigencia(vigencia);
+                traslado.setDocumento(frNoDocumento.getText().trim());
+
+                listaTraslado = accesoDatos.consultarObjetoPorVigencia(Traslado.class, traslado, vigencia);
+
+                if (!listaTraslado.isEmpty()) {
+                    traslado = listaTraslado.get(0);
+                    reportes.runReporteTraslado(vigencia, traslado);
+                }
+            }
+        }
     }//GEN-LAST:event_imprimirTrasladoMousePressed
 
     private void eliminarRegistroMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_eliminarRegistroMousePressed
@@ -706,6 +726,25 @@ public class Traslado_Presupuestal extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_frValorFocusGained
 
+    public void cargarTrasladoSeleccionado(String documento) {
+        accesoDatos = new AccesoDatos();
+        Traslado traslado = new Traslado();        
+        traslado.setVigencia(vigencia);
+        traslado.setDocumento(documento);
+        traslado = accesoDatos.consultarObjetoPorVigencia(Traslado.class, traslado, vigencia).get(0);
+
+        frNoDocumento.setText(traslado.getDocumento());
+        frFecha.setDate(traslado.getFecha());
+        frListaRubros.setSelectedItem(0);
+        frValor.setText("$0.0");
+        if (traslado.getDescripcion() != null) {
+            if (!traslado.getDescripcion().trim().equals("")) {
+                frDescripcion.setText(traslado.getDescripcion());
+            }
+        }
+        cargarTablaTraslado(traslado);
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraHerramientas;

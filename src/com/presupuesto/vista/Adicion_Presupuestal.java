@@ -428,7 +428,7 @@ public class Adicion_Presupuestal extends javax.swing.JInternalFrame {
 
         menuAdicion.setText("Inicio");
 
-        itemNuevo.setText("Nuevo Registro");
+        itemNuevo.setText("Nueva Adición");
         itemNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemNuevoActionPerformed(evt);
@@ -436,7 +436,7 @@ public class Adicion_Presupuestal extends javax.swing.JInternalFrame {
         });
         menuAdicion.add(itemNuevo);
 
-        itemGuardar.setText("Guardar");
+        itemGuardar.setText("Guardar Adición");
         itemGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemGuardarActionPerformed(evt);
@@ -464,7 +464,7 @@ public class Adicion_Presupuestal extends javax.swing.JInternalFrame {
 
         menuEditar.setText("Editar");
 
-        itemEliminar.setText("Eliminar");
+        itemEliminar.setText("Eliminar Adicion");
         itemEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemEliminarActionPerformed(evt);
@@ -695,8 +695,7 @@ public class Adicion_Presupuestal extends javax.swing.JInternalFrame {
                     reportes.runReporteAdicion(vigencia, adicion);
                 }
             }
-        }
-        
+        }        
     }//GEN-LAST:event_imprimirAdicionMousePressed
 
     private void frNoDocumentoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_frNoDocumentoFocusLost
