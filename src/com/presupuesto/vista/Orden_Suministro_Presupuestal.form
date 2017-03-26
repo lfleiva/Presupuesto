@@ -11,7 +11,7 @@
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="menuTraslado">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Orden de Suministro"/>
+            <Property name="text" type="java.lang.String" value="Inicio"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="itemNuevo">

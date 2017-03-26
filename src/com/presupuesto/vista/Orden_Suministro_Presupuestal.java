@@ -434,7 +434,7 @@ public class Orden_Suministro_Presupuestal extends javax.swing.JInternalFrame {
 
         barraMenu.setBackground(new java.awt.Color(255, 255, 255));
 
-        menuTraslado.setText("Orden de Suministro");
+        menuTraslado.setText("Inicio");
 
         itemNuevo.setText("Nueva Orden");
         itemNuevo.addActionListener(new java.awt.event.ActionListener() {

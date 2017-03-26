@@ -6,7 +6,6 @@
 package com.presupuesto.vista;
 
 import com.presupuesto.control.AccesoDatos;
-import com.presupuesto.modelo.Beneficiario;
 import com.presupuesto.modelo.Entidad;
 import com.presupuesto.modelo.Vigencia;
 import java.util.ArrayList;
@@ -24,11 +23,16 @@ public class Home extends javax.swing.JFrame {
     // ***** Atributos de la clase *****//
     AccesoDatos accesoDatos;
     Vigencia vigencia;
+    boolean loginExitoso;
 
     /**
      * Creates new form Home
      */
     public Home() {
+        boolean existeVigencia = false;
+        boolean existeRegistroEntidad = false;
+        loginExitoso = false;
+
         initComponents();
 
         // Icono
@@ -43,23 +47,61 @@ public class Home extends javax.swing.JFrame {
         login.setLocationRelativeTo(null);
         login.setVisible(true);
 
-        //datosEntidad();   
-        
-        consultarVigencia();
+        if (loginExitoso) {
+            existeVigencia = consultarVigencia();
+
+            if (!existeVigencia) {
+                registrarPrimeraVigencia();
+            } else {
+                cargarInformacionEntidad();
+                this.setVisible(true);
+            }
+        }
     }
 
     /**
      * Metodo para consultar vigencia actual
      */
-    private void consultarVigencia() {
+    private boolean consultarVigencia() {
+        boolean existenVigencias = true;
         accesoDatos = new AccesoDatos();
         vigencia = new Vigencia();
         vigencia.setActiva(true);
-        vigencia = accesoDatos.consultarTodos(vigencia, Vigencia.class).get(0);
+        List<Vigencia> listaVigencias = new ArrayList<Vigencia>();
+        listaVigencias = accesoDatos.consultarTodos(vigencia, Vigencia.class);
+
+        if (!listaVigencias.isEmpty()) {
+            vigencia = listaVigencias.get(0);
+        } else {
+            existenVigencias = false;
+        }
+
+        return existenVigencias;
     }
 
     public Vigencia getVigencia() {
         return vigencia;
+    }
+
+    public void registrarPrimeraVigencia() {
+        CrearVigenciaInicial nuevaVigencia = new CrearVigenciaInicial(this, true);
+        nuevaVigencia.setLocationRelativeTo(null);
+        nuevaVigencia.setVisible(true);
+    }
+
+    private boolean cargarInformacionEntidad() {
+        accesoDatos = new AccesoDatos();
+        Entidad entidad = new Entidad();
+        List<Entidad> listaEntidad = new ArrayList<Entidad>();        
+        listaEntidad = accesoDatos.consultarTodos(entidad, Entidad.class);
+        
+        if (!listaEntidad.isEmpty()) {
+            entidad = listaEntidad.get(0);
+            datosEntidad(entidad);
+            return true;
+        } else {
+            return false;
+        }                       
     }
 
     // ***** Metodos Privados ***** //    
@@ -78,6 +120,18 @@ public class Home extends javax.swing.JFrame {
         nombreEntidad = new javax.swing.JLabel();
         nitEntidad = new javax.swing.JLabel();
         departamentoCiudad = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        accesoDisponibilidad = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        accesoRegistro = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        accesoOrdenPrestacionServicios = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        accesoOrdenSuministro = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        accesoComprobante = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        accesoEjecucion = new javax.swing.JLabel();
         barraMenuPrincipal = new javax.swing.JMenuBar();
         menuPresupuesto = new javax.swing.JMenu();
         itemRubros = new javax.swing.JMenuItem();
@@ -131,6 +185,78 @@ public class Home extends javax.swing.JFrame {
         departamentoCiudad.setFont(new java.awt.Font("Century", 0, 14)); // NOI18N
         departamentoCiudad.setForeground(new java.awt.Color(255, 255, 255));
         panelInformacionEntidad.add(departamentoCiudad, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 55, 340, 20));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/AccesoHome.png"))); // NOI18N
+
+        accesoDisponibilidad.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        accesoDisponibilidad.setForeground(new java.awt.Color(0, 51, 102));
+        accesoDisponibilidad.setText("Disponibilidad Presupuestal");
+        accesoDisponibilidad.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        accesoDisponibilidad.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                accesoDisponibilidadMousePressed(evt);
+            }
+        });
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/AccesoHome.png"))); // NOI18N
+
+        accesoRegistro.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        accesoRegistro.setForeground(new java.awt.Color(0, 51, 102));
+        accesoRegistro.setText("Registro Presupuestal");
+        accesoRegistro.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        accesoRegistro.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                accesoRegistroMousePressed(evt);
+            }
+        });
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/AccesoHome.png"))); // NOI18N
+
+        accesoOrdenPrestacionServicios.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        accesoOrdenPrestacionServicios.setForeground(new java.awt.Color(0, 51, 102));
+        accesoOrdenPrestacionServicios.setText("Orden de Prestación de Servicios");
+        accesoOrdenPrestacionServicios.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        accesoOrdenPrestacionServicios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                accesoOrdenPrestacionServiciosMousePressed(evt);
+            }
+        });
+
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/AccesoHome.png"))); // NOI18N
+
+        accesoOrdenSuministro.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        accesoOrdenSuministro.setForeground(new java.awt.Color(0, 51, 102));
+        accesoOrdenSuministro.setText("Orden de Suministro");
+        accesoOrdenSuministro.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        accesoOrdenSuministro.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                accesoOrdenSuministroMousePressed(evt);
+            }
+        });
+
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/AccesoHome.png"))); // NOI18N
+
+        accesoComprobante.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        accesoComprobante.setForeground(new java.awt.Color(0, 51, 102));
+        accesoComprobante.setText("Comprobante de Egreso");
+        accesoComprobante.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        accesoComprobante.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                accesoComprobanteMousePressed(evt);
+            }
+        });
+
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/AccesoHome.png"))); // NOI18N
+
+        accesoEjecucion.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        accesoEjecucion.setForeground(new java.awt.Color(0, 51, 102));
+        accesoEjecucion.setText("Ejecución Presupuestal");
+        accesoEjecucion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        accesoEjecucion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                accesoEjecucionMousePressed(evt);
+            }
+        });
 
         barraMenuPrincipal.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -295,11 +421,63 @@ public class Home extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(panelInformacionEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(449, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, infoEmpresaLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(infoEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(infoEmpresaLayout.createSequentialGroup()
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(accesoEjecucion, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(infoEmpresaLayout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(accesoComprobante, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(infoEmpresaLayout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(accesoOrdenSuministro, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(infoEmpresaLayout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(accesoOrdenPrestacionServicios, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(infoEmpresaLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(accesoRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(infoEmpresaLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(accesoDisponibilidad, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(19, 19, 19))
         );
         infoEmpresaLayout.setVerticalGroup(
             infoEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, infoEmpresaLayout.createSequentialGroup()
-                .addContainerGap(324, Short.MAX_VALUE)
+                .addContainerGap()
+                .addGroup(infoEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel1)
+                    .addComponent(accesoDisponibilidad))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(infoEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel3)
+                    .addComponent(accesoRegistro))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(infoEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel5)
+                    .addComponent(accesoOrdenPrestacionServicios))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(infoEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel7)
+                    .addComponent(accesoOrdenSuministro))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(infoEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel9)
+                    .addComponent(accesoComprobante))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(infoEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel11)
+                    .addComponent(accesoEjecucion))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
                 .addComponent(panelInformacionEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -416,8 +594,44 @@ public class Home extends javax.swing.JFrame {
         this.ventanaPrincipal.setSelectedIndex(this.ventanaPrincipal.getTabCount() - 1);
     }//GEN-LAST:event_itemVigenciaPresupuestalActionPerformed
 
+    private void accesoDisponibilidadMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accesoDisponibilidadMousePressed
+        Disponibilidad_Presupuestal disponibilidadPresupuestal = new Disponibilidad_Presupuestal(this);
+        this.ventanaPrincipal.addTab("Disponibilidad Presupuestal", disponibilidadPresupuestal);
+        this.ventanaPrincipal.setSelectedIndex(this.ventanaPrincipal.getTabCount() - 1);
+    }//GEN-LAST:event_accesoDisponibilidadMousePressed
+
+    private void accesoRegistroMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accesoRegistroMousePressed
+        Registro_Presupuestal registroPresupuestal = new Registro_Presupuestal(this);
+        this.ventanaPrincipal.addTab("Registro Presupuestal", registroPresupuestal);
+        this.ventanaPrincipal.setSelectedIndex(this.ventanaPrincipal.getTabCount() - 1);
+    }//GEN-LAST:event_accesoRegistroMousePressed
+
+    private void accesoOrdenPrestacionServiciosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accesoOrdenPrestacionServiciosMousePressed
+        Orden_Prestacion_Servicio_Presupuestal ops = new Orden_Prestacion_Servicio_Presupuestal(this);
+        this.ventanaPrincipal.addTab("Orden de Prestacion de Servicio", ops);
+        this.ventanaPrincipal.setSelectedIndex(this.ventanaPrincipal.getTabCount() - 1);
+    }//GEN-LAST:event_accesoOrdenPrestacionServiciosMousePressed
+
+    private void accesoOrdenSuministroMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accesoOrdenSuministroMousePressed
+        Orden_Suministro_Presupuestal orden = new Orden_Suministro_Presupuestal(this);
+        this.ventanaPrincipal.addTab("Orden de Suministro", orden);
+        this.ventanaPrincipal.setSelectedIndex(this.ventanaPrincipal.getTabCount() - 1);
+    }//GEN-LAST:event_accesoOrdenSuministroMousePressed
+
+    private void accesoComprobanteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accesoComprobanteMousePressed
+        Comprobante_Egreso comprobante = new Comprobante_Egreso(this);
+        this.ventanaPrincipal.addTab("Comrpobante de Egreso", comprobante);
+        this.ventanaPrincipal.setSelectedIndex(this.ventanaPrincipal.getTabCount() - 1);
+    }//GEN-LAST:event_accesoComprobanteMousePressed
+
+    private void accesoEjecucionMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accesoEjecucionMousePressed
+        Ejecucion_Presupuestal ejecucionPresupuestal = new Ejecucion_Presupuestal(this);
+        this.ventanaPrincipal.addTab("Ejecución Presupuestal", ejecucionPresupuestal);
+        this.ventanaPrincipal.setSelectedIndex(this.ventanaPrincipal.getTabCount() - 1);
+    }//GEN-LAST:event_accesoEjecucionMousePressed
+
     //***** Metodos Publicos *****//
-    public void datosEntidad(Entidad entidad, Vigencia vigencia) {
+    public void datosEntidad(Entidad entidad) {
         nombreEntidad.setText(entidad.getNombre());
         nitEntidad.setText("Nit. " + entidad.getNit());
         departamentoCiudad.setText(entidad.getCiudad() + " - " + entidad.getDepartamento());
@@ -474,8 +688,21 @@ public class Home extends javax.swing.JFrame {
         this.ventanaPrincipal = ventanaPrincipal;
     }
 
+    public boolean isLoginExitoso() {
+        return loginExitoso;
+    }
+
+    public void setLoginExitoso(boolean loginExitoso) {
+        this.loginExitoso = loginExitoso;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel accesoComprobante;
+    private javax.swing.JLabel accesoDisponibilidad;
+    private javax.swing.JLabel accesoEjecucion;
+    private javax.swing.JLabel accesoOrdenPrestacionServicios;
+    private javax.swing.JLabel accesoOrdenSuministro;
+    private javax.swing.JLabel accesoRegistro;
     private javax.swing.JMenuBar barraMenuPrincipal;
     private javax.swing.JLabel departamentoCiudad;
     private javax.swing.JInternalFrame infoEmpresa;
@@ -497,6 +724,12 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemRubros;
     private javax.swing.JMenuItem itemTrasladoPresupuestal;
     private javax.swing.JMenuItem itemVigenciaPresupuestal;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu menuAdministrar;
     private javax.swing.JMenu menuAyuda;
     private javax.swing.JMenu menuEgresos;

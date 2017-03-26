@@ -200,29 +200,14 @@ public class Login_Dialog extends javax.swing.JDialog implements Runnable {
 
         if (!listaAcceso.isEmpty()) {
             validacionExitosa = true;
-            cargarInformacionEntidad();
-            home.setVisible(true);
+            home.setLoginExitoso(true);            
             this.setVisible(false);
         } else {
             labelMensaje.setText("Usuario y/o Contraseña incorrectos");
         }
 
         return validacionExitosa;
-    }
-
-    private void cargarInformacionEntidad() {
-        accesoDatos = new AccesoDatos();
-        Entidad entidad = new Entidad();
-        List<Entidad> listaEntidad = new ArrayList<Entidad>();
-
-        listaEntidad = accesoDatos.consultarTodos(entidad, Entidad.class);
-
-        entidad = listaEntidad.get(0);
-        
-        consultarVigencia();
-
-        home.datosEntidad(entidad, vigencia);
-    }
+    }    
     
     /**
      * Metodo que consulta la vigencia activa
