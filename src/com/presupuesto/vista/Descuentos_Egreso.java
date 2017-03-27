@@ -97,6 +97,7 @@ public class Descuentos_Egreso extends javax.swing.JDialog {
 
         nuevoRegistro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         nuevoRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/nuevo_registro.png"))); // NOI18N
+        nuevoRegistro.setToolTipText("Nuevo");
         nuevoRegistro.setAlignmentX(0.5F);
         nuevoRegistro.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         nuevoRegistro.setMaximumSize(new java.awt.Dimension(25, 20));
@@ -111,6 +112,7 @@ public class Descuentos_Egreso extends javax.swing.JDialog {
 
         guardarRegistro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         guardarRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/guardar.png"))); // NOI18N
+        guardarRegistro.setToolTipText("Guardar");
         guardarRegistro.setAlignmentX(0.5F);
         guardarRegistro.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         guardarRegistro.setMaximumSize(new java.awt.Dimension(25, 20));
@@ -125,6 +127,7 @@ public class Descuentos_Egreso extends javax.swing.JDialog {
 
         listaRegistros.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         listaRegistros.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/lista.png"))); // NOI18N
+        listaRegistros.setToolTipText("Lista");
         listaRegistros.setAlignmentX(0.5F);
         listaRegistros.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         listaRegistros.setMaximumSize(new java.awt.Dimension(25, 20));

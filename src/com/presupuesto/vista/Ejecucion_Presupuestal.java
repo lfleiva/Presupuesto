@@ -408,6 +408,7 @@ public class Ejecucion_Presupuestal extends javax.swing.JInternalFrame implement
 
         imprimirAdicion.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         imprimirAdicion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/imprimir.png"))); // NOI18N
+        imprimirAdicion.setToolTipText("Imprimir");
         imprimirAdicion.setAlignmentX(0.5F);
         imprimirAdicion.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         imprimirAdicion.setMaximumSize(new java.awt.Dimension(25, 20));
@@ -426,6 +427,8 @@ public class Ejecucion_Presupuestal extends javax.swing.JInternalFrame implement
 
         menuAdicion.setText("Inicio");
 
+        itemCerrar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
+        itemCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/Cerrar.png"))); // NOI18N
         itemCerrar.setText("Cerrar");
         itemCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

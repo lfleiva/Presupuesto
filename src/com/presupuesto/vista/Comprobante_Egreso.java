@@ -357,6 +357,7 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
 
         nuevoRegistro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         nuevoRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/nuevo_registro.png"))); // NOI18N
+        nuevoRegistro.setToolTipText("Nuevo");
         nuevoRegistro.setAlignmentX(0.5F);
         nuevoRegistro.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         nuevoRegistro.setMaximumSize(new java.awt.Dimension(25, 20));
@@ -371,6 +372,7 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
 
         guardarRegistro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         guardarRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/guardar.png"))); // NOI18N
+        guardarRegistro.setToolTipText("Guardar");
         guardarRegistro.setAlignmentX(0.5F);
         guardarRegistro.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         guardarRegistro.setMaximumSize(new java.awt.Dimension(25, 20));
@@ -385,6 +387,7 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
 
         listaRegistros.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         listaRegistros.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/lista.png"))); // NOI18N
+        listaRegistros.setToolTipText("Lista");
         listaRegistros.setAlignmentX(0.5F);
         listaRegistros.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         listaRegistros.setMaximumSize(new java.awt.Dimension(25, 20));
@@ -399,6 +402,7 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
 
         imprimirRegistro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         imprimirRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/imprimir.png"))); // NOI18N
+        imprimirRegistro.setToolTipText("Imprimir");
         imprimirRegistro.setAlignmentX(0.5F);
         imprimirRegistro.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         imprimirRegistro.setMaximumSize(new java.awt.Dimension(25, 20));
@@ -414,6 +418,7 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
 
         eliminarRegistro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         eliminarRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/eliminar.png"))); // NOI18N
+        eliminarRegistro.setToolTipText("Eliminar");
         eliminarRegistro.setAlignmentX(0.5F);
         eliminarRegistro.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         eliminarRegistro.setMaximumSize(new java.awt.Dimension(25, 20));
@@ -558,7 +563,9 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
 
         menuTraslado.setText("Inicio");
 
-        itemNuevo.setText("Nuevo Registro");
+        itemNuevo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        itemNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/nuevo_registro.png"))); // NOI18N
+        itemNuevo.setText("Nuevo Comprobante");
         itemNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemNuevoActionPerformed(evt);
@@ -566,7 +573,9 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
         });
         menuTraslado.add(itemNuevo);
 
-        itemGuardar.setText("Guardar");
+        itemGuardar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
+        itemGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/guardar.png"))); // NOI18N
+        itemGuardar.setText("Guardar Comprobante");
         itemGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemGuardarActionPerformed(evt);
@@ -574,6 +583,8 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
         });
         menuTraslado.add(itemGuardar);
 
+        itemListaAdiciones.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
+        itemListaAdiciones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/lista.png"))); // NOI18N
         itemListaAdiciones.setText("Lista Comprobantes");
         itemListaAdiciones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -590,6 +601,8 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
         });
         menuTraslado.add(jMenuItem1);
 
+        itemCerrar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
+        itemCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/Cerrar.png"))); // NOI18N
         itemCerrar.setText("Cerrar");
         itemCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -602,7 +615,9 @@ public class Comprobante_Egreso extends javax.swing.JInternalFrame {
 
         menuEditar.setText("Editar");
 
-        itemEliminar.setText("Eliminar");
+        itemEliminar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
+        itemEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/eliminar.png"))); // NOI18N
+        itemEliminar.setText("Eliminar Comprobante");
         itemEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemEliminarActionPerformed(evt);

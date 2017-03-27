@@ -261,6 +261,7 @@ public class Orden_Suministro_Presupuestal extends javax.swing.JInternalFrame {
 
         nuevaOrden.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         nuevaOrden.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/nuevo_registro.png"))); // NOI18N
+        nuevaOrden.setToolTipText("Nuevo");
         nuevaOrden.setAlignmentX(0.5F);
         nuevaOrden.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         nuevaOrden.setMaximumSize(new java.awt.Dimension(25, 20));
@@ -275,6 +276,7 @@ public class Orden_Suministro_Presupuestal extends javax.swing.JInternalFrame {
 
         guardarOrden.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         guardarOrden.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/guardar.png"))); // NOI18N
+        guardarOrden.setToolTipText("Guardar");
         guardarOrden.setAlignmentX(0.5F);
         guardarOrden.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         guardarOrden.setMaximumSize(new java.awt.Dimension(25, 20));
@@ -289,6 +291,7 @@ public class Orden_Suministro_Presupuestal extends javax.swing.JInternalFrame {
 
         mostrarOrdenes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         mostrarOrdenes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/lista.png"))); // NOI18N
+        mostrarOrdenes.setToolTipText("Lista");
         mostrarOrdenes.setAlignmentX(0.5F);
         mostrarOrdenes.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         mostrarOrdenes.setMaximumSize(new java.awt.Dimension(25, 20));
@@ -303,6 +306,7 @@ public class Orden_Suministro_Presupuestal extends javax.swing.JInternalFrame {
 
         imprimirOrden.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         imprimirOrden.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/imprimir.png"))); // NOI18N
+        imprimirOrden.setToolTipText("Imprimir");
         imprimirOrden.setAlignmentX(0.5F);
         imprimirOrden.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         imprimirOrden.setMaximumSize(new java.awt.Dimension(25, 20));
@@ -318,6 +322,7 @@ public class Orden_Suministro_Presupuestal extends javax.swing.JInternalFrame {
 
         eliminarOrden.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         eliminarOrden.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/eliminar.png"))); // NOI18N
+        eliminarOrden.setToolTipText("Eliminar");
         eliminarOrden.setAlignmentX(0.5F);
         eliminarOrden.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         eliminarOrden.setMaximumSize(new java.awt.Dimension(25, 20));
@@ -434,8 +439,10 @@ public class Orden_Suministro_Presupuestal extends javax.swing.JInternalFrame {
 
         barraMenu.setBackground(new java.awt.Color(255, 255, 255));
 
-        menuTraslado.setText("Orden de Suministro");
+        menuTraslado.setText("Inicio");
 
+        itemNuevo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        itemNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/nuevo_registro.png"))); // NOI18N
         itemNuevo.setText("Nueva Orden");
         itemNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -444,7 +451,9 @@ public class Orden_Suministro_Presupuestal extends javax.swing.JInternalFrame {
         });
         menuTraslado.add(itemNuevo);
 
-        itemGuardar.setText("Guardar");
+        itemGuardar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
+        itemGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/guardar.png"))); // NOI18N
+        itemGuardar.setText("Guardar Orden");
         itemGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemGuardarActionPerformed(evt);
@@ -452,7 +461,9 @@ public class Orden_Suministro_Presupuestal extends javax.swing.JInternalFrame {
         });
         menuTraslado.add(itemGuardar);
 
-        itemListaAdiciones.setText("Lista Orden Suministro");
+        itemListaAdiciones.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
+        itemListaAdiciones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/lista.png"))); // NOI18N
+        itemListaAdiciones.setText("Lista Ordenes");
         itemListaAdiciones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemListaAdicionesActionPerformed(evt);
@@ -460,6 +471,8 @@ public class Orden_Suministro_Presupuestal extends javax.swing.JInternalFrame {
         });
         menuTraslado.add(itemListaAdiciones);
 
+        itemCerrar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
+        itemCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/Cerrar.png"))); // NOI18N
         itemCerrar.setText("Cerrar");
         itemCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -472,7 +485,9 @@ public class Orden_Suministro_Presupuestal extends javax.swing.JInternalFrame {
 
         menuEditar.setText("Editar");
 
-        itemEliminar.setText("Eliminar");
+        itemEliminar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
+        itemEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/eliminar.png"))); // NOI18N
+        itemEliminar.setText("Eliminar Orden");
         itemEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemEliminarActionPerformed(evt);

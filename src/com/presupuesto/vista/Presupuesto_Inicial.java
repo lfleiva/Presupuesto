@@ -349,6 +349,7 @@ public class Presupuesto_Inicial extends javax.swing.JInternalFrame {
 
         guardarRegistro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         guardarRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/guardar.png"))); // NOI18N
+        guardarRegistro.setToolTipText("Guardar");
         guardarRegistro.setAlignmentX(0.5F);
         guardarRegistro.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         guardarRegistro.setMaximumSize(new java.awt.Dimension(25, 20));
@@ -363,6 +364,7 @@ public class Presupuesto_Inicial extends javax.swing.JInternalFrame {
 
         imprimirPresupuesto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         imprimirPresupuesto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/imprimir.png"))); // NOI18N
+        imprimirPresupuesto.setToolTipText("Imprimir");
         imprimirPresupuesto.setAlignmentX(0.5F);
         imprimirPresupuesto.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         imprimirPresupuesto.setMaximumSize(new java.awt.Dimension(25, 20));
@@ -378,6 +380,7 @@ public class Presupuesto_Inicial extends javax.swing.JInternalFrame {
 
         eliminarRegistro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         eliminarRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/eliminar.png"))); // NOI18N
+        eliminarRegistro.setToolTipText("Eliminar");
         eliminarRegistro.setAlignmentX(0.5F);
         eliminarRegistro.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         eliminarRegistro.setMaximumSize(new java.awt.Dimension(25, 20));
@@ -472,6 +475,8 @@ public class Presupuesto_Inicial extends javax.swing.JInternalFrame {
 
         menuPresupuesto.setText("Inicio");
 
+        itemGuardar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
+        itemGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/guardar.png"))); // NOI18N
         itemGuardar.setText("Guardar");
         itemGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -480,6 +485,8 @@ public class Presupuesto_Inicial extends javax.swing.JInternalFrame {
         });
         menuPresupuesto.add(itemGuardar);
 
+        itemCerrar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
+        itemCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/Cerrar.png"))); // NOI18N
         itemCerrar.setText("Cerrar");
         itemCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -492,6 +499,8 @@ public class Presupuesto_Inicial extends javax.swing.JInternalFrame {
 
         jMenu1.setText("Editar");
 
+        itemEliminar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
+        itemEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/eliminar.png"))); // NOI18N
         itemEliminar.setText("Eliminar");
         itemEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
