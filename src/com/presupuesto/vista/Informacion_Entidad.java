@@ -127,6 +127,7 @@ public class Informacion_Entidad extends javax.swing.JInternalFrame {
 
         guardarRegistro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         guardarRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/guardar.png"))); // NOI18N
+        guardarRegistro.setToolTipText("Guardar");
         guardarRegistro.setAlignmentX(0.5F);
         guardarRegistro.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         guardarRegistro.setMaximumSize(new java.awt.Dimension(25, 20));

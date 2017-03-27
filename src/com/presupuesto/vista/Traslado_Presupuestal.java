@@ -253,6 +253,7 @@ public class Traslado_Presupuestal extends javax.swing.JInternalFrame {
 
         nuevoRegistro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         nuevoRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/nuevo_registro.png"))); // NOI18N
+        nuevoRegistro.setToolTipText("Nuevo");
         nuevoRegistro.setAlignmentX(0.5F);
         nuevoRegistro.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         nuevoRegistro.setMaximumSize(new java.awt.Dimension(25, 20));
@@ -267,6 +268,7 @@ public class Traslado_Presupuestal extends javax.swing.JInternalFrame {
 
         guardarRegistro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         guardarRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/guardar.png"))); // NOI18N
+        guardarRegistro.setToolTipText("Guardar");
         guardarRegistro.setAlignmentX(0.5F);
         guardarRegistro.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         guardarRegistro.setMaximumSize(new java.awt.Dimension(25, 20));
@@ -281,6 +283,7 @@ public class Traslado_Presupuestal extends javax.swing.JInternalFrame {
 
         listaTraslado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         listaTraslado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/lista.png"))); // NOI18N
+        listaTraslado.setToolTipText("Lista");
         listaTraslado.setAlignmentX(0.5F);
         listaTraslado.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         listaTraslado.setMaximumSize(new java.awt.Dimension(25, 20));
@@ -295,6 +298,7 @@ public class Traslado_Presupuestal extends javax.swing.JInternalFrame {
 
         imprimirTraslado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         imprimirTraslado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/imprimir.png"))); // NOI18N
+        imprimirTraslado.setToolTipText("Imprimir");
         imprimirTraslado.setAlignmentX(0.5F);
         imprimirTraslado.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         imprimirTraslado.setMaximumSize(new java.awt.Dimension(25, 20));
@@ -310,6 +314,7 @@ public class Traslado_Presupuestal extends javax.swing.JInternalFrame {
 
         eliminarRegistro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         eliminarRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/eliminar.png"))); // NOI18N
+        eliminarRegistro.setToolTipText("Eliminar");
         eliminarRegistro.setAlignmentX(0.5F);
         eliminarRegistro.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         eliminarRegistro.setMaximumSize(new java.awt.Dimension(25, 20));

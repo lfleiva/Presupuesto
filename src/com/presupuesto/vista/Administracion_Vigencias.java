@@ -87,6 +87,7 @@ public class Administracion_Vigencias extends javax.swing.JInternalFrame {
 
         guardarRegistro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         guardarRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/guardar.png"))); // NOI18N
+        guardarRegistro.setToolTipText("Guardar");
         guardarRegistro.setAlignmentX(0.5F);
         guardarRegistro.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         guardarRegistro.setMaximumSize(new java.awt.Dimension(25, 20));
@@ -102,6 +103,7 @@ public class Administracion_Vigencias extends javax.swing.JInternalFrame {
 
         eliminarRegistro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         eliminarRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/eliminar.png"))); // NOI18N
+        eliminarRegistro.setToolTipText("Eliminar");
         eliminarRegistro.setAlignmentX(0.5F);
         eliminarRegistro.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         eliminarRegistro.setMaximumSize(new java.awt.Dimension(25, 20));

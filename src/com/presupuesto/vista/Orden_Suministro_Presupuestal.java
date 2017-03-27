@@ -261,6 +261,7 @@ public class Orden_Suministro_Presupuestal extends javax.swing.JInternalFrame {
 
         nuevaOrden.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         nuevaOrden.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/nuevo_registro.png"))); // NOI18N
+        nuevaOrden.setToolTipText("Nuevo");
         nuevaOrden.setAlignmentX(0.5F);
         nuevaOrden.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         nuevaOrden.setMaximumSize(new java.awt.Dimension(25, 20));
@@ -275,6 +276,7 @@ public class Orden_Suministro_Presupuestal extends javax.swing.JInternalFrame {
 
         guardarOrden.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         guardarOrden.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/guardar.png"))); // NOI18N
+        guardarOrden.setToolTipText("Guardar");
         guardarOrden.setAlignmentX(0.5F);
         guardarOrden.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         guardarOrden.setMaximumSize(new java.awt.Dimension(25, 20));
@@ -289,6 +291,7 @@ public class Orden_Suministro_Presupuestal extends javax.swing.JInternalFrame {
 
         mostrarOrdenes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         mostrarOrdenes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/lista.png"))); // NOI18N
+        mostrarOrdenes.setToolTipText("Lista");
         mostrarOrdenes.setAlignmentX(0.5F);
         mostrarOrdenes.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         mostrarOrdenes.setMaximumSize(new java.awt.Dimension(25, 20));
@@ -303,6 +306,7 @@ public class Orden_Suministro_Presupuestal extends javax.swing.JInternalFrame {
 
         imprimirOrden.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         imprimirOrden.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/imprimir.png"))); // NOI18N
+        imprimirOrden.setToolTipText("Imprimir");
         imprimirOrden.setAlignmentX(0.5F);
         imprimirOrden.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         imprimirOrden.setMaximumSize(new java.awt.Dimension(25, 20));
@@ -318,6 +322,7 @@ public class Orden_Suministro_Presupuestal extends javax.swing.JInternalFrame {
 
         eliminarOrden.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         eliminarOrden.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/eliminar.png"))); // NOI18N
+        eliminarOrden.setToolTipText("Eliminar");
         eliminarOrden.setAlignmentX(0.5F);
         eliminarOrden.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         eliminarOrden.setMaximumSize(new java.awt.Dimension(25, 20));
