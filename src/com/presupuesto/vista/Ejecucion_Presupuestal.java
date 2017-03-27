@@ -426,6 +426,8 @@ public class Ejecucion_Presupuestal extends javax.swing.JInternalFrame implement
 
         menuAdicion.setText("Inicio");
 
+        itemCerrar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
+        itemCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/Cerrar.png"))); // NOI18N
         itemCerrar.setText("Cerrar");
         itemCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

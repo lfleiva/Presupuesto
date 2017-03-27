@@ -448,14 +448,16 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
 
         barraMenu.setBackground(new java.awt.Color(255, 255, 255));
 
-        menuRubro.setText("Rubro");
+        menuRubro.setText("Inicio");
         menuRubro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuRubroActionPerformed(evt);
             }
         });
 
-        itemNuevoRegistro.setText("Nuevo Registro");
+        itemNuevoRegistro.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        itemNuevoRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/nuevo_registro.png"))); // NOI18N
+        itemNuevoRegistro.setText("Nuevo Rubro");
         itemNuevoRegistro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemNuevoRegistroActionPerformed(evt);
@@ -463,6 +465,8 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
         });
         menuRubro.add(itemNuevoRegistro);
 
+        itemGuardar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
+        itemGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/guardar.png"))); // NOI18N
         itemGuardar.setText("Guardar Rubro");
         itemGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -471,7 +475,9 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
         });
         menuRubro.add(itemGuardar);
 
-        itemLista.setText("Lista");
+        itemLista.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
+        itemLista.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/lista.png"))); // NOI18N
+        itemLista.setText("Lista Rubros");
         itemLista.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemListaActionPerformed(evt);
@@ -479,6 +485,8 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
         });
         menuRubro.add(itemLista);
 
+        itemCerrar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
+        itemCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/Cerrar.png"))); // NOI18N
         itemCerrar.setText("Cerrar");
         itemCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -491,7 +499,9 @@ public class Rubro_Presupuestal extends javax.swing.JInternalFrame {
 
         jMenu1.setText("Editar");
 
-        itemEliminar.setText("Eliminar");
+        itemEliminar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
+        itemEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/eliminar.png"))); // NOI18N
+        itemEliminar.setText("Eliminar Rubro");
         itemEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemEliminarActionPerformed(evt);

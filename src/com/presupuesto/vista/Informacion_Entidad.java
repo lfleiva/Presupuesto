@@ -170,6 +170,8 @@ public class Informacion_Entidad extends javax.swing.JInternalFrame {
 
         menuAdicion.setText("Inicio");
 
+        itemGuardar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
+        itemGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/guardar.png"))); // NOI18N
         itemGuardar.setText("Guardar");
         itemGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -178,6 +180,8 @@ public class Informacion_Entidad extends javax.swing.JInternalFrame {
         });
         menuAdicion.add(itemGuardar);
 
+        itemCerrar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
+        itemCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/Cerrar.png"))); // NOI18N
         itemCerrar.setText("Cerrar");
         itemCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -451,7 +451,9 @@ public class Disponibilidad_Presupuestal extends javax.swing.JInternalFrame {
 
         menuDisponibilidad.setText("Inicio");
 
-        itemNuevo.setText("Nuevo Registro");
+        itemNuevo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        itemNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/nuevo_registro.png"))); // NOI18N
+        itemNuevo.setText("Nueva Disponibilidad");
         itemNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemNuevoActionPerformed(evt);
@@ -459,7 +461,9 @@ public class Disponibilidad_Presupuestal extends javax.swing.JInternalFrame {
         });
         menuDisponibilidad.add(itemNuevo);
 
-        itemGuardar.setText("Guardar");
+        itemGuardar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
+        itemGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/guardar.png"))); // NOI18N
+        itemGuardar.setText("Guardar Disponibilidad");
         itemGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemGuardarActionPerformed(evt);
@@ -467,6 +471,8 @@ public class Disponibilidad_Presupuestal extends javax.swing.JInternalFrame {
         });
         menuDisponibilidad.add(itemGuardar);
 
+        itemListaAdiciones.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
+        itemListaAdiciones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/lista.png"))); // NOI18N
         itemListaAdiciones.setText("Lista Disponibilidades");
         itemListaAdiciones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -475,6 +481,8 @@ public class Disponibilidad_Presupuestal extends javax.swing.JInternalFrame {
         });
         menuDisponibilidad.add(itemListaAdiciones);
 
+        itemCerrar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
+        itemCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/Cerrar.png"))); // NOI18N
         itemCerrar.setText("Cerrar");
         itemCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -487,7 +495,9 @@ public class Disponibilidad_Presupuestal extends javax.swing.JInternalFrame {
 
         menuEditar.setText("Editar");
 
-        itemEliminar.setText("Eliminar");
+        itemEliminar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
+        itemEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/eliminar.png"))); // NOI18N
+        itemEliminar.setText("Eliminar Disponibilidad");
         itemEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemEliminarActionPerformed(evt);

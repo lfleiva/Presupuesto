@@ -306,7 +306,9 @@ public class Orden_Prestacion_Servicio_Presupuestal extends javax.swing.JInterna
 
         menuTraslado.setText("Inicio");
 
-        itemNuevo.setText("Nuevo Registro");
+        itemNuevo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        itemNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/nuevo_registro.png"))); // NOI18N
+        itemNuevo.setText("Nueva Orden");
         itemNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemNuevoActionPerformed(evt);
@@ -314,7 +316,9 @@ public class Orden_Prestacion_Servicio_Presupuestal extends javax.swing.JInterna
         });
         menuTraslado.add(itemNuevo);
 
-        itemGuardar.setText("Guardar");
+        itemGuardar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
+        itemGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/guardar.png"))); // NOI18N
+        itemGuardar.setText("Guardar Orden");
         itemGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemGuardarActionPerformed(evt);
@@ -322,7 +326,9 @@ public class Orden_Prestacion_Servicio_Presupuestal extends javax.swing.JInterna
         });
         menuTraslado.add(itemGuardar);
 
-        itemListaAdiciones.setText("Lista OPS Presupuestal");
+        itemListaAdiciones.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
+        itemListaAdiciones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/lista.png"))); // NOI18N
+        itemListaAdiciones.setText("Lista Ordenes");
         itemListaAdiciones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemListaAdicionesActionPerformed(evt);
@@ -330,6 +336,8 @@ public class Orden_Prestacion_Servicio_Presupuestal extends javax.swing.JInterna
         });
         menuTraslado.add(itemListaAdiciones);
 
+        itemCerrar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
+        itemCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/Cerrar.png"))); // NOI18N
         itemCerrar.setText("Cerrar");
         itemCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -342,7 +350,9 @@ public class Orden_Prestacion_Servicio_Presupuestal extends javax.swing.JInterna
 
         menuEditar.setText("Editar");
 
-        itemEliminar.setText("Eliminar");
+        itemEliminar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
+        itemEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/eliminar.png"))); // NOI18N
+        itemEliminar.setText("Eliminar Orden");
         itemEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemEliminarActionPerformed(evt);

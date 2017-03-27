@@ -16,6 +16,12 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="itemNuevo">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+N"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/com/presupuesto/img/nuevo_registro.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Nueva Orden"/>
               </Properties>
               <Events>
@@ -24,7 +30,13 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemGuardar">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Guardar"/>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+G"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/com/presupuesto/img/guardar.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Guardar Orden"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemGuardarActionPerformed"/>
@@ -32,7 +44,13 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemListaAdiciones">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Lista Orden Suministro"/>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+L"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/com/presupuesto/img/lista.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Lista Ordenes"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemListaAdicionesActionPerformed"/>
@@ -40,6 +58,12 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemCerrar">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+Q"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/com/presupuesto/img/Cerrar.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Cerrar"/>
               </Properties>
               <Events>
@@ -55,7 +79,13 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="itemEliminar">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Eliminar"/>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+D"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/com/presupuesto/img/eliminar.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Eliminar Orden"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemEliminarActionPerformed"/>
