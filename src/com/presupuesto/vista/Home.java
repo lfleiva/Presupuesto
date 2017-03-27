@@ -78,6 +78,7 @@ public class Home extends javax.swing.JFrame {
         nombreEntidad = new javax.swing.JLabel();
         nitEntidad = new javax.swing.JLabel();
         departamentoCiudad = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         barraMenuPrincipal = new javax.swing.JMenuBar();
         menuPresupuesto = new javax.swing.JMenu();
         itemRubros = new javax.swing.JMenuItem();
@@ -131,6 +132,8 @@ public class Home extends javax.swing.JFrame {
         departamentoCiudad.setFont(new java.awt.Font("Century", 0, 14)); // NOI18N
         departamentoCiudad.setForeground(new java.awt.Color(255, 255, 255));
         panelInformacionEntidad.add(departamentoCiudad, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 55, 340, 20));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/registrar.png"))); // NOI18N
 
         barraMenuPrincipal.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -281,6 +284,11 @@ public class Home extends javax.swing.JFrame {
         menuAyuda.setText("Ayuda");
 
         itemAcercaDe.setText("Acerca de");
+        itemAcercaDe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemAcercaDeActionPerformed(evt);
+            }
+        });
         menuAyuda.add(itemAcercaDe);
 
         barraMenuPrincipal.add(menuAyuda);
@@ -295,11 +303,17 @@ public class Home extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(panelInformacionEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(449, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, infoEmpresaLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(295, 295, 295))
         );
         infoEmpresaLayout.setVerticalGroup(
             infoEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, infoEmpresaLayout.createSequentialGroup()
-                .addContainerGap(324, Short.MAX_VALUE)
+                .addGap(54, 54, 54)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 240, Short.MAX_VALUE)
                 .addComponent(panelInformacionEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -416,6 +430,12 @@ public class Home extends javax.swing.JFrame {
         this.ventanaPrincipal.setSelectedIndex(this.ventanaPrincipal.getTabCount() - 1);
     }//GEN-LAST:event_itemVigenciaPresupuestalActionPerformed
 
+    private void itemAcercaDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAcercaDeActionPerformed
+        AcercaDe acercaDe = new AcercaDe(this, true);
+        acercaDe.setLocationRelativeTo(null);
+        acercaDe.setVisible(true);
+    }//GEN-LAST:event_itemAcercaDeActionPerformed
+
     //***** Metodos Publicos *****//
     public void datosEntidad(Entidad entidad, Vigencia vigencia) {
         nombreEntidad.setText(entidad.getNombre());
@@ -497,6 +517,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemRubros;
     private javax.swing.JMenuItem itemTrasladoPresupuestal;
     private javax.swing.JMenuItem itemVigenciaPresupuestal;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu menuAdministrar;
     private javax.swing.JMenu menuAyuda;
     private javax.swing.JMenu menuEgresos;

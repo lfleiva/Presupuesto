@@ -10,6 +10,7 @@ import com.presupuesto.control.BeneficiarioJpaController;
 import com.presupuesto.control.exceptions.NonexistentEntityException;
 import com.presupuesto.modelo.Beneficiario;
 import com.presupuesto.modelo.Vigencia;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -74,6 +75,76 @@ public class Beneficiario_Presupuesto extends javax.swing.JInternalFrame {
         frEmail.setText(beneficiario.getEmail());
     }
 
+    private void eliminarBeneficiario() {
+        if (validarFormulario()) {
+            accesoDatos = new AccesoDatos();
+            List<Beneficiario> listaBeneficiario = new ArrayList<Beneficiario>();
+            Beneficiario beneficiario = new Beneficiario();
+            beneficiario.setIdentificacion(frIdentificacion.getText());
+
+            listaBeneficiario = accesoDatos.consultarTodos(beneficiario, Beneficiario.class);
+
+            if (!listaBeneficiario.isEmpty()) {
+                beneficiario = listaBeneficiario.get(0);
+                if (beneficiario.getDisponibilidadList().isEmpty()) {
+                    try {
+                        beneficiarioController = new BeneficiarioJpaController();
+                        beneficiarioController.destroy(beneficiario);
+                        reiniciarFormulario();
+                    } catch (NonexistentEntityException ex) {
+                        Logger.getLogger(Beneficiario_Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    frMensaje.setForeground(Color.RED);
+                    frMensaje.setText("El beneficiario no se puede eliminar, tiene disponibilidades a su nombre");                    
+                }
+            } else {
+                frMensaje.setForeground(Color.RED);
+                frMensaje.setText("Por favor verificar que exista el registro del beneficiario a eliminar");                
+            }
+        } else {
+            frMensaje.setForeground(Color.RED);
+            frMensaje.setText("Por favor verificar que el formulario de registro este completo");       
+        }
+    }
+    
+    private void guardarBeneficiario() {
+        if (validarFormulario()) {
+            accesoDatos = new AccesoDatos();
+            List<Beneficiario> listaBeneficarios = new ArrayList<Beneficiario>();
+            Beneficiario beneficiario = new Beneficiario();
+            beneficiario.setIdentificacion(frIdentificacion.getText());
+
+            listaBeneficarios = accesoDatos.consultarTodos(beneficiario, Beneficiario.class);
+
+            if (!listaBeneficarios.isEmpty()) {
+                beneficiario = listaBeneficarios.get(0);
+            }
+
+            beneficiario.setNombre(frNombre.getText());
+            beneficiario.setDireccion(frDireccion.getText());
+            beneficiario.setTelefono(frTelefono.getText());
+            beneficiario.setEmail(frEmail.getText());
+
+            beneficiario = accesoDatos.persistirActualizar(beneficiario);
+
+            reiniciarFormulario();
+            
+            frMensaje.setForeground(Color.DARK_GRAY);
+            frMensaje.setText("El beneficiario se registro correctamente");
+        } else {
+            frMensaje.setForeground(Color.RED);
+            frMensaje.setText("Por favor verificar que el formulario de registro este completo");
+        }
+    }
+    
+    private void abrirListaBeneficiarios() {
+        // Abrir Lista
+        Lista_Beneficiarios listaBeneficiarios = new Lista_Beneficiarios(this, true);
+        listaBeneficiarios.setLocationRelativeTo(null);
+        listaBeneficiarios.setVisible(true);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -99,6 +170,7 @@ public class Beneficiario_Presupuesto extends javax.swing.JInternalFrame {
         frEmail = new javax.swing.JTextField();
         labelTelefono = new javax.swing.JLabel();
         labelEmail = new javax.swing.JLabel();
+        frMensaje = new javax.swing.JLabel();
         barraMenu = new javax.swing.JMenuBar();
         menuAdicion = new javax.swing.JMenu();
         itemNuevo = new javax.swing.JMenuItem();
@@ -195,7 +267,7 @@ public class Beneficiario_Presupuesto extends javax.swing.JInternalFrame {
 
         menuAdicion.setText("Inicio");
 
-        itemNuevo.setText("Nuevo Registro");
+        itemNuevo.setText("Nuevo Beneficiario");
         itemNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemNuevoActionPerformed(evt);
@@ -203,7 +275,7 @@ public class Beneficiario_Presupuesto extends javax.swing.JInternalFrame {
         });
         menuAdicion.add(itemNuevo);
 
-        itemGuardar.setText("Guardar");
+        itemGuardar.setText("Guardar Beneficiario");
         itemGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemGuardarActionPerformed(evt);
@@ -231,7 +303,7 @@ public class Beneficiario_Presupuesto extends javax.swing.JInternalFrame {
 
         menuEditar.setText("Editar");
 
-        itemEliminar.setText("Eliminar");
+        itemEliminar.setText("Eliminar Beneficiario");
         itemEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemEliminarActionPerformed(evt);
@@ -257,12 +329,14 @@ public class Beneficiario_Presupuesto extends javax.swing.JInternalFrame {
                     .addComponent(labelTelefono, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(labelEmail, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(frIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(frNombre)
-                    .addComponent(frDireccion)
-                    .addComponent(frTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(frEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(frIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(frNombre)
+                        .addComponent(frDireccion)
+                        .addComponent(frTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(frEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(frMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -289,7 +363,9 @@ public class Beneficiario_Presupuesto extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(frEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelEmail))
-                .addGap(0, 227, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(frMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 201, Short.MAX_VALUE))
         );
 
         pack();
@@ -305,36 +381,11 @@ public class Beneficiario_Presupuesto extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_itemNuevoActionPerformed
 
     private void itemGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGuardarActionPerformed
-        if (validarFormulario()) {
-            accesoDatos = new AccesoDatos();
-            List<Beneficiario> listaBeneficarios = new ArrayList<Beneficiario>();
-            Beneficiario beneficiario = new Beneficiario();
-            beneficiario.setIdentificacion(frIdentificacion.getText());
-
-            listaBeneficarios = accesoDatos.consultarTodos(beneficiario, Beneficiario.class);
-
-            if (!listaBeneficarios.isEmpty()) {
-                beneficiario = listaBeneficarios.get(0);
-            }
-
-            beneficiario.setNombre(frNombre.getText());
-            beneficiario.setDireccion(frDireccion.getText());
-            beneficiario.setTelefono(frTelefono.getText());
-            beneficiario.setEmail(frEmail.getText());
-
-            beneficiario = accesoDatos.persistirActualizar(beneficiario);
-
-            reiniciarFormulario();
-        } else {
-            JOptionPane.showMessageDialog(null, "Por favor verificar que el formulario de registro este completo", "Verificación Beneficiario", 0);
-        }
+        guardarBeneficiario();
     }//GEN-LAST:event_itemGuardarActionPerformed
 
     private void itemListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemListaActionPerformed
-        // Abrir Lista
-        Lista_Beneficiarios listaBeneficiarios = new Lista_Beneficiarios(this, true);
-        listaBeneficiarios.setLocationRelativeTo(null);
-        listaBeneficiarios.setVisible(true);
+        abrirListaBeneficiarios();
     }//GEN-LAST:event_itemListaActionPerformed
 
     private void itemCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCerrarActionPerformed
@@ -342,31 +393,7 @@ public class Beneficiario_Presupuesto extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_itemCerrarActionPerformed
 
     private void itemEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemEliminarActionPerformed
-        if (validarFormulario()) {
-            accesoDatos = new AccesoDatos();
-            List<Beneficiario> listaBeneficiario = new ArrayList<Beneficiario>();
-            Beneficiario beneficiario = new Beneficiario();
-            beneficiario.setIdentificacion(frIdentificacion.getText());
-
-            listaBeneficiario = accesoDatos.consultarTodos(beneficiario, Beneficiario.class);
-
-            if (!listaBeneficiario.isEmpty()) {
-                beneficiario = listaBeneficiario.get(0);
-                if (beneficiario.getDisponibilidadList().isEmpty()) {
-                    try {
-                        beneficiarioController = new BeneficiarioJpaController();
-                        beneficiarioController.destroy(beneficiario);
-                        reiniciarFormulario();
-                    } catch (NonexistentEntityException ex) {
-                        Logger.getLogger(Beneficiario_Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "El beneficiario no se puede eliminar, tiene disponibilidades a su nombre", "Verificación Beneficiario", 0);
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Por favor verificar que exista el registro del beneficiario a eliminar", "Verificación Beneficiario", 0);
-            }
-        }
+        eliminarBeneficiario();
     }//GEN-LAST:event_itemEliminarActionPerformed
 
     private void nuevoRegistroMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nuevoRegistroMousePressed
@@ -376,70 +403,19 @@ public class Beneficiario_Presupuesto extends javax.swing.JInternalFrame {
         frTelefono.setText("");
         frEmail.setText("");
         frIdentificacion.requestFocus();
+        frMensaje.setText("");
     }//GEN-LAST:event_nuevoRegistroMousePressed
 
     private void guardarRegistroMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarRegistroMousePressed
-        if (validarFormulario()) {
-            accesoDatos = new AccesoDatos();
-            List<Beneficiario> listaBeneficarios = new ArrayList<Beneficiario>();
-            Beneficiario beneficiario = new Beneficiario();
-            beneficiario.setIdentificacion(frIdentificacion.getText());
-
-            listaBeneficarios = accesoDatos.consultarTodos(beneficiario, Beneficiario.class);
-
-            if (!listaBeneficarios.isEmpty()) {
-                beneficiario = listaBeneficarios.get(0);
-            }
-
-            beneficiario.setIdentificacion(frIdentificacion.getText().trim());
-            beneficiario.setNombre(frNombre.getText());
-            beneficiario.setDireccion(frDireccion.getText());
-            beneficiario.setTelefono(frTelefono.getText());
-            beneficiario.setEmail(frEmail.getText());
-
-            beneficiario = accesoDatos.persistirActualizar(beneficiario);
-
-            reiniciarFormulario();
-        } else {
-            JOptionPane.showMessageDialog(null, "Por favor verificar que el formulario de registro este completo", "Verificación Beneficiario", 0);
-        }
+        guardarBeneficiario();
     }//GEN-LAST:event_guardarRegistroMousePressed
 
     private void listaRegistrosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaRegistrosMousePressed
-        // Abrir Lista
-        Lista_Beneficiarios listaBeneficiarios = new Lista_Beneficiarios(this, true);
-        listaBeneficiarios.setLocationRelativeTo(null);
-        listaBeneficiarios.setVisible(true);
+        abrirListaBeneficiarios();
     }//GEN-LAST:event_listaRegistrosMousePressed
 
     private void eliminarRegistroMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_eliminarRegistroMousePressed
-        if (validarFormulario()) {
-            accesoDatos = new AccesoDatos();
-            List<Beneficiario> listaBeneficiario = new ArrayList<Beneficiario>();
-            Beneficiario beneficiario = new Beneficiario();
-            beneficiario.setIdentificacion(frIdentificacion.getText());
-
-            listaBeneficiario = accesoDatos.consultarTodos(beneficiario, Beneficiario.class);
-
-            if (!listaBeneficiario.isEmpty()) {
-                beneficiario = listaBeneficiario.get(0);
-                if (beneficiario.getDisponibilidadList().isEmpty()) {
-                    try {
-                        beneficiarioController = new BeneficiarioJpaController();
-                        beneficiarioController.destroy(beneficiario);
-                        reiniciarFormulario();
-                    } catch (NonexistentEntityException ex) {
-                        Logger.getLogger(Beneficiario_Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "El beneficiario no se puede eliminar, tiene disponibilidades a su nombre", "Verificación Beneficiario", 0);
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Por favor verificar que exista el registro del beneficiario a eliminar", "Verificación Beneficiario", 0);
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Por favor verificar que los datos de formulario estan correctos", "Verificación Formulario", 0);
-        }
+        eliminarBeneficiario();
     }//GEN-LAST:event_eliminarRegistroMousePressed
 
     private void frIdentificacionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_frIdentificacionFocusLost
@@ -469,6 +445,7 @@ public class Beneficiario_Presupuesto extends javax.swing.JInternalFrame {
     private javax.swing.JTextField frDireccion;
     private javax.swing.JTextField frEmail;
     private javax.swing.JTextField frIdentificacion;
+    private javax.swing.JLabel frMensaje;
     private javax.swing.JTextField frNombre;
     private javax.swing.JTextField frTelefono;
     private javax.swing.JLabel guardarRegistro;

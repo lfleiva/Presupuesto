@@ -94,6 +94,11 @@ public class Lista_Beneficiarios extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        tablaBeneficiarios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaBeneficiariosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tablaBeneficiarios);
 
         jLabel1.setText("Beneficiarios Registrados");
@@ -145,6 +150,21 @@ public class Lista_Beneficiarios extends javax.swing.JDialog {
 
         this.setVisible(false);
     }//GEN-LAST:event_botonSeleccionarActionPerformed
+
+    private void tablaBeneficiariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaBeneficiariosMouseClicked
+        if (evt.getClickCount() == 2) {
+            DefaultTableModel model = new DefaultTableModel();
+            model = (DefaultTableModel) tablaBeneficiarios.getModel();
+            int filaSeleccionada = tablaBeneficiarios.getSelectedRow();
+
+            if (filaSeleccionada != -1) {
+                String beneficiarioSeleccionado = model.getValueAt(filaSeleccionada, 0).toString();
+                beneficiarioPresupuestal.cargarBeneficiarioSeleccionado(beneficiarioSeleccionado);
+            }
+
+            this.setVisible(false);
+        }
+    }//GEN-LAST:event_tablaBeneficiariosMouseClicked
 
     /**
      * @param args the command line arguments

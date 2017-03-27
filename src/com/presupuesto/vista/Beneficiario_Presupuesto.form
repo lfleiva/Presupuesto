@@ -16,7 +16,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="itemNuevo">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Nuevo Registro"/>
+                <Property name="text" type="java.lang.String" value="Nuevo Beneficiario"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemNuevoActionPerformed"/>
@@ -24,7 +24,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemGuardar">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Guardar"/>
+                <Property name="text" type="java.lang.String" value="Guardar Beneficiario"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemGuardarActionPerformed"/>
@@ -55,7 +55,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="itemEliminar">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Eliminar"/>
+                <Property name="text" type="java.lang.String" value="Eliminar Beneficiario"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemEliminarActionPerformed"/>
@@ -110,12 +110,15 @@
                   <Component id="labelEmail" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="frIdentificacion" min="-2" pref="100" max="-2" attributes="0"/>
-                  <Component id="frNombre" max="32767" attributes="0"/>
-                  <Component id="frDireccion" alignment="0" max="32767" attributes="0"/>
-                  <Component id="frTelefono" min="-2" pref="100" max="-2" attributes="0"/>
-                  <Component id="frEmail" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="frIdentificacion" min="-2" pref="100" max="-2" attributes="0"/>
+                      <Component id="frNombre" max="32767" attributes="0"/>
+                      <Component id="frDireccion" alignment="0" max="32767" attributes="0"/>
+                      <Component id="frTelefono" min="-2" pref="100" max="-2" attributes="0"/>
+                      <Component id="frEmail" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="frMensaje" min="-2" pref="356" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -150,7 +153,9 @@
                   <Component id="frEmail" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="labelEmail" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="0" pref="227" max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="frMensaje" min="-2" pref="15" max="-2" attributes="0"/>
+              <EmptySpace min="0" pref="201" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -311,6 +316,8 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Email"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="frMensaje">
     </Component>
   </SubComponents>
 </Form>

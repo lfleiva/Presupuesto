@@ -128,7 +128,7 @@ public class Administracion_Vigencias extends javax.swing.JInternalFrame {
         });
         menuAdicion.add(itemNuevo);
 
-        itemGuardar.setText("Guardar");
+        itemGuardar.setText("Guardar Vigencia");
         itemGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemGuardarActionPerformed(evt);
@@ -148,7 +148,7 @@ public class Administracion_Vigencias extends javax.swing.JInternalFrame {
 
         menuEditar.setText("Editar");
 
-        itemEliminar.setText("Eliminar");
+        itemEliminar.setText("Eliminar Vigencia");
         itemEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemEliminarActionPerformed(evt);

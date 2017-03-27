@@ -5,18 +5,26 @@
  */
 package com.presupuesto.vista;
 
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author Luis Fernando Leiva
  */
 public class AcercaDe extends javax.swing.JDialog {
 
+    public static Home home;
+    
     /**
      * Creates new form AcercaDe
      */
-    public AcercaDe(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public AcercaDe(Home parent, boolean modal) {
+        this.home = parent;
+        this.setModal(modal);
         initComponents();
+        
+        // Icono
+        setIconImage(new ImageIcon(getClass().getResource("/com/presupuesto/img/Icono.png")).getImage());
     }
 
     /**
@@ -28,27 +36,22 @@ public class AcercaDe extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setText("jLabel1");
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/logo_ittera.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addComponent(jLabel1)
-                .addContainerGap(246, Short.MAX_VALUE))
+            .addComponent(jLabel2)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(98, 98, 98)
-                .addComponent(jLabel1)
-                .addContainerGap(188, Short.MAX_VALUE))
+            .addComponent(jLabel2)
         );
 
         pack();
@@ -84,7 +87,7 @@ public class AcercaDe extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                AcercaDe dialog = new AcercaDe(new javax.swing.JFrame(), true);
+                AcercaDe dialog = new AcercaDe(home, true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -97,6 +100,6 @@ public class AcercaDe extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
 }
