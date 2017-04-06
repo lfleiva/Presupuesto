@@ -154,6 +154,7 @@ public class Home extends javax.swing.JFrame {
         itemInformacionEntidad = new javax.swing.JMenuItem();
         itemCambioContraseña = new javax.swing.JMenuItem();
         menuAyuda = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         itemAcercaDe = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -406,7 +407,22 @@ public class Home extends javax.swing.JFrame {
 
         menuAyuda.setText("Ayuda");
 
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/Pdf.png"))); // NOI18N
+        jMenuItem1.setText("Manual");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        menuAyuda.add(jMenuItem1);
+
         itemAcercaDe.setText("Acerca de");
+        itemAcercaDe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemAcercaDeActionPerformed(evt);
+            }
+        });
         menuAyuda.add(itemAcercaDe);
 
         barraMenuPrincipal.add(menuAyuda);
@@ -630,6 +646,16 @@ public class Home extends javax.swing.JFrame {
         this.ventanaPrincipal.setSelectedIndex(this.ventanaPrincipal.getTabCount() - 1);
     }//GEN-LAST:event_accesoEjecucionMousePressed
 
+    private void itemAcercaDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAcercaDeActionPerformed
+        AcercaDe acercaDe = new AcercaDe(this, true);
+        acercaDe.setLocationRelativeTo(null);
+        acercaDe.setVisible(true);
+    }//GEN-LAST:event_itemAcercaDeActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        System.out.println("Abrir Manual");
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     //***** Metodos Publicos *****//
     public void datosEntidad(Entidad entidad) {
         nombreEntidad.setText(entidad.getNombre());
@@ -730,6 +756,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenu menuAdministrar;
     private javax.swing.JMenu menuAyuda;
     private javax.swing.JMenu menuEgresos;
