@@ -407,6 +407,11 @@ public class Home extends javax.swing.JFrame {
         menuAyuda.setText("Ayuda");
 
         itemAcercaDe.setText("Acerca de");
+        itemAcercaDe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemAcercaDeActionPerformed(evt);
+            }
+        });
         menuAyuda.add(itemAcercaDe);
 
         barraMenuPrincipal.add(menuAyuda);
@@ -629,6 +634,10 @@ public class Home extends javax.swing.JFrame {
         this.ventanaPrincipal.addTab("Ejecución Presupuestal", ejecucionPresupuestal);
         this.ventanaPrincipal.setSelectedIndex(this.ventanaPrincipal.getTabCount() - 1);
     }//GEN-LAST:event_accesoEjecucionMousePressed
+
+    private void itemAcercaDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAcercaDeActionPerformed
+                
+    }//GEN-LAST:event_itemAcercaDeActionPerformed
 
     //***** Metodos Publicos *****//
     public void datosEntidad(Entidad entidad) {
