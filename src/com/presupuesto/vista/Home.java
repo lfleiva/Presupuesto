@@ -636,7 +636,10 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_accesoEjecucionMousePressed
 
     private void itemAcercaDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAcercaDeActionPerformed
-                
+        // Abrir Acerca de
+        AcercaDe acercaDe = new AcercaDe(this, true);
+        acercaDe.setLocationRelativeTo(null);
+        acercaDe.setVisible(true);
     }//GEN-LAST:event_itemAcercaDeActionPerformed
 
     //***** Metodos Publicos *****//
