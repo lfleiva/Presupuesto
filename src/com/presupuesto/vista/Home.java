@@ -49,12 +49,15 @@ public class Home extends javax.swing.JFrame {
 
         if (loginExitoso) {
             existeVigencia = consultarVigencia();
+            existeRegistroEntidad = cargarInformacionEntidad();
 
             if (!existeVigencia) {
                 registrarPrimeraVigencia();
-            } else {
+            } else if (existeRegistroEntidad) {
                 cargarInformacionEntidad();
                 this.setVisible(true);
+            } else {
+                //
             }
         }
     }
@@ -87,6 +90,12 @@ public class Home extends javax.swing.JFrame {
         CrearVigenciaInicial nuevaVigencia = new CrearVigenciaInicial(this, true);
         nuevaVigencia.setLocationRelativeTo(null);
         nuevaVigencia.setVisible(true);
+    }
+    
+    public void registroInicialEntidad() {
+        RegistroInicialEntidad registroEntidad = new RegistroInicialEntidad(this, true);
+        registroEntidad.setLocationRelativeTo(null);
+        registroEntidad.setVisible(true);
     }
 
     private boolean cargarInformacionEntidad() {
@@ -154,6 +163,7 @@ public class Home extends javax.swing.JFrame {
         itemInformacionEntidad = new javax.swing.JMenuItem();
         itemCambioContraseña = new javax.swing.JMenuItem();
         menuAyuda = new javax.swing.JMenu();
+        itemManual = new javax.swing.JMenuItem();
         itemAcercaDe = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -406,6 +416,16 @@ public class Home extends javax.swing.JFrame {
 
         menuAyuda.setText("Ayuda");
 
+        itemManual.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
+        itemManual.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presupuesto/img/Pdf.png"))); // NOI18N
+        itemManual.setText("Manual");
+        itemManual.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemManualActionPerformed(evt);
+            }
+        });
+        menuAyuda.add(itemManual);
+
         itemAcercaDe.setText("Acerca de");
         itemAcercaDe.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -642,6 +662,10 @@ public class Home extends javax.swing.JFrame {
         acercaDe.setVisible(true);
     }//GEN-LAST:event_itemAcercaDeActionPerformed
 
+    private void itemManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemManualActionPerformed
+        System.out.println("Abrir Manual");
+    }//GEN-LAST:event_itemManualActionPerformed
+
     //***** Metodos Publicos *****//
     public void datosEntidad(Entidad entidad) {
         nombreEntidad.setText(entidad.getNombre());
@@ -729,6 +753,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemExportarDB;
     private javax.swing.JMenuItem itemImportarDB;
     private javax.swing.JMenuItem itemInformacionEntidad;
+    private javax.swing.JMenuItem itemManual;
     private javax.swing.JMenuItem itemOrdenPrestacionServicio;
     private javax.swing.JMenuItem itemOrdenSuministro;
     private javax.swing.JMenuItem itemPresupuestoInicial;

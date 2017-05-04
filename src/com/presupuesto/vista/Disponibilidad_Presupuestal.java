@@ -704,10 +704,16 @@ public class Disponibilidad_Presupuestal extends javax.swing.JInternalFrame {
 
         listaDisponibilidad = accesoDatos.consultarObjetoPorVigencia(Disponibilidad.class, disponibilidad, vigencia);
 
-        if (!listaDisponibilidad.isEmpty()) {
+        if (!listaDisponibilidad.isEmpty()) {            
             try {
                 disponibilidad = listaDisponibilidad.get(0);
-                disponibilidadController.destroy(disponibilidad);
+                if(disponibilidad.getComprobanteEgresoList().isEmpty() && disponibilidad.getOrdenSuministroList().isEmpty() 
+                        && disponibilidad.getRegistroList().isEmpty() && disponibilidad.getOpsList().isEmpty()){
+                    disponibilidadController.destroy(disponibilidad);
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se puede eliminar la disponibilidad ya que tiene relacion en el presupuesto", "Verificación Disponibilidad", 0);
+                }
+                                
             } catch (NonexistentEntityException ex) {
                 Logger.getLogger(Disponibilidad_Presupuestal.class.getName()).log(Level.SEVERE, null, ex);
             }

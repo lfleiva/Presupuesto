@@ -38,7 +38,7 @@ public class CrearVigenciaInicial extends javax.swing.JDialog {
     }
     
     private void abrirSiguiente(){
-        InstructivoVigencia instructivoVigencia = new InstructivoVigencia(home, true);
+        RegistroInicialEntidad instructivoVigencia = new RegistroInicialEntidad(home, true);
         instructivoVigencia.setLocationRelativeTo(null);
         instructivoVigencia.setVisible(true);
     }
