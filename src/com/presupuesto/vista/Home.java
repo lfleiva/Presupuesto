@@ -8,6 +8,7 @@ package com.presupuesto.vista;
 import com.presupuesto.control.AccesoDatos;
 import com.presupuesto.modelo.Entidad;
 import com.presupuesto.modelo.Vigencia;
+import static com.presupuesto.vista.CrearVigenciaInicial.home;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -53,11 +54,14 @@ public class Home extends javax.swing.JFrame {
 
             if (!existeVigencia) {
                 registrarPrimeraVigencia();
-            } else if (existeRegistroEntidad) {
-                cargarInformacionEntidad();
                 this.setVisible(true);
-            } else {
-                //
+            } else if (!existeRegistroEntidad) {
+                RegistroInicialEntidad instructivoVigencia = new RegistroInicialEntidad(this, true);
+                instructivoVigencia.setLocationRelativeTo(null);
+                instructivoVigencia.setVisible(true);                
+            } else {                
+                cargarInformacionEntidad();
+                this.setVisible(true);   
             }
         }
     }
@@ -65,7 +69,7 @@ public class Home extends javax.swing.JFrame {
     /**
      * Metodo para consultar vigencia actual
      */
-    private boolean consultarVigencia() {
+    public boolean consultarVigencia() {
         boolean existenVigencias = true;
         accesoDatos = new AccesoDatos();
         vigencia = new Vigencia();
@@ -91,26 +95,26 @@ public class Home extends javax.swing.JFrame {
         nuevaVigencia.setLocationRelativeTo(null);
         nuevaVigencia.setVisible(true);
     }
-    
+
     public void registroInicialEntidad() {
         RegistroInicialEntidad registroEntidad = new RegistroInicialEntidad(this, true);
         registroEntidad.setLocationRelativeTo(null);
         registroEntidad.setVisible(true);
     }
 
-    private boolean cargarInformacionEntidad() {
+    public boolean cargarInformacionEntidad() {
         accesoDatos = new AccesoDatos();
         Entidad entidad = new Entidad();
-        List<Entidad> listaEntidad = new ArrayList<Entidad>();        
+        List<Entidad> listaEntidad = new ArrayList<Entidad>();
         listaEntidad = accesoDatos.consultarTodos(entidad, Entidad.class);
-        
+
         if (!listaEntidad.isEmpty()) {
             entidad = listaEntidad.get(0);
             datosEntidad(entidad);
             return true;
         } else {
             return false;
-        }                       
+        }
     }
 
     // ***** Metodos Privados ***** //    

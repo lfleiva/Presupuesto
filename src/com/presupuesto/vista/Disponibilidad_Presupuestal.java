@@ -736,7 +736,11 @@ public class Disponibilidad_Presupuestal extends javax.swing.JInternalFrame {
                 frListaBeneficiarios.setSelectedItem(disponibilidad.getBeneficiario().getIdentificacion() + " - " + disponibilidad.getBeneficiario().getNombre());
                 frFecha.setDate(disponibilidad.getFecha());
                 frObjeto.setText(disponibilidad.getObjeto());
-                frListaRubros.setSelectedIndex(0);
+                
+                if(frListaRubros.getItemCount() > 0) {
+                    frListaRubros.setSelectedIndex(0);
+                }                
+                
                 frValor.setText("$0.0");
 
                 eliminarElementosTabla();
@@ -757,7 +761,11 @@ public class Disponibilidad_Presupuestal extends javax.swing.JInternalFrame {
                 }                
                 frFecha.setDate(null);
                 frObjeto.setText("");
-                frListaRubros.setSelectedIndex(0);
+                
+                if(frListaRubros.getItemCount() > 0) {
+                    frListaRubros.setSelectedIndex(0);
+                }
+                
                 frValor.setText("$0.0");
                 eliminarElementosTabla();
             }

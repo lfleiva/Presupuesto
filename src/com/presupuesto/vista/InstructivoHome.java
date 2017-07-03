@@ -108,7 +108,8 @@ public class InstructivoHome extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void labelSiguienteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelSiguienteMousePressed
-        
+        home.setVisible(true);
+        this.hide();
     }//GEN-LAST:event_labelSiguienteMousePressed
 
     private void jLabel4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MousePressed

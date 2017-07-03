@@ -182,7 +182,7 @@ public class CrearVigenciaInicial extends javax.swing.JDialog {
             vigencia.setVigencia(Integer.toString(frAnio.getYear()));
             vigencia.setDescripcion(frDescripcion.getText());
             vigencia = accesoDatos.persistirActualizar(vigencia);
-            
+            home.consultarVigencia();
             abrirSiguiente();
             this.hide();
             

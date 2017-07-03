@@ -7,7 +7,6 @@ package com.presupuesto.vista;
 
 import com.presupuesto.control.AccesoDatos;
 import com.presupuesto.modelo.Acceso;
-import com.presupuesto.modelo.Entidad;
 import com.presupuesto.modelo.Vigencia;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;

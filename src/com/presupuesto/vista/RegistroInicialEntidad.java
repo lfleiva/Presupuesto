@@ -300,6 +300,7 @@ public class RegistroInicialEntidad extends javax.swing.JDialog {
             entidad.setTelefono(frTelefono.getText().trim());
             entidad.setTesorero(frTesorero.getText().trim());                        
             entidad = accesoDatos.persistirActualizar(entidad); 
+            home.cargarInformacionEntidad();
             abrirSiguiente();
             this.hide();
         } else {
